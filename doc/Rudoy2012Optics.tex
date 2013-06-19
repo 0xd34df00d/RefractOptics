@@ -18,6 +18,7 @@
 \usepackage{url}
 \usepackage{babelbib}
 \usepackage{pbox}
+\usepackage{grffile}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{decorations.pathmorphing}
 
@@ -191,13 +192,19 @@ $\xi^{\lambda} \in \mathcal{N}(0, \sigma_{\lambda}$ и $\xi^n \in \mathcal{N}(0,
 
 \section{Вычислительный эксперимент}
 
-В вычислительном эксперименте используются данные, полученные в ходе
-физического эксперимента по изучению возможности определения состава смеси
-прозрачных материалов по суммарной дисперсионной зависимости, если известна экспериментальная
-зависимость дисперсии для каждого конкретного материала. Рассматривается один
-материал, для которого имеется 18 экспериментальных точек,
+В вычислительном эксперименте используются данные, полученные в ходе физического
+эксперимента по изучению возможности определения состава смеси прозрачных
+материалов по суммарной дисперсионной зависимости, если известна экспериментальная
+зависимость дисперсии для каждого конкретного материала. Рассматривается три
+материала, для каждого из которых имеется 18 экспериментальных точек,
 соответствующих коэффициенту преломления при разных значениях длины волны.
 Характерное значение $n \approx 1.33$, $\lambda \in (400-950)$ нм.
+
+Предполагается, что свойства материалов описываются одной и той же формулой, так
+как подчиняются одним и тем же законам. Поэтому сначала получена формула
+регрессионной зависимости по данным для первого материала, а затем для каждого
+из трех материалов оценена стабильность полученного решения и найдены конкретные
+коэффициенты.
 
 В силу замечания о невозможности подбора структурных параметров $\alpha$ и $\tau$,
 разделение на обучающую и контрольную выборку не производилось, однако переобучения
@@ -245,9 +252,10 @@ $\hat{Q} = 0.95$, $\alpha = 0.05$, $\tau = 10$ получена следующа
 \eqref{eq:res_0}.
 
 Увеличим $\tau$ до 25. Получим следующую формулу:
-\[
+\begin{equation}
   n(\lambda) = 1.34 + \frac{11.6}{\lambda} + \frac{17.37}{\lambda^2} + \frac{0.0866}{\lambda^3} + \frac{2.95 \cdot 10^{-4}}{\lambda^4} + \frac{8.54 \cdot 10^{-7}}{\lambda^5},
-\]
+  \label{eq:res_incorrect}
+\end{equation}
 сложность которой составляет $31$, и для которой среднеквадратичная ошибка
 на выборке составляет $\approx 3.9 \cdot 10^{-7}$,
 а значение $Q_f \approx 0.0498$.
@@ -276,7 +284,7 @@ $\hat{Q} = 0.95$, $\alpha = 0.05$, $\tau = 10$ получена следующа
 $(\sigma_{\lambda}, \sigma_n)$.
 
 Численные значения эмпирического матожидания и дисперсии для первого, второго и третьего
-коэффициентов формулы \eqref{eq:res_0} для некоторых значений
+коэффициентов формулы \eqref{eq:res_0} для первого полимера для некоторых значений
 $(\sigma_{\lambda}, \sigma_n)$ приведены в таблицах \ref{tabl:stability1},
 \ref{tabl:stability2} и \ref{tabl:stability3} соответственно. По строкам указаны значения
 для $\sigma_n$, по столбцам~--- для $\sigma_{\lambda}$.
@@ -293,7 +301,7 @@ $(\sigma_{\lambda}, \sigma_n)$ приведены в таблицах \ref{tabl:
 	  10 & $\displaystyle (1.36; 2.74 \cdot 10^{-7})$ & $\displaystyle (1.36; 2.37 \cdot 10^{-6})$ & $\displaystyle (1.36; 2.35 \cdot 10^{-5})$ & $\displaystyle (1.36; 2.35 \cdot 10^{-4})$ & $\displaystyle (1.36; 0.00236)$\\ \hline
 	\end{tabular}%
   }
-  \caption{Значения матожидания и стандартного отклонения для первого коэффициента}
+  \caption{Значения матожидания и стандартного отклонения для первого коэффициента первого полимера}
   \label{tabl:stability1}
 \end{table}
 
@@ -306,10 +314,10 @@ $(\sigma_{\lambda}, \sigma_n)$ приведены в таблицах \ref{tabl:
 	  0.01 & $\displaystyle (5.82; 5.41 \cdot 10^{-5})$ & $\displaystyle (5.82; 9.17 \cdot 10^{-4})$ & $\displaystyle (5.82; 0.00904)$ & $\displaystyle (5.82; 0.0867)$ & $\displaystyle (5.56; 1.81)$\\ \hline
 	  0.1 & $\displaystyle (5.82; 5.37 \cdot 10^{-4})$ & $\displaystyle (5.82; 0.00105)$ & $\displaystyle (5.82; 0.00907)$ & $\displaystyle (5.82; 0.0873)$ & $\displaystyle (5.56; 1.81)$\\ \hline
 	  1 & $\displaystyle (5.82; 0.00538)$ & $\displaystyle (5.82; 0.00549)$ & $\displaystyle (5.82; 0.0106)$ & $\displaystyle (5.82; 0.0866)$ & $\displaystyle (5.56; 1.82)$\\ \hline
-	  10 & $\displaystyle (5.82; 0.0511)$ & $\displaystyle (5.82; 0.0516)$ & $\displaystyle (5.82; 0.0525)$ & $\displaystyle (5.82; 0.103)$ & $\displaystyle (5.59; 1.75)$\\ \hline
+	  10 & $\displaystyle (5.82; 0.0511)$ & $\displaystyle (5.82; 0.0516)$ & $\displaystyle (5.82; 0.0.20)$ & $\displaystyle (5.82; 0.103)$ & $\displaystyle (5.59; 1.75)$\\ \hline
 	\end{tabular}%
   }
-  \caption{Значения матожидания и стандартного отклонения для второго коэффициента}
+  \caption{Значения матожидания и стандартного отклонения для второго коэффициента первого полимера}
   \label{tabl:stability2}
 \end{table}
 
@@ -325,12 +333,25 @@ $(\sigma_{\lambda}, \sigma_n)$ приведены в таблицах \ref{tabl:
 	  10 & $\displaystyle (3.59 \cdot 10^{-5}; 9.71 \cdot 10^{-7})$ & $\displaystyle (3.59 \cdot 10^{-5}; 9.83 \cdot 10^{-7})$ & $\displaystyle (3.59 \cdot 10^{-5}; 9.89 \cdot 10^{-7})$ & $\displaystyle (3.59 \cdot 10^{-5}; 1.18 \cdot 10^{-6})$ & $\displaystyle (2.4 \cdot 10^{-4}; 0.0882)$\\ \hline
 	\end{tabular}%
   }
-  \caption{Значения матожидания и стандартного отклонения для третьего коэффициента}
+  \caption{Значения матожидания и стандартного отклонения для третьего коэффициента первого полимера}
   \label{tabl:stability3}
 \end{table}
 
-На графиках \ref{fig:coeff_0}, \ref{fig:coeff_1} и \ref{fig:coeff_2} представлены
-поверхности уровня дисперсии для первого, второго и третьего коэффициентов соответственно.
+В таблице \ref{tabl:res_even} представлены
+поверхности уровня дисперсии для первого, второго и третьего коэффициентов каждого из полимеров
+соответственно.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{c c c}
+	Материал 1 & Материал 2 & Материал 3 \\ \hline
+	\includegraphics[scale=0.25]{figs/even/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.25]{figs/even/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.25]{figs/even/p3.txt_coeff0.dat.pdf} \\
+	\includegraphics[scale=0.25]{figs/even/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.25]{figs/even/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.25]{figs/even/p3.txt_coeff1.dat.pdf} \\
+	\includegraphics[scale=0.25]{figs/even/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.25]{figs/even/p2.txt_coeff2.dat.pdf} & \includegraphics[scale=0.25]{figs/even/p3.txt_coeff2.dat.pdf}
+  \end{tabular}
+  \caption{Поверхности дисперсии для формулы \eqref{eq:res_0}.}
+  \label{tabl:res_even}
+\end{table}
 
 Из графиков видно, что от шума, накладываемого на значения длины волны, дисперсия значений
 первого и второго коэффициентов практически не зависит. В то же время дисперсия значений
@@ -346,28 +367,104 @@ $(\sigma_{\lambda}, \sigma_n)$ приведены в таблицах \ref{tabl:
 предложенный метод прямо указывает, на каких интервалах шума какой будет выигрыш в точности
 предсказания от небольшого увеличения точности.
 
-\begin{figure}[h]
-  \centering
-  \includegraphics{figs/coeff0.eps}
-  \caption{Поверхность уровней дисперсии для первого коэффициента}
-  \label{fig:coeff_0}
-\end{figure}
+Отметим так же, что для коэффициентов, стоящих на одних и тех же местах, графики дисперсии
+похожи даже для разных материалов. Из этого можно сделать вывод, что полученная формула
+действительно описывает наблюдаемое физическое явление~--- именно такая зависимость и
+<<должна>> была бы получиться, и что полученная зависимость носит универсальный характер,
+не являясь переобученной моделью.
 
-\begin{figure}[h]
-  \centering
-  \includegraphics{figs/coeff1.eps}
-  \caption{Поверхность уровней дисперсии для второго коэффициента}
-  \label{fig:coeff_1}
-\end{figure}
+Кроме того, значения дисперсии не превосходят настоящие значения параметров по порядку величины,
+что означает, в частности, что материалы могут быть различены даже не очень точным рефрактометром.
 
-\begin{figure}[h]
+\subsection{Стабильность некорректного решения}
+
+Аналогично исследуем стабильность решения \eqref{eq:res_incorrect}. Для данных значений дисперсии
+приведем только графики зависимости, см. таблицу \ref{tabl:res_incorrect}.
+
+\begin{table}[h]
   \centering
-  \includegraphics{figs/coeff2.eps}
-  \caption{Поверхность уровней дисперсии для третьего коэффициента}
-  \label{fig:coeff_2}
-\end{figure}
+  \begin{tabular}{c c c}
+	Материал 1 & Материал 2 & Материал 3 \\ \hline
+	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff0.dat.pdf} \\
+	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff1.dat.pdf} \\
+	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff2.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff2.dat.pdf} \\
+	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff3.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff3.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff3.dat.pdf} \\
+	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff4.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff4.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff4.dat.pdf} \\
+	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff5.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff5.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff5.dat.pdf}
+  \end{tabular}
+  \caption{Поверхности дисперсии для формулы \eqref{eq:res_incorrect}.}
+  \label{tabl:res_incorrect}
+\end{table}
+
+Из графиков видно, что в случае формулы \eqref{eq:res_incorrect} дисперсия соответствующих
+параметров существенно превышает таковую для \eqref{eq:res_0}. В частности, второй, третий
+и четвертый коэффициенты имеют дисперсию, на порядки превышающую характерные значения самих
+коэффициентов.
+
+Данные результаты свидетельствуют о переобучении, и что полученная модель не может быть
+использована для надежного приближения экспериментальных данных ввиду большой чувствительности
+к шумам.
 
 \FloatBarrier
+
+\subsection{Исследование экспертного предположения}
+
+Экспертом предположено, что формула так же может иметь вид
+\begin{equation}
+  n(\lambda) = a + \frac{b}{c - \frac{1}{\lambda^2}},
+  \label{eq:resonance}
+\end{equation}
+если измерения находятся вблизи точки резонанса.
+
+Результаты нахождения параметров $a, b$ и $c$ методом Левенберга-Марквардта
+приведены в таблице \ref{tabl:resonance_coeffs}.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{| c | r | r | r |} \hline
+	Материал	& $a$		& $b$					& $c$					\\ \hline
+	1			& 1.385		& $1.79 \cdot 10^{-7}$	& $-4.49 \cdot 10^{-6}$	\\ \hline
+	2			& 1.372		& $1.62 \cdot 10^{-7}$	& $-4.59 \cdot 10^{-6}$	\\ \hline
+	3			& 1.361		& $1.21 \cdot 10^{-7}$	& $-3.75 \cdot 10^{-6}$	\\ \hline
+  \end{tabular}
+  \caption{Значения коэффициентов формулы \eqref{eq:resonance}.}
+  \label{tabl:resonance_coeffs}
+\end{table}
+
+Коэффициент $c$ в формуле \eqref{eq:resonance} имеет смысл резонансной
+частоты, приближение к которой описывается этой формулой, поэтому коэффициент
+$c$ должен быть неотрицательным. Ввиду этого полученные результаты не
+имеют физического смысла.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{c c c}
+	Материал 1 & Материал 2 & Материал 3 \\ \hline
+	\includegraphics[scale=0.25]{figs/resonance/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.25]{figs/resonance/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.25]{figs/resonance/p3.txt_coeff0.dat.pdf} \\
+	\includegraphics[scale=0.25]{figs/resonance/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.25]{figs/resonance/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.25]{figs/resonance/p3.txt_coeff1.dat.pdf} \\
+	\includegraphics[scale=0.25]{figs/resonance/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.25]{figs/resonance/p2.txt_coeff2.dat.pdf} & \includegraphics[scale=0.25]{figs/resonance/p3.txt_coeff2.dat.pdf}
+  \end{tabular}
+  \caption{Поверхности дисперсии для формулы \eqref{eq:resonance}.}
+  \label{tabl:res_resonance}
+\end{table}
+
+Тем не менее, исследуем стабильность данного решения тем же методом, что и в
+предыдущих случаях. Поверхности дисперсии приведены в таблице \ref{tabl:res_resonance}.
+
+Отметим, что характерная дисперсия первого коэффициента на порядок больше, чем
+для формулы \eqref{eq:res_0}, что затрудняет различение материалов в смеси при
+достаточно большой погрешности измерения $\lambda$, однако дисперсии второго и
+третьего коэффициента примерно на порядок меньше, чем для формулы
+\eqref{eq:res_0}.
+
+Поверхности дисперсии также не являются настолько же гладкими, как для формулы
+\eqref{eq:res_0}.
+
+Все это позволяет заключить, что, хотя экспериментальные данные хорошо
+описываются формулой \eqref{eq:resonance}, они не являются корректными с
+экспертно-физической точки зрения. Это, в частности, подтверждается экспертным
+соображением об ограничениях на коэффициенты формулы \eqref{eq:resonance},
+которые не выполняются в полученной модели.
 
 \section{Заключение}
 
@@ -385,7 +482,10 @@ $(\sigma_{\lambda}, \sigma_n)$ приведены в таблицах \ref{tabl:
 членов результирующей суперпозиции в решение, и зависимость изменения этих членов от
 случайных шумов во входных данных. В частности, в прикладных областях данный метод позволяет
 выявить, какие именно элементы признакового описания объектов в генеральной совокупности
-наиболее чувствительны к шуму.
+наиболее чувствительны к шуму. Кроме того, для корректных с экспертной точки зрения
+решений оказывается, что они стабильны, в то время как некорректные результаты нестабильны.
+
+\FloatBarrier
 
 \bibliographystyle{babunsrt-lf}
 %\bibliographystyle{babunsrt}
