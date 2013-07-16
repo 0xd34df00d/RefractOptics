@@ -30,110 +30,10 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
-#include <thread>
-#include <mutex>
-#include <future>
 #include <limits>
-#include <dlib/svm.h>
-
-#define MATHLIB_STANDALONE
-#include <Rmath.h>
-
-typedef dlib::matrix<double, 1, 1> SampleType_t;
+#include "solve.h"
 
 const size_t ParamsCount = 3;
-typedef dlib::matrix<double, ParamsCount, 1> Params_t;
-
-namespace Series
-{
-	double residual (const std::pair<SampleType_t, double>& data, const Params_t& p)
-	{
-		double result = 0;
-		const auto x = data.first (0);
-		for (size_t i = 0; i < ParamsCount; ++i)
-			result += p (i) / std::pow (x, 2 * i);
-		return result - data.second;
-	}
-
-	Params_t residualDer (const std::pair<SampleType_t, double>& data, const Params_t& p)
-	{
-		Params_t res;
-		const auto x = data.first (0);
-		for (size_t i = 0; i < ParamsCount; ++i)
-			res (i) = 1 / std::pow (x, 2 * i);
-		return res;
-	}
-}
-
-namespace Resonance
-{
-	double residual (const std::pair<SampleType_t, double>& data, const Params_t& p)
-	{
-		const auto x = data.first (0);
-		const auto x2 = x * x;
-
-		const double cminus = p (2) - 1.0 / x2;
-		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot >= 0 ? std::sqrt(underRoot) : std::numeric_limits<double>::max () / 10;
-
-		return root - data.second;
-	}
-
-	Params_t residualDer (const std::pair<SampleType_t, double>& data, const Params_t& p)
-	{
-		const auto x = data.first (0);
-		const auto x2 = x * x;
-
-		const double cminus = p (2) - 1.0 / x2;
-		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot >= 0 ? std::sqrt(underRoot) : std::numeric_limits<double>::max () / 10;
-
-		Params_t res;
-		res (0) = 1. / (2. * root);
-		res (1) = 1. / (2. * root * cminus);
-		res (2) = -(p (1) / (2 * root * cminus * cminus));
-		return res;
-	}
-}
-
-using namespace Resonance;
-
-Params_t solve (const std::vector<std::pair<SampleType_t, double>>& pairs)
-{
-	Params_t p;
-	for (size_t i = 0; i < ParamsCount; ++i)
-		p (i) = 1;
-	dlib::solve_least_squares_lm (dlib::objective_delta_stop_strategy(1e-5),
-			residual, residualDer, pairs, p);
-	return p;
-}
-
-typedef std::vector<std::vector<double>> StatsVec_t;
-
-StatsVec_t getStats (double lVar, double nVar,
-		const std::vector<std::pair<SampleType_t, double>>& pairs)
-{
-	std::random_device generator;
-	std::normal_distribution<double> lambdaDistr (0, lVar);
-	std::normal_distribution<double> nDistr (0, nVar);
-
-	StatsVec_t stats;
-	stats.resize (ParamsCount);
-	for (size_t i = 0; i < 5000; ++i)
-	{
-		std::vector<std::pair<SampleType_t, double>> localPairs = pairs;
-		for (auto& pair : localPairs)
-		{
-			pair.first (0) += lambdaDistr (generator);
-			pair.second += nDistr (generator);
-		}
-
-		const auto& p = solve (localPairs);
-		for (size_t j = 0; j < ParamsCount; ++j)
-			stats [j].push_back (p (j));
-	}
-	return stats;
-}
 
 std::string format (double value)
 {
@@ -170,6 +70,60 @@ std::string format (double value)
 	return ostr.str ();
 }
 
+namespace Series
+{
+	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		double result = 0;
+		const auto x = data.first (0);
+		for (size_t i = 0; i < ParamsCount; ++i)
+			result += p (i) / std::pow (x, 2 * i);
+		return result - data.second;
+	}
+
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		Params_t<ParamsCount> res;
+		const auto x = data.first (0);
+		for (size_t i = 0; i < ParamsCount; ++i)
+			res (i) = 1 / std::pow (x, 2 * i);
+		return res;
+	}
+}
+
+namespace Resonance
+{
+	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		const auto x = data.first (0);
+		const auto x2 = x * x;
+
+		const double cminus = p (2) - 1.0 / x2;
+		const double underRoot = p (0) + p (1) / cminus;
+		const double root = underRoot >= 0 ? std::sqrt(underRoot) : std::numeric_limits<double>::max () / 10;
+
+		return root - data.second;
+	}
+
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		const auto x = data.first (0);
+		const auto x2 = x * x;
+
+		const double cminus = p (2) - 1.0 / x2;
+		const double underRoot = p (0) + p (1) / cminus;
+		const double root = underRoot >= 0 ? std::sqrt(underRoot) : std::numeric_limits<double>::max () / 10;
+
+		Params_t<ParamsCount> res;
+		res (0) = 1. / (2. * root);
+		res (1) = 1. / (2. * root * cminus);
+		res (2) = -(p (1) / (2 * root * cminus * cminus));
+		return res;
+	}
+}
+
+using namespace Resonance;
+
 int main (int argc, char **argv)
 {
 	if (argc < 2)
@@ -202,7 +156,7 @@ int main (int argc, char **argv)
 	std::cout << "read " << samples.size () << " samples: " << std::endl;
 
 	{
-		const auto& p = solve (pairs);
+		const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
 		std::cout << "inferred params: " << dlib::trans (p) << std::endl;
 
 		double sum = 0;
@@ -224,41 +178,7 @@ int main (int argc, char **argv)
 			7e-3, 0.01, 0.01, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1 };
 			*/
 
-	std::mutex mapMutex;
-	std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>> results;
-	for (auto lVar : lVars)
-	{
-		for (auto i = nVars.begin (); i != nVars.end (); )
-		{
-			std::map<double, std::future<StatsVec_t>> nVar2future;
-			for (size_t t = 0; i != nVars.end () && t < std::thread::hardware_concurrency (); ++i, ++t)
-				nVar2future [*i] = std::async (std::launch::async, getStats, lVar, *i, pairs);
-
-			for (auto& pair : nVar2future)
-			{
-				const auto& coeffs = pair.second.get ();
-
-				std::vector<dlib::running_stats<double>> stats;
-				stats.resize (coeffs.size ());
-				for (size_t i = 0; i < coeffs.size (); ++i)
-					for (auto coeff : coeffs [i])
-						stats [i].add (coeff);
-				results [lVar] [pair.first] = stats;
-
-				/*
-				for (size_t i = 0; i < coeffs.size (); ++i)
-				{
-					std::stringstream fname;
-					fname << infile << "_coeff" << i << "_" << lVar << "_" << pair.first << ".dat";
-					std::ofstream ostr (fname.str ());
-					for (auto coeff : coeffs [i])
-						ostr << coeff << "\n";
-					ostr << std::endl;
-				}
-				*/
-			}
-		}
-	}
+	auto results = calcStats<ParamsCount> (lVars, nVars, pairs, residual, residualDer);
 
 	/*
 	for (size_t i = 0; i < ParamsCount; ++i)
