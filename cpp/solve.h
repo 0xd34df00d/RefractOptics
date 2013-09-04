@@ -50,39 +50,84 @@ Params_t<ParamsCount> solve (const std::vector<std::pair<SampleType_t, double>>&
 }
 
 typedef std::vector<std::vector<double>> StatsVec_t;
+typedef std::vector<std::pair<SampleType_t, double>> PairsList_t;
+typedef std::vector<dlib::running_stats<double>> RunningStatsList_t;
+typedef std::map<double, std::map<double, RunningStatsList_t>> Stats_t;
 
 template<size_t ParamsCount, typename R, typename D>
-StatsVec_t getStats (double lVar, double nVar,
-		const std::vector<std::pair<SampleType_t, double>>& pairs, R res, D der)
+class StatsKeeper
 {
-	std::random_device generator;
-	std::normal_distribution<double> lambdaDistr (0, lVar);
-	std::normal_distribution<double> nDistr (0, nVar);
+	double LVar_;
+	double NVar_;
 
-	StatsVec_t stats;
-	stats.resize (ParamsCount);
-	for (size_t i = 0; i < 5000; ++i)
+	PairsList_t Pairs_;
+
+	R R_;
+	D D_;
+
+	StatsVec_t Stats_;
+	RunningStatsList_t Running_;
+public:
+	StatsKeeper (double lVar, double nVar, const PairsList_t& pairs, R r, D d)
+	: LVar_ (lVar)
+	, NVar_ (nVar)
+	, Pairs_ (pairs)
+	, R_ (r)
+	, D_ (d)
 	{
-		std::vector<std::pair<SampleType_t, double>> localPairs = pairs;
-		for (auto& pair : localPairs)
-		{
-			if (lVar)
-				pair.first (0) += lambdaDistr (generator);
-			if (nVar)
-				pair.second += nDistr (generator);
-		}
-
-		const auto& p = solve<ParamsCount> (localPairs, res, der);
-		for (size_t j = 0; j < ParamsCount; ++j)
-			stats [j].push_back (p (j));
+		Stats_.resize (ParamsCount);
+		Running_.resize (ParamsCount);
 	}
-	return stats;
+
+	void TryMore (size_t tries)
+	{
+		std::random_device generator;
+		std::normal_distribution<double> lambdaDistr (0, LVar_);
+		std::normal_distribution<double> nDistr (0, NVar_);
+
+		for (size_t i = 0; i < tries; ++i)
+		{
+			auto localPairs = Pairs_;
+			for (auto& pair : localPairs)
+			{
+				if (LVar_)
+					pair.first (0) += lambdaDistr (generator);
+				if (NVar_)
+					pair.second += nDistr (generator);
+			}
+
+			const auto& p = solve<ParamsCount> (localPairs, R_, D_);
+			for (size_t j = 0; j < ParamsCount; ++j)
+			{
+				const auto val = p (j);
+				Stats_ [j].push_back (val);
+				Running_ [j].add (val);
+			}
+		}
+	}
+
+	const StatsVec_t& GetPoints () const
+	{
+		return Stats_;
+	}
+
+	const RunningStatsList_t& GetRunning () const
+	{
+		return Running_;
+	}
+};
+
+template<size_t ParamsCount, typename R, typename D>
+StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, R res, D der)
+{
+	StatsKeeper<ParamsCount, R, D> keeper (lVar, nVar, pairs, res, der);
+	keeper.TryMore (5000);
+	return keeper.GetPoints ();
 }
 
 template<size_t ParamsCount, typename R, typename D>
-std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>>
-	calcStats (const std::vector<double>& lVars, const std::vector<double>& nVars,
-			std::vector<std::pair<SampleType_t, double>> pairs, R res, D der)
+Stats_t calcStats (const std::vector<double>& lVars, const std::vector<double>& nVars,
+			const PairsList_t& pairs, R res, D der)
 {
 	std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>> results;
 	for (auto lVar : lVars)
