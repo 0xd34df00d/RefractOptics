@@ -6,3 +6,7 @@ ADD_EXECUTABLE (optics WIN32
 	main.cpp
 	stats.cpp
 	)
+
+add_executable (test_linear WIN32
+	testlinear_main.cpp
+	)
