@@ -128,6 +128,10 @@ Stats_t calcStats (const std::vector<double>& lVars, const std::vector<double>& 
 			const PairsList_t& pairs, R res, D der)
 {
 	std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>> results;
+
+	const double count = lVars.size () * nVars.size ();
+	size_t finished = 0;
+
 	for (auto lVar : lVars)
 	{
 		for (auto i = nVars.begin (); i != nVars.end (); )
@@ -148,6 +152,7 @@ Stats_t calcStats (const std::vector<double>& lVars, const std::vector<double>& 
 					for (auto coeff : coeffs [i])
 						stats [i].add (coeff);
 				results [lVar] [pair.first] = stats;
+				std::cout << (100 * ++finished / count) << "% done for (" << lVar << "; " << pair.first << ")" << std::endl;
 			}
 		}
 	}
