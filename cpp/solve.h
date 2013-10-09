@@ -82,8 +82,6 @@ public:
 	void TryMore (size_t tries)
 	{
 		std::random_device generator;
-		std::normal_distribution<double> lambdaDistr (0, LVar_);
-		std::normal_distribution<double> nDistr (0, NVar_);
 
 		for (size_t i = 0; i < tries; ++i)
 		{
@@ -91,9 +89,9 @@ public:
 			for (auto& pair : localPairs)
 			{
 				if (LVar_)
-					pair.first (0) += lambdaDistr (generator);
+					pair.first (0) += std::normal_distribution<double> { 0, LVar_ * pair.first (0) } (generator);
 				if (NVar_)
-					pair.second += nDistr (generator);
+					pair.second += std::normal_distribution<double> { 0, NVar_ * pair.second } (generator);
 			}
 
 			const auto& p = solve<ParamsCount> (localPairs, R_, D_);

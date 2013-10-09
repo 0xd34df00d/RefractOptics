@@ -155,28 +155,22 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << samples.size () << " samples: " << std::endl;
 
-	{
-		const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
-		std::cout << "inferred params: " << dlib::trans (p) << std::endl;
+	const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
+	std::cout << "inferred params: " << dlib::trans (p) << std::endl;
 
-		double sum = 0;
-		for (const auto& pair : pairs)
-		{
-			auto r = residual (pair, p);
-			sum += r * r;
-		}
-		std::cout << "MSE: " << sum / pairs.size () << std::endl;
+	double sum = 0;
+	for (const auto& pair : pairs)
+	{
+		auto r = residual (pair, p);
+		sum += r * r;
 	}
+	std::cout << "MSE: " << sum / pairs.size () << std::endl;
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
-	std::vector<double> lVars { 0, 0.1, 0.3, 1, 3 };
+	std::vector<double> lVars { 0, 1e-5, 2e-5, 5e-5, 1e-4, 1e-3 };
 	std::vector<double> nVars { 0, 1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5, 8e-5, 9e-5,
 			1e-4, 2e-4, 3e-4, 4e-4, 5e-4, 6e-4, 7e-4, 8e-4, 9e-4, 1e-3 };
-	/*
-	std::vector<double> nVars { 0, 1e-5, 2e-5, 5e-5, 1e-4, 2e-5, 5e-4, 1e-3, 2e-3, 5e-3,
-			7e-3, 0.01, 0.01, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1 };
-			*/
 
 	auto results = calcStats<ParamsCount> (lVars, nVars, pairs, residual, residualDer);
 
@@ -219,7 +213,7 @@ int main (int argc, char **argv)
 			for (auto nVar : nVars)
 			{
 				const auto& stats = results [lVar] [nVar];
-				ostr << lVar << " " << nVar << " " << stats [i].stddev () << std::endl;
+				ostr << lVar << " " << nVar << " " << stats [i].stddev () / p (i)  << std::endl;
 			}
 			ostr << std::endl;
 		}
