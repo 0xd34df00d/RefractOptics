@@ -217,7 +217,7 @@ int main (int argc, char **argv)
 			for (auto nVar : nVars)
 			{
 				const auto& stats = results [lVar] [nVar];
-				ostr << lVar << " " << nVar << " " << stats [i].stddev () / p (i)  << std::endl;
+				ostr << lVar * 1000 << " " << nVar * 1000 << " " << stats [i].stddev () / p (i) * 1000  << std::endl;
 			}
 			ostr << std::endl;
 		}
