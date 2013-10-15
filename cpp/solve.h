@@ -89,9 +89,15 @@ public:
 			for (auto& pair : localPairs)
 			{
 				if (LVar_)
-					pair.first (0) += std::normal_distribution<double> { 0, LVar_ * pair.first (0) } (generator);
+				{
+					const auto bound = LVar_ * pair.first (0);
+					pair.first (0) += std::normal_distribution<double> { 0, bound } (generator);
+				}
 				if (NVar_)
-					pair.second += std::normal_distribution<double> { 0, NVar_ * pair.second } (generator);
+				{
+					const auto bound = NVar_ * pair.second;
+					pair.second += std::normal_distribution<double> { 0, bound } (generator);
+				}
 			}
 
 			const auto& p = solve<ParamsCount> (localPairs, R_, D_);
