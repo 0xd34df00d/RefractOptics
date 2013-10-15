@@ -168,9 +168,13 @@ int main (int argc, char **argv)
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
-	std::vector<double> lVars { 0, 1e-5, 2e-5, 5e-5, 1e-4, 1e-3 };
-	std::vector<double> nVars { 0, 1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5, 8e-5, 9e-5,
-			1e-4, 2e-4, 3e-4, 4e-4, 5e-4, 6e-4, 7e-4, 8e-4, 9e-4, 1e-3 };
+	std::vector<double> lVars;
+	for (double i = 0; i < 1e-3; i += 1e-4)
+		lVars.push_back (i);
+
+	std::vector<double> nVars;
+	for (double i = 0; i < 5e-4; i += 2e-5)
+		nVars.push_back (i);
 
 	auto results = calcStats<ParamsCount> (lVars, nVars, pairs, residual, residualDer);
 
