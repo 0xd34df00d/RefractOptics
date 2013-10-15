@@ -44,8 +44,8 @@ Params_t<ParamsCount> solve (const std::vector<std::pair<SampleType_t, double>>&
 	Params_t<ParamsCount> p;
 	for (size_t i = 0; i < ParamsCount; ++i)
 		p (i) = 0;
-	dlib::solve_least_squares_lm (dlib::objective_delta_stop_strategy(1e-7),
-			res, der, pairs, p, 10);
+	dlib::solve_least_squares_lm (dlib::objective_delta_stop_strategy(1e-9),
+			res, der, pairs, p, 0.01);
 	return p;
 }
 
