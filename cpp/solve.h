@@ -67,13 +67,16 @@ class StatsKeeper
 
 	StatsVec_t Stats_;
 	RunningStatsList_t Running_;
+
+	const bool Relative_ = true;
 public:
-	StatsKeeper (double lVar, double nVar, const PairsList_t& pairs, R r, D d)
+	StatsKeeper (double lVar, double nVar, const PairsList_t& pairs, R r, D d, bool relative = true)
 	: LVar_ (lVar)
 	, NVar_ (nVar)
 	, Pairs_ (pairs)
 	, R_ (r)
 	, D_ (d)
+	, Relative_ (relative)
 	{
 		Stats_.resize (ParamsCount);
 		Running_.resize (ParamsCount);
@@ -83,6 +86,9 @@ public:
 	{
 		std::random_device generator;
 
+		std::normal_distribution<double> lambdaDistr { 0, LVar_ };
+		std::normal_distribution<double> nDistr { 0, NVar_ };
+
 		for (size_t i = 0; i < tries; ++i)
 		{
 			auto localPairs = Pairs_;
@@ -91,12 +97,16 @@ public:
 				if (LVar_)
 				{
 					const auto bound = LVar_ * pair.first (0);
-					pair.first (0) += std::normal_distribution<double> { 0, bound } (generator);
+					pair.first (0) += Relative_ ?
+							std::normal_distribution<double> { 0, bound } (generator) :
+							lambdaDistr (generator);
 				}
 				if (NVar_)
 				{
 					const auto bound = NVar_ * pair.second;
-					pair.second += std::normal_distribution<double> { 0, bound } (generator);
+					pair.second += Relative_ ?
+							std::normal_distribution<double> { 0, bound } (generator) :
+							nDistr (generator);
 				}
 			}
 
