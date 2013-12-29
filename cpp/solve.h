@@ -62,8 +62,8 @@ class StatsKeeper
 
 	PairsList_t Pairs_;
 
-	R R_;
-	D D_;
+	const R R_;
+	const D D_;
 
 	StatsVec_t Stats_;
 	RunningStatsList_t Running_;
