@@ -122,7 +122,7 @@ namespace Resonance
 	}
 }
 
-using namespace Resonance;
+using namespace Series;
 
 int main (int argc, char **argv)
 {
