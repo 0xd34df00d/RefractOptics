@@ -153,7 +153,7 @@ Stats_t calcStats (const std::vector<double>& lVars, const std::vector<double>& 
 		for (auto i = nVars.begin (); i != nVars.end (); )
 		{
 			std::map<double, std::future<StatsVec_t>> nVar2future;
-			for (size_t t = 0; i != nVars.end () && t < std::thread::hardware_concurrency (); ++i, ++t)
+			for (size_t t = 0; i != nVars.end () && t < std::thread::hardware_concurrency () - 1; ++i, ++t)
 				nVar2future [*i] = std::async (std::launch::async,
 						getStats<ParamsCount, R, D>,
 						lVar, *i, pairs, res, der);
