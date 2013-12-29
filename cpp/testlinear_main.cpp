@@ -127,8 +127,11 @@ int main (int argc, char **argv)
 		const auto diff0 = std::abs (std::pow (stats [0].stddev (), 2) - da0);
 		const auto diff1 = std::abs (std::pow (stats [1].stddev (), 2) - da1);
 
-		std::cout << "\t" << i << "\t" << diff0 << ";\t\t";
-		std::cout << diff1 << std::endl;
+		if (!(i % 10))
+		{
+			std::cout << "\t" << i << "\t" << diff0 << ";\t\t";
+			std::cout << diff1 << std::endl;
+		}
 
 		ostr << i << " " << diff0 << " " << diff1 << std::endl;
 		ostrN << i << " " << diff0 / da0 << " " << diff1 / da1 << std::endl;
