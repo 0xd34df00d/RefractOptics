@@ -160,8 +160,8 @@ $n$ имеет принципиальное значение. Указанная
 данные. В третьей части описывается метод, позволяющий учитывать и анализировать
 зависимость погрешностей различных коэффициентов порожденной суперпозиции от погрешности
 эксперимента. В четвертой части приводятся результаты вычислительного
-эксперимента на реальных данных. Рассматривается три полимера в области прозрачности,
-для каждого из которых имеется 18 экспериментальных точек,
+эксперимента на реальных данных. Рассматривается два полимера в области прозрачности,
+для каждого из которых имеется 17 экспериментальных точек,
 соответствующих величине коэффициента преломления при различных значениях длины волны.
 
 \section{Постановка задачи}
@@ -381,40 +381,41 @@ $\hat{f}$, минимизирующие функционал \eqref{eq:s} сог
 В вычислительном эксперименте используются данные, полученные в ходе
 изучения возможности определения состава смеси прозрачных
 полимеров по суммарной дисперсионной зависимости, если известна экспериментальная
-зависимость дисперсии для каждого конкретного полимера. Рассматривается три
+зависимость дисперсии для каждого конкретного полимера. Рассматривается два
 полимера, для каждого из которых имеется 17 экспериментальных точек,
 соответствующих коэффициенту преломления при разных значениях длины волны.
 Значения приведены в таблице \ref{tabl:source_data}.
 
 \begin{table}[h]
-  \begin{tabular}{| r | r | r | r |} \hline
-	$\lambda$, нм	& Первый полимер & Второй полимер & Третий полимер \\ \hline
-	435.8 & 1.36852 & 1.35715 & 1.34850 \\ \hline
-	447.1 & 1.36745 & 1.35625 & 1.34767 \\ \hline
-	471.3 & 1.36543 & 1.35449 & 1.34620 \\ \hline
-	486.1 & 1.36446 & 1.35349 & 1.34542 \\ \hline
-	501.6 & 1.36347 & 1.35275 & 1.34461 \\ \hline
-	546.1 & 1.36126 & 1.35083 & 1.34294 \\ \hline
-	577.0 & 1.3599 & 1.34968 & 1.34191 \\ \hline
-	587.6 & 1.3597 & 1.34946 & 1.34174 \\ \hline
-	589.3 & 1.35952 & 1.34938 & 1.34158 \\ \hline
-	656.3 & 1.35767 & 1.34768 & 1.34005 \\ \hline
-	667.8 & 1.35743 & 1.34740 & 1.33987 \\ \hline
-	706.5 & 1.35652 & 1.34664 & 1.33917 \\ \hline
-	750 & 1.35587 & 1.34607 & 1.33855 \\ \hline
-	800 & 1.35504 & 1.34544 & 1.33794 \\ \hline
-	850 & 1.3544 & 1.34487 & 1.33741 \\ \hline
-	900 & 1.35403 & 1.34437 & 1.33685 \\ \hline
-	950 & 1.35364 & 1.34407 & 1.33652 \\ \hline
+  \footnotesize
+  \begin{tabular}{| r | r | r |} \hline
+	$\lambda$, нм	& Первый полимер & Второй полимер \\ \hline
+	435.8 & 1.36852 & 1.35715 \\ \hline
+	447.1 & 1.36745 & 1.35625 \\ \hline
+	471.3 & 1.36543 & 1.35449 \\ \hline
+	486.1 & 1.36446 & 1.35349 \\ \hline
+	501.6 & 1.36347 & 1.35275 \\ \hline
+	546.1 & 1.36126 & 1.35083 \\ \hline
+	577.0 & 1.3599 & 1.34968 \\ \hline
+	587.6 & 1.3597 & 1.34946 \\ \hline
+	589.3 & 1.35952 & 1.34938 \\ \hline
+	656.3 & 1.35767 & 1.34768 \\ \hline
+	667.8 & 1.35743 & 1.34740 \\ \hline
+	706.5 & 1.35652 & 1.34664 \\ \hline
+	750 & 1.35587 & 1.34607 \\ \hline
+	800 & 1.35504 & 1.34544 \\ \hline
+	850 & 1.3544 & 1.34487 \\ \hline
+	900 & 1.35403 & 1.34437 \\ \hline
+	950 & 1.35364 & 1.34407 \\ \hline
   \end{tabular}
-  \caption{Экспериментальные значения коэффициентов преломления для трех разных полимеров.}
+  \caption{Экспериментальные значения коэффициентов преломления.}
   \label{tabl:source_data}
 \end{table}
 
 Предполагается, что дисперсионные свойства полимеров описываются одной и той же функциональной зависимостью, так
 как подчиняются одним и тем же законам. Поэтому сначала получена суперпозиция $\hat{f}$,
 минимизирующая \eqref{eq:s_f} для первого полимера, а затем для каждого
-из трех полимеров находятся соответствующие векторы параметров
+из полимеров находятся соответствующие векторы параметров
 $\hat{\boldsymbol{\omega}}_{\hat{f}}$ и оценивается устойчивость полученного решения.
 
 Разделение на обучающую и контрольную выборку не производилось, однако переобучения
@@ -501,11 +502,11 @@ $(\sigma_{\lambda}, \sigma_n)$.
 
 \begin{table}[h]
   \centering
-  \begin{tabular}{c c c}
-	Полимер 1 & Полимер 2 & Полимер 3 \\ \hline
-	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p3.txt_coeff0.dat.pdf} \\
-	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p3.txt_coeff1.dat.pdf} \\
-	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p3.txt_coeff2.dat.pdf}
+  \begin{tabular}{c c}
+	Полимер 1 & Полимер 2 \\ \hline
+	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff0.dat.pdf} \\
+	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff1.dat.pdf} \\
+	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff2.dat.pdf}
   \end{tabular}
   \caption{Поверхности дисперсии для формулы \eqref{eq:res_0}.}
   \label{tabl:res_even}
@@ -543,11 +544,11 @@ $(\sigma_{\lambda}, \sigma_n)$.
 
 \begin{table}[h]
   \centering
-  \begin{tabular}{c c c}
-	Полимер 1 & Полимер 2 & Полимер 3 \\ \hline
-	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p3.txt_coeff0.dat.pdf} \\
-	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p3.txt_coeff1.dat.pdf} \\
-	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p3.txt_coeff2.dat.pdf} %\\
+  \begin{tabular}{c c}
+	Полимер 1 & Полимер 2 \\ \hline
+	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff0.dat.pdf} \\
+	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff1.dat.pdf} \\
+	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff2.dat.pdf} %\\
 %	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff3.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff3.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff3.dat.pdf} \\
 %	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff4.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff4.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff4.dat.pdf} \\
 %	\includegraphics[scale=0.20]{figs/all/p1.txt_coeff5.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p2.txt_coeff5.dat.pdf} & \includegraphics[scale=0.20]{figs/all/p3.txt_coeff5.dat.pdf}
@@ -595,11 +596,11 @@ $(\sigma_{\lambda}, \sigma_n)$.
 
 \begin{table}[h]
   \centering
-  \begin{tabular}{c c c}
-	Полимер 1 & Полимер 2 & Полимер 3 \\ \hline
-	\includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p3.txt_coeff0.dat.pdf} \\
-	\includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p3.txt_coeff1.dat.pdf} \\
-	\includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p3.txt_coeff2.dat.pdf}
+  \begin{tabular}{c c}
+	Полимер 1 & Полимер 2 \\ \hline
+	\includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff0.dat.pdf} \\
+	\includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff1.dat.pdf} \\
+	\includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff2.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff2.dat.pdf}
   \end{tabular}
   \caption{Поверхности дисперсии для формулы \eqref{eq:resonance}.}
   \label{tabl:res_resonance}
