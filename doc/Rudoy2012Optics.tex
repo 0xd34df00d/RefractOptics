@@ -495,62 +495,6 @@ $\alpha = 0.05$, $\tau = 10$ получена следующая суперпо�
 Критерием останова в нем являлось достижение 10000 итераций для каждой пары
 $(\sigma_{\lambda}, \sigma_n)$.
 
-\begin{comment}
-Численные значения эмпирического матожидания и дисперсии для первого, второго и третьего
-коэффициентов формулы \eqref{eq:res_0} для первого полимера для некоторых значений
-$(\sigma_{\lambda}, \sigma_n)$ приведены в таблицах \ref{tabl:stability1},
-\ref{tabl:stability2} и \ref{tabl:stability3} соответственно. По строкам указаны значения
-для $\sigma_n$, по столбцам~--- для $\sigma_{\lambda}$.
-
-\begin{table}[h]
-  \centering
-  \resizebox{\columnwidth}{!}{%
-	\begin{tabular}{| l | l | l | l | l | l |} \hline
-	   & $0$ & $10^{-5}$ & $10^{-4}$ & $0.001$ & $0.01$\\ \hline
-	  0 & $\displaystyle (1.36; 5.97 \cdot 10^{-7})$ & $\displaystyle (1.36; 2.34 \cdot 10^{-6})$ & $\displaystyle (1.36; 2.39 \cdot 10^{-5})$ & $\displaystyle (1.36; 2.34 \cdot 10^{-4})$ & $\displaystyle (1.36; 0.00238)$\\ \hline
-	  0.01 & $\displaystyle (1.36; 0)$ & $\displaystyle (1.36; 2.37 \cdot 10^{-6})$ & $\displaystyle (1.36; 2.38 \cdot 10^{-5})$ & $\displaystyle (1.36; 2.37 \cdot 10^{-4})$ & $\displaystyle (1.36; 0.00231)$\\ \hline
-	  0.1 & $\displaystyle (1.36; 0)$ & $\displaystyle (1.36; 2.37 \cdot 10^{-6})$ & $\displaystyle (1.36; 2.35 \cdot 10^{-5})$ & $\displaystyle (1.36; 2.34 \cdot 10^{-4})$ & $\displaystyle (1.36; 0.00237)$\\ \hline
-	  1 & $\displaystyle (1.36; 1.03 \cdot 10^{-7})$ & $\displaystyle (1.36; 2.36 \cdot 10^{-6})$ & $\displaystyle (1.36; 2.34 \cdot 10^{-5})$ & $\displaystyle (1.36; 2.39 \cdot 10^{-4})$ & $\displaystyle (1.36; 0.00235)$\\ \hline
-	  10 & $\displaystyle (1.36; 2.74 \cdot 10^{-7})$ & $\displaystyle (1.36; 2.37 \cdot 10^{-6})$ & $\displaystyle (1.36; 2.35 \cdot 10^{-5})$ & $\displaystyle (1.36; 2.35 \cdot 10^{-4})$ & $\displaystyle (1.36; 0.00236)$\\ \hline
-	\end{tabular}%
-  }
-  \caption{Значения матожидания и стандартного отклонения для первого коэффициента первого полимера}
-  \label{tabl:stability1}
-\end{table}
-
-\begin{table}[h]
-  \centering
-  \resizebox{\columnwidth}{!}{%
-	\begin{tabular}{| l | l | l | l | l | l |} \hline
-	   & $0$ & $10^{-5}$ & $10^{-4}$ & $0.001$ & $0.01$\\ \hline
-	  0 & $\displaystyle (5.82; 0)$ & $\displaystyle (5.82; 9.12 \cdot 10^{-4})$ & $\displaystyle (5.82; 0.00913)$ & $\displaystyle (5.82; 0.0871)$ & $\displaystyle (5.55; 1.87)$\\ \hline
-	  0.01 & $\displaystyle (5.82; 5.41 \cdot 10^{-5})$ & $\displaystyle (5.82; 9.17 \cdot 10^{-4})$ & $\displaystyle (5.82; 0.00904)$ & $\displaystyle (5.82; 0.0867)$ & $\displaystyle (5.56; 1.81)$\\ \hline
-	  0.1 & $\displaystyle (5.82; 5.37 \cdot 10^{-4})$ & $\displaystyle (5.82; 0.00105)$ & $\displaystyle (5.82; 0.00907)$ & $\displaystyle (5.82; 0.0873)$ & $\displaystyle (5.56; 1.81)$\\ \hline
-	  1 & $\displaystyle (5.82; 0.00538)$ & $\displaystyle (5.82; 0.00549)$ & $\displaystyle (5.82; 0.0106)$ & $\displaystyle (5.82; 0.0866)$ & $\displaystyle (5.56; 1.82)$\\ \hline
-	  10 & $\displaystyle (5.82; 0.0511)$ & $\displaystyle (5.82; 0.0516)$ & $\displaystyle (5.82; 0.0.20)$ & $\displaystyle (5.82; 0.103)$ & $\displaystyle (5.59; 1.75)$\\ \hline
-	\end{tabular}%
-  }
-  \caption{Значения матожидания и стандартного отклонения для второго коэффициента первого полимера}
-  \label{tabl:stability2}
-\end{table}
-
-\begin{table}[h]
-  \centering
-  \resizebox{\columnwidth}{!}{%
-	\begin{tabular}{| l | l | l | l | l | l |} \hline
-	   & $0$ & $10^{-5}$ & $10^{-4}$ & $0.001$ & $0.01$\\ \hline
-	  0 & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 6.21 \cdot 10^{-7})$ & $\displaystyle (0; 0.0657)$\\ \hline
-	  0.01 & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 6.23 \cdot 10^{-7})$ & $\displaystyle (5.7 \cdot 10^{-4}; 0.0536)$\\ \hline
-	  0.1 & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 6.21 \cdot 10^{-7})$ & $\displaystyle (0; 0.106)$\\ \hline
-	  1 & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 0)$ & $\displaystyle (3.58 \cdot 10^{-5}; 1.16 \cdot 10^{-7})$ & $\displaystyle (3.58 \cdot 10^{-5}; 6.32 \cdot 10^{-7})$ & $\displaystyle (0; 0.185)$\\ \hline
-	  10 & $\displaystyle (3.59 \cdot 10^{-5}; 9.71 \cdot 10^{-7})$ & $\displaystyle (3.59 \cdot 10^{-5}; 9.83 \cdot 10^{-7})$ & $\displaystyle (3.59 \cdot 10^{-5}; 9.89 \cdot 10^{-7})$ & $\displaystyle (3.59 \cdot 10^{-5}; 1.18 \cdot 10^{-6})$ & $\displaystyle (2.4 \cdot 10^{-4}; 0.0882)$\\ \hline
-	\end{tabular}%
-  }
-  \caption{Значения матожидания и стандартного отклонения для третьего коэффициента первого полимера}
-  \label{tabl:stability3}
-\end{table}
-\end{comment}
-
 В таблице \ref{tabl:res_even} представлены
 поверхности уровня дисперсии для первого, второго и третьего коэффициентов каждого из полимеров
 соответственно.
