@@ -144,6 +144,8 @@ int main (int argc, char **argv)
 		double lambda, n;
 		char c;
 		istr >> lambda >> c >> n;
+		if (!istr)
+			break;
 
 		SampleType_t sample;
 		sample (0) = lambda;
