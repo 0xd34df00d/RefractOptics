@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 PROJECT (optics)
-SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -std=c++0x -pthread")
+SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -std=c++11 -pthread")
 
 ADD_EXECUTABLE (optics WIN32
 	main.cpp
@@ -9,4 +9,9 @@ ADD_EXECUTABLE (optics WIN32
 
 add_executable (test_linear WIN32
 	testlinear_main.cpp
+	)
+
+add_executable (interpolator WIN32
+	interpolator.cpp
+	interpolate_main.cpp
 	)
