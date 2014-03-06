@@ -35,6 +35,7 @@
 #include <dlib/svm.h>
 
 typedef dlib::matrix<double, 1, 1> SampleType_t;
+typedef std::vector<std::pair<SampleType_t, double>> TrainingSet_t;
 
 template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
 

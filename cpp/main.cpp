@@ -136,7 +136,7 @@ int main (int argc, char **argv)
 
 	std::vector<SampleType_t> samples;
 	std::vector<double> labels;
-	std::vector<std::pair<SampleType_t, double>> pairs;
+	TrainingSet_t pairs;
 
 	std::ifstream istr (infile);
 	while (istr)
