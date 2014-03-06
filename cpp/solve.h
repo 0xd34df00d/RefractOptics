@@ -55,9 +55,11 @@ typedef std::vector<std::pair<SampleType_t, double>> PairsList_t;
 typedef std::vector<dlib::running_stats<double>> RunningStatsList_t;
 typedef std::map<double, std::map<double, RunningStatsList_t>> Stats_t;
 
-template<size_t ParamsCount, typename R, typename D>
+template<typename Solver, typename R, typename D>
 class StatsKeeper
 {
+	Solver Solver_;
+
 	double LVar_;
 	double NVar_;
 
@@ -71,16 +73,15 @@ class StatsKeeper
 
 	const bool Relative_ = true;
 public:
-	StatsKeeper (double lVar, double nVar, const PairsList_t& pairs, R r, D d, bool relative = true)
-	: LVar_ (lVar)
+	StatsKeeper (Solver s, double lVar, double nVar, const PairsList_t& pairs, R r, D d, bool relative = true)
+	: Solver_ (s)
+	, LVar_ (lVar)
 	, NVar_ (nVar)
 	, Pairs_ (pairs)
 	, R_ (r)
 	, D_ (d)
 	, Relative_ (relative)
 	{
-		Stats_.resize (ParamsCount);
-		Running_.resize (ParamsCount);
 	}
 
 	void TryMore (size_t tries)
@@ -111,8 +112,15 @@ public:
 				}
 			}
 
-			const auto& p = solve<ParamsCount> (localPairs, R_, D_);
-			for (size_t j = 0; j < ParamsCount; ++j)
+			const auto& p = Solver_ (localPairs, R_, D_);
+
+			if (Stats_.size () < p.nr ())
+			{
+				Stats_.resize (p.nr ());
+				Running_.resize (p.nr ());
+			}
+
+			for (size_t j = 0; j < p.nr (); ++j)
 			{
 				const auto val = p (j);
 				Stats_ [j].push_back (val);
@@ -132,16 +140,16 @@ public:
 	}
 };
 
-template<size_t ParamsCount, typename R, typename D>
-StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, R res, D der)
+template<typename Solver, typename R, typename D>
+StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, R res, D der, Solver s)
 {
-	StatsKeeper<ParamsCount, R, D> keeper (lVar, nVar, pairs, res, der);
+	StatsKeeper<Solver, R, D> keeper (s, lVar, nVar, pairs, res, der);
 	keeper.TryMore (5000);
 	return keeper.GetPoints ();
 }
 
-template<size_t ParamsCount, typename R, typename D>
-Stats_t calcStats (const std::vector<double>& lVars, const std::vector<double>& nVars,
+template<typename Solver, typename R, typename D>
+Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector<double>& nVars,
 			const PairsList_t& pairs, R res, D der)
 {
 	std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>> results;
@@ -156,8 +164,8 @@ Stats_t calcStats (const std::vector<double>& lVars, const std::vector<double>& 
 			std::map<double, std::future<StatsVec_t>> nVar2future;
 			for (size_t t = 0; i != nVars.end () && t < std::thread::hardware_concurrency () - 1; ++i, ++t)
 				nVar2future [*i] = std::async (std::launch::async,
-						getStats<ParamsCount, R, D>,
-						lVar, *i, pairs, res, der);
+						&getStats<Solver, R, D>,
+						lVar, *i, pairs, res, der, s);
 
 			for (auto& pair : nVar2future)
 			{

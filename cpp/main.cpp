@@ -178,7 +178,7 @@ int main (int argc, char **argv)
 	for (double i = 0; i < 5e-4; i += 2e-5)
 		nVars.push_back (i);
 
-	auto results = calcStats<ParamsCount> (lVars, nVars, pairs, residual, residualDer);
+	auto results = calcStats (&solve<ParamsCount, decltype (residual), decltype (residualDer)>, lVars, nVars, pairs, residual, residualDer);
 
 	/*
 	for (size_t i = 0; i < ParamsCount; ++i)

@@ -114,7 +114,7 @@ int main (int argc, char **argv)
 	std::cout << "book stuff: " << da0 << "; " << da1 << std::endl;
 
 	std::cout << "real stuff diff: " << std::endl;
-	StatsKeeper<2, decltype (res), decltype (der)> keeper (0, variance, pairs, res, der, false);
+	StatsKeeper<decltype (&solve<2, decltype (res), decltype (der)>), decltype (res), decltype (der)> keeper (&solve<2>, 0, variance, pairs, res, der, false);
 
 	std::ofstream ostr (std::string ("linear_log_") + argv [1] + "x_" + argv [2] + "_samples_" + argv [5] + "_variance_" + argv [6] + ".log");
 	std::ofstream ostrN (std::string ("linear_log_") + argv [1] + "x_" + argv [2] + "_samples_" + argv [5] + "_variance_" + argv [6] + "_norm.log");
