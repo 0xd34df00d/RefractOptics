@@ -100,7 +100,7 @@ namespace Resonance
 
 		const double cminus = p (2) - 1.0 / x2;
 		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot >= 0 ? std::sqrt(underRoot) : std::numeric_limits<double>::max () / 10;
+		const double root = underRoot >= 0 ? std::sqrt(underRoot) : 10;
 
 		return root - data.second;
 	}
@@ -112,7 +112,7 @@ namespace Resonance
 
 		const double cminus = p (2) - 1.0 / x2;
 		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot >= 0 ? std::sqrt(underRoot) : std::numeric_limits<double>::max () / 10;
+		const double root = underRoot > 0 ? std::sqrt(underRoot) : 10;
 
 		Params_t<ParamsCount> res;
 		res (0) = 1. / (2. * root);
