@@ -55,7 +55,7 @@ std::string format (double value)
 			++count;
 		}
 
-	if (value != 1 | !count)
+	if (value != 1 || !count)
 	{
 		ostr << value;
 		if (count)
