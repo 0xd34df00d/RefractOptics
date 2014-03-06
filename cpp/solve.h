@@ -40,12 +40,12 @@ typedef std::vector<std::pair<SampleType_t, double>> TrainingSet_t;
 template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
 
 template<size_t ParamsCount, typename R, typename D>
-Params_t<ParamsCount> solve (const std::vector<std::pair<SampleType_t, double>>& pairs, R res, D der)
+Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D der)
 {
 	Params_t<ParamsCount> p;
 	for (size_t i = 0; i < ParamsCount; ++i)
 		p (i) = 0;
-	dlib::solve_least_squares_lm (dlib::objective_delta_stop_strategy(1e-9),
+	dlib::solve_least_squares_lm (dlib::objective_delta_stop_strategy(1e-11),
 			res, der, pairs, p, 0.01);
 	return p;
 }
@@ -55,7 +55,7 @@ typedef std::vector<std::pair<SampleType_t, double>> PairsList_t;
 typedef std::vector<dlib::running_stats<double>> RunningStatsList_t;
 typedef std::map<double, std::map<double, RunningStatsList_t>> Stats_t;
 
-template<typename Solver, typename R, typename D>
+template<typename Solver>
 class StatsKeeper
 {
 	Solver Solver_;
@@ -65,21 +65,16 @@ class StatsKeeper
 
 	PairsList_t Pairs_;
 
-	const R R_;
-	const D D_;
-
 	StatsVec_t Stats_;
 	RunningStatsList_t Running_;
 
 	const bool Relative_ = true;
 public:
-	StatsKeeper (Solver s, double lVar, double nVar, const PairsList_t& pairs, R r, D d, bool relative = true)
+	StatsKeeper (Solver s, double lVar, double nVar, const PairsList_t& pairs, bool relative = true)
 	: Solver_ (s)
 	, LVar_ (lVar)
 	, NVar_ (nVar)
 	, Pairs_ (pairs)
-	, R_ (r)
-	, D_ (d)
 	, Relative_ (relative)
 	{
 	}
@@ -112,7 +107,7 @@ public:
 				}
 			}
 
-			const auto& p = Solver_ (localPairs, R_, D_);
+			const auto& p = Solver_ (localPairs);
 
 			if (Stats_.size () < p.nr ())
 			{
@@ -140,17 +135,17 @@ public:
 	}
 };
 
-template<typename Solver, typename R, typename D>
-StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, R res, D der, Solver s)
+template<typename Solver>
+StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, Solver s)
 {
-	StatsKeeper<Solver, R, D> keeper (s, lVar, nVar, pairs, res, der);
+	StatsKeeper<Solver> keeper (s, lVar, nVar, pairs);
 	keeper.TryMore (5000);
 	return keeper.GetPoints ();
 }
 
-template<typename Solver, typename R, typename D>
+template<typename Solver>
 Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector<double>& nVars,
-			const PairsList_t& pairs, R res, D der)
+			const PairsList_t& pairs)
 {
 	std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>> results;
 
@@ -164,8 +159,8 @@ Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector
 			std::map<double, std::future<StatsVec_t>> nVar2future;
 			for (size_t t = 0; i != nVars.end () && t < std::thread::hardware_concurrency () - 1; ++i, ++t)
 				nVar2future [*i] = std::async (std::launch::async,
-						&getStats<Solver, R, D>,
-						lVar, *i, pairs, res, der, s);
+						&getStats<Solver>,
+						lVar, *i, pairs, s);
 
 			for (auto& pair : nVar2future)
 			{
