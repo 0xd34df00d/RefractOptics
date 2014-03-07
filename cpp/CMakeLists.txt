@@ -15,3 +15,5 @@ add_executable (interpolator WIN32
 	interpolator.cpp
 	interpolate_main.cpp
 	)
+
+target_link_libraries (interpolator gmp)

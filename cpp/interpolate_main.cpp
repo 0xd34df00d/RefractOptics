@@ -29,9 +29,22 @@
 
 #include "interpolator.h"
 #include <vector>
+#include <gmpxx.h>
+#include <gmp.h>
 
+template<>
+struct DoubleTraits<mpf_class>
 {
-	double result = 0;
+	static double ToDouble (const mpf_class& c) { return c.get_d (); }
+
+	static mpf_class Pow (const mpf_class& c1, size_t c2)
+	{
+		mpf_class res;
+		mpf_pow_ui (res.get_mpf_t (), c1.get_mpf_t (), c2);
+		return res;
+	}
+};
+
 template<typename T>
 T Value (const std::vector<T>& coeffs, T x)
 {
