@@ -34,8 +34,11 @@
 #include <future>
 #include <dlib/svm.h>
 
-typedef dlib::matrix<double, 1, 1> SampleType_t;
-typedef std::vector<std::pair<SampleType_t, double>> TrainingSet_t;
+template<typename T> using SampleTypeBase_t = dlib::matrix<T, 1, 1>;
+template<typename T> using TrainingSetBase_t = std::vector<std::pair<SampleTypeBase_t<T>, T>>;
+
+typedef SampleTypeBase_t<double> SampleType_t;
+typedef TrainingSetBase_t<double> TrainingSet_t;
 
 template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
 
