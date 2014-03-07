@@ -30,42 +30,58 @@
 #include "interpolator.h"
 #include <vector>
 
-double Value (const std::vector<double>& coeffs, double x)
 {
 	double result = 0;
+template<typename T>
+T Value (const std::vector<T>& coeffs, T x)
+{
+	T result { 0 };
 	for (size_t i = 0; i < coeffs.size (); ++i)
-		result += coeffs [i] * std::pow (x, coeffs.size () - i - 1);
+		result += coeffs [i] * DoubleTraits<T>::Pow (x, coeffs.size () - i - 1);
 	return result;
 }
 
-bool Test (const std::vector<double>& coeffs)
+namespace
+{
+	template<typename T>
+	std::vector<double> VecToDouble (const std::vector<T>& vec)
+	{
+		std::vector<double> result;
+		for (const auto& item : vec)
+			result.push_back (DoubleTraits<T>::ToDouble (item));
+		return result;
+	}
+}
+
+template<typename T>
+bool Test (const std::vector<T>& coeffs)
 {
 	std::cout << "*** testing\t\t";
-	PrintCoeffs (std::cout, coeffs) << "...\t\t\t";
+	PrintCoeffs (std::cout, VecToDouble (coeffs)) << "...\t\t\t";
 
-	TrainingSet_t set;
-	auto add = [&set] (double x, double y)
+	TrainingSetBase_t<T> set;
+	auto add = [&set] (T x, T y)
 	{
-		SampleType_t t;
+		SampleTypeBase_t<T> t;
 		t (0) = x;
 		set.push_back ({ t, y });
 	};
 
 	for (size_t i = 0; i < coeffs.size (); ++i)
-		add (i, Value (coeffs, i));
+		add (i, Value (coeffs, static_cast<T> (i)));
 
-	Interpolator ip { set };
+	Interpolator<T> ip { set };
 	const auto& res = ip.GetResult ();
 	for (size_t i = 0; i < coeffs.size (); ++i)
 	{
-		if (std::abs (coeffs [i] - res [i]) <= 1e-10)
+		if (std::abs (DoubleTraits<T>::ToDouble (coeffs [i] - res [i])) / DoubleTraits<T>::ToDouble (coeffs [i] ? coeffs [i] : 1) <= 1e-2)
 			continue;
 
 		std::cout << "[ Fail ]" << std::endl;
 		std::cout << "\tExpected: ";
-		PrintCoeffs (std::cout, coeffs) << std::endl;
+		PrintCoeffs (std::cout, VecToDouble (coeffs)) << std::endl;
 		std::cout << "\tGot:      ";
-		PrintCoeffs (std::cout, res) << std::endl;
+		PrintCoeffs (std::cout, VecToDouble (res)) << std::endl;
 
 		return false;
 	}
@@ -75,13 +91,60 @@ bool Test (const std::vector<double>& coeffs)
 	return true;
 }
 
+template<typename T>
+void PerfTest (const std::vector<T>& coeffs)
+{
+	TrainingSetBase_t<T> set;
+	auto add = [&set] (T x, T y)
+	{
+		SampleTypeBase_t<T> t;
+		t (0) = x;
+		set.push_back ({ t, y });
+	};
+
+	for (size_t i = 0; i < coeffs.size (); ++i)
+		add (i, Value (coeffs, static_cast<T> (i)));
+
+	const auto& begin = std::chrono::high_resolution_clock::now ();
+
+	const size_t count = 1000;
+	for (size_t i = 0; i < 1000; ++i)
+	{
+		Interpolator<T> ip { set };
+		const auto& res = ip.GetResult ();
+	}
+
+	const auto& end = std::chrono::high_resolution_clock::now ();
+
+	std::cout << count << " iterations took "
+			<< std::chrono::duration_cast<std::chrono::milliseconds> (end - begin).count ()
+			<< " ms" << std::endl;
+}
+
+typedef long double Type;
+
 int main (int argc, char **argv)
 {
-	Test ({ 1, 0, 0 });
-	Test ({ 3, 2, 4 });
-	Test ({ 1, 0, 0, 0 });
-	Test ({ 1, 0, 0, 10 });
-	Test ({ 2, 3, 2, 0 });
-	Test ({ 2, 3, 2, 10 });
+	Test<Type> ({ 1, 0, 0 });
+	Test<Type> ({ 3, 2, 4 });
+	Test<Type> ({ 1, 0, 0, 0 });
+	Test<Type> ({ 1, 0, 0, 10 });
+	Test<Type> ({ 2, 3, 2, 0 });
+	Test<Type> ({ 2, 3, 2, 10 });
+	Test<Type> ({ 2, -3, 2, -10 });
+
+	/*
+	std::vector<Type> multi { };
+	for (int i = 0; i < 17; ++i)
+	{
+		multi.push_back (600 + 10 * i);
+		if (multi.size () >= 3)
+		{
+			Test (multi);
+			PerfTest (multi);
+		}
+	}
+	*/
+
 	return 0;
 }

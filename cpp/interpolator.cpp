@@ -28,7 +28,6 @@
  **********************************************************************/
 
 #include "interpolator.h"
-#include <algorithm>
 
 std::ostream& PrintCoeffs (std::ostream& ostr, const std::vector<double>& coeffs)
 {
@@ -42,61 +41,4 @@ std::ostream& PrintCoeffs (std::ostream& ostr, const std::vector<double>& coeffs
 		ostr << coeffs [i] << " * x^" << (coeffs.size () - i - 1);
 	}
 	return ostr;
-}
-
-namespace
-{
-	template<typename Iter>
-	double GenSet (size_t size, Iter begin, Iter end)
-	{
-		if (!size || std::distance (begin, end) < size)
-			return 1;
-
-		if (size == 1)
-			return std::accumulate (begin, end, 0);
-
-		double result {};
-
-		for (auto i = begin; i != end - size + 1; ++i)
-			result += *i * GenSet (size - 1, i + 1, end);
-
-		return result;
-	}
-
-	std::vector<double> GetLNumeratorCoeffs (const TrainingSet_t& points, size_t idx)
-	{
-		std::vector<double> xs;
-		for (size_t i = 0; i < points.size (); ++i)
-			if (i != idx)
-				xs.push_back (- points [i].first (0));
-
-		std::vector<double> result;
-		for (size_t i = 0; i < points.size (); ++i)
-			result.push_back (GenSet (i, xs.cbegin (), xs.cend ()));
-		return result;
-	}
-}
-
-Interpolator::Interpolator (const TrainingSet_t& points)
-: Result_ (points.size ())
-{
-	for (size_t i = 0; i < points.size (); ++i)
-	{
-		const auto xi = points [i].first (0);
-		const auto yi = points [i].second;
-
-		double denom = 1;
-		for (size_t j = 0; j < points.size (); ++j)
-			if (j != i)
-				denom *= xi - points [j].first (0);
-
-		const auto& coeffs = GetLNumeratorCoeffs (points, i);
-		for (size_t i = 0; i < Result_.size (); ++i)
-			Result_ [i] += coeffs [i] * yi / denom;
-	}
-}
-
-const std::vector<double>& Interpolator::GetResult () const
-{
-	return Result_;
 }
