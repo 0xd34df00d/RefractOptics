@@ -134,8 +134,6 @@ int main (int argc, char **argv)
 
 	const std::string infile (argv[1]);
 
-	std::vector<SampleType_t> samples;
-	std::vector<double> labels;
 	TrainingSet_t pairs;
 
 	std::ifstream istr (infile);
@@ -150,12 +148,10 @@ int main (int argc, char **argv)
 		SampleType_t sample;
 		sample (0) = lambda;
 
-		samples.push_back (sample);
-		labels.push_back (n);
 		pairs.push_back ({ sample, n });
 	}
 
-	std::cout << "read " << samples.size () << " samples: " << std::endl;
+	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
 	const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
 	std::cout << "inferred params: " << dlib::trans (p) << std::endl;
