@@ -28,9 +28,11 @@
  **********************************************************************/
 
 #include "interpolator.h"
+#include <boost/lexical_cast.hpp>
 #include <vector>
 #include <gmpxx.h>
 #include <gmp.h>
+#include "util.h"
 
 template<>
 struct DoubleTraits<mpf_class>
@@ -145,6 +147,41 @@ int main (int argc, char **argv)
 	Test<Type> ({ 2, 3, 2, 0 });
 	Test<Type> ({ 2, 3, 2, 10 });
 	Test<Type> ({ 2, -3, 2, -10 });
+
+	if (argc < 2)
+	{
+		std::cout << "Usage: " << argv [0] << " datafile [threadCount]" << std::endl;
+		return 1;
+	}
+
+	size_t threadCount = 0;
+	if (argc > 2)
+		threadCount = boost::lexical_cast<size_t> (argv [2]);
+
+	const std::string infile (argv [1]);
+	const auto& pairs = LoadData (infile);
+
+	std::vector<double> lVars;
+	for (double i = 0; i < 1e-3; i += 1e-4)
+		lVars.push_back (i);
+	for (double i = 1e-3; i < 1e-2; i += 1e-3)
+		lVars.push_back (i);
+
+	std::vector<double> nVars;
+	for (double i = 0; i < 1e-4; i += 1e-5)
+		nVars.push_back (i);
+	for (double i = 1e-4; i < 1e-3; i += 1e-4)
+		nVars.push_back (i);
+
+	const Interpolator<Type> srcInterp { pairs };
+	std::cout << "Derived polynome:" << std::endl;
+	PrintCoeffs (std::cout, VecToDouble (srcInterp.GetResult ())) << std::endl;
+
+	auto results = calcStats ([] (const TrainingSet_t& pts)
+				{ return Interpolator<Type> { pts }.GetResultMat (); },
+			lVars, nVars, pairs, threadCount);
+
+	WriteCoeffs (srcInterp.GetResultMat (), results, infile);
 
 	/*
 	std::vector<Type> multi { };
