@@ -80,7 +80,8 @@ class Interpolator
 {
 	std::vector<T> Result_;
 public:
-	Interpolator (const TrainingSetBase_t<T>& points)
+	template<typename U>
+	Interpolator (const TrainingSetBase_t<U>& points)
 	: Result_ (points.size ())
 	{
 		for (size_t i = 0; i < points.size (); ++i)
