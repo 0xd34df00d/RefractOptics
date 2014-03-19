@@ -148,19 +148,22 @@ StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, Solver 
 
 template<typename Solver>
 Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector<double>& nVars,
-			const PairsList_t& pairs)
+			const PairsList_t& pairs, size_t threadCount = 0)
 {
 	std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>> results;
 
 	const double count = lVars.size () * nVars.size ();
 	size_t finished = 0;
 
+	if (!threadCount)
+		threadCount = std::thread::hardware_concurrency () - 1;
+
 	for (auto lVar : lVars)
 	{
 		for (auto i = nVars.begin (); i != nVars.end (); )
 		{
 			std::map<double, std::future<StatsVec_t>> nVar2future;
-			for (size_t t = 0; i != nVars.end () && t < std::thread::hardware_concurrency () - 1; ++i, ++t)
+			for (size_t t = 0; i != nVars.end () && t < threadCount; ++i, ++t)
 				nVar2future [*i] = std::async (std::launch::async,
 						&getStats<Solver>,
 						lVar, *i, pairs, s);
