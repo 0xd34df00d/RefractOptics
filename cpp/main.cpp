@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <limits>
 #include "solve.h"
+#include "util.h"
 
 const size_t ParamsCount = 3;
 
@@ -132,24 +133,8 @@ int main (int argc, char **argv)
 		return 1;
 	}
 
-	const std::string infile (argv[1]);
-
-	TrainingSet_t pairs;
-
-	std::ifstream istr (infile);
-	while (istr)
-	{
-		double lambda, n;
-		char c;
-		istr >> lambda >> c >> n;
-		if (!istr)
-			break;
-
-		SampleType_t sample;
-		sample (0) = lambda;
-
-		pairs.push_back ({ sample, n });
-	}
+	const std::string infile (argv [1]);
+	const auto& pairs = LoadData (infile);
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
@@ -206,21 +191,5 @@ int main (int argc, char **argv)
 	}
 	*/
 
-	for (size_t i = 0; i < ParamsCount; ++i)
-	{
-		std::stringstream fname;
-		fname << infile << "_coeff" << i << ".dat";
-
-		std::ofstream ostr (fname.str ());
-		for (auto lVar : lVars)
-		{
-			for (auto nVar : nVars)
-			{
-				const auto& stats = results [lVar] [nVar];
-				ostr << lVar * 1000 << " " << nVar * 1000 << " " << stats [i].stddev () / p (i) * 1000  << std::endl;
-			}
-			ostr << std::endl;
-		}
-		std::cout << "wrote " << fname.str () << std::endl;
-	}
+	WriteCoeffs (p, results, infile);
 }
