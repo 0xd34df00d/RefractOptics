@@ -127,4 +127,19 @@ public:
 
 		return result;
 	}
+
+	template<typename U>
+	double MSE (const TrainingSetBase_t<U>& points) const
+	{
+		double result = 0;
+
+		for (const auto& point : points)
+		{
+			const auto val = DoubleTraits<T>::ToDouble (Value (Result_, T { point.first (0) }));
+			const auto expected = DoubleTraits<U>::ToDouble (point.second);
+			result += (val - expected) * (val - expected);
+		}
+
+		return result / points.size ();
+	}
 };
