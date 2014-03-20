@@ -87,7 +87,7 @@ bool Test (const std::vector<T>& coeffs)
 	};
 
 	for (size_t i = 0; i < coeffs.size (); ++i)
-		add (i, Value (coeffs, static_cast<T> (i)));
+		add (i + 10, Value (coeffs, static_cast<T> (i)));
 
 	Interpolator<T> ip { set };
 	const auto& res = ip.GetResult ();
