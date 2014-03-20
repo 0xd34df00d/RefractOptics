@@ -96,10 +96,13 @@ public:
 			const T xi { points [i].first (0) };
 			const T yi { points [i].second };
 
-			T denom { 1 };
+			std::vector<T> multipliers;
 			for (size_t j = 0; j < points.size (); ++j)
 				if (j != i)
-					denom *= xi - points [j].first (0);
+					multipliers.push_back (xi - points [j].first (0));
+
+			std::sort (multipliers.begin (), multipliers.end ());
+			const auto denom = std::accumulate (multipliers.begin (), multipliers.end (), T { 1 }, std::multiplies<T> {});
 
 			const auto& coeffs = GetLNumeratorCoeffs (points, i);
 			for (size_t i = 0; i < Result_.size (); ++i)
