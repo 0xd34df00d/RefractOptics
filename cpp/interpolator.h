@@ -34,38 +34,36 @@
 
 std::ostream& PrintCoeffs (std::ostream&, const std::vector<double>&);
 
-namespace
+template<typename T, typename Iter>
+T GenSet (size_t size, Iter begin, Iter end)
 {
-	template<typename T, typename Iter>
-	T GenSet (size_t size, Iter begin, Iter end)
-	{
-		if (!size || std::distance (begin, end) < size)
-			return 1;
+	if (!size || std::distance (begin, end) < size)
+		return 1;
 
-		if (size == 1)
-			return std::accumulate (begin, end, T { 0 });
+	if (size == 1)
+		return std::accumulate (begin, end, T { 0 });
 
-		T result {};
+	T result {};
 
-		for (auto i = begin; i != end - size + 1; ++i)
-			result += *i * GenSet<T> (size - 1, i + 1, end);
+	for (auto i = begin; i != end - size + 1; ++i)
+		result += *i * GenSet<T> (size - 1, i + 1, end);
 
-		return result;
-	}
+	return result;
+}
 
-	template<typename T>
-	std::vector<T> GetLNumeratorCoeffs (const TrainingSetBase_t<T>& points, size_t idx)
-	{
-		std::vector<T> xs;
-		for (size_t i = 0; i < points.size (); ++i)
-			if (i != idx)
-				xs.push_back (- points [i].first (0));
+template<typename T>
+std::vector<T> GetLNumeratorCoeffs (const TrainingSetBase_t<T>& points, size_t idx)
+{
+	std::vector<T> xs;
+	for (size_t i = 0; i < points.size (); ++i)
+		if (i != idx)
+			xs.push_back (- points [i].first (0));
+	std::sort (xs.begin (), xs.end ());
 
-		std::vector<T> result;
-		for (size_t i = 0; i < points.size (); ++i)
-			result.push_back (GenSet<T> (i, xs.cbegin (), xs.cend ()));
-		return result;
-	}
+	std::vector<T> result;
+	for (size_t i = 0; i < points.size (); ++i)
+		result.push_back (GenSet<T> (i, xs.cbegin (), xs.cend ()));
+	return result;
 }
 
 template<typename T>
@@ -74,6 +72,15 @@ struct DoubleTraits
 	static T Pow (const T& t1, size_t t2) { return std::pow (t1, t2); }
 	static double ToDouble (const T& t) { return static_cast<double> (t); }
 };
+
+template<typename T>
+T Value (const std::vector<T>& coeffs, T x)
+{
+	T result { 0 };
+	for (size_t i = 0; i < coeffs.size (); ++i)
+		result += coeffs [i] * DoubleTraits<T>::Pow (x, coeffs.size () - i - 1);
+	return result;
+}
 
 template<typename T>
 class Interpolator

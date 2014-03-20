@@ -47,15 +47,6 @@ struct DoubleTraits<mpf_class>
 	}
 };
 
-template<typename T>
-T Value (const std::vector<T>& coeffs, T x)
-{
-	T result { 0 };
-	for (size_t i = 0; i < coeffs.size (); ++i)
-		result += coeffs [i] * DoubleTraits<T>::Pow (x, coeffs.size () - i - 1);
-	return result;
-}
-
 namespace
 {
 	template<typename T>
