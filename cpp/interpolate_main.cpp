@@ -29,6 +29,8 @@
 
 #include "interpolator.h"
 #include <boost/lexical_cast.hpp>
+#include <boost/multiprecision/gmp.hpp>
+#include <boost/math/special_functions/powm1.hpp>
 #include <vector>
 #include <gmpxx.h>
 #include <gmp.h>
@@ -44,6 +46,17 @@ struct DoubleTraits<mpf_class>
 		mpf_class res;
 		mpf_pow_ui (res.get_mpf_t (), c1.get_mpf_t (), c2);
 		return res;
+	}
+};
+
+template<typename T>
+struct DoubleTraits<boost::multiprecision::number<T>>
+{
+	static double ToDouble (const boost::multiprecision::number<T>& num) { return num.template convert_to<double> (); }
+
+	static boost::multiprecision::number<T> Pow (const boost::multiprecision::number<T>& num, size_t c)
+	{
+		return boost::math::powm1 (num, c) + 1;
 	}
 };
 
