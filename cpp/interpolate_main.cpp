@@ -144,6 +144,8 @@ typedef long double Type;
 
 int main (int argc, char **argv)
 {
+	Test<Type> ({ 1 });
+	Test<Type> ({ 1, 0 });
 	Test<Type> ({ 1, 0, 0 });
 	Test<Type> ({ 3, 2, 4 });
 	Test<Type> ({ 1, 0, 0, 0 });
