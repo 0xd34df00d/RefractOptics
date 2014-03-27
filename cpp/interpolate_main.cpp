@@ -79,15 +79,15 @@ bool Test (const std::vector<T>& coeffs)
 	PrintCoeffs (std::cout, VecToDouble (coeffs)) << "...\t\t\t";
 
 	TrainingSetBase_t<T> set;
-	auto add = [&set] (T x, T y)
+	auto add = [&set, &coeffs] (T x)
 	{
 		SampleTypeBase_t<T> t;
 		t (0) = x;
-		set.push_back ({ t, y });
+		set.push_back ({ t, Value (coeffs, static_cast<T> (x)) });
 	};
 
 	for (size_t i = 0; i < coeffs.size (); ++i)
-		add (i + 10, Value (coeffs, static_cast<T> (i)));
+		add (i * 10 + 500);
 
 	Interpolator<T> ip { set };
 	const auto& res = ip.GetResult ();
@@ -105,7 +105,7 @@ bool Test (const std::vector<T>& coeffs)
 		return false;
 	}
 
-	std::cout << "[ OK ]" << std::endl;
+	std::cout << ip.MSE (set) << "\t\t[ OK ]" << std::endl;
 
 	return true;
 }
@@ -140,7 +140,9 @@ void PerfTest (const std::vector<T>& coeffs)
 			<< " ms" << std::endl;
 }
 
-typedef long double Type;
+typedef boost::multiprecision::number<boost::multiprecision::gmp_float<100>> Type;
+//typedef boost::multiprecision::float128 Type;
+//typedef double Type;
 
 int main (int argc, char **argv)
 {
@@ -154,6 +156,14 @@ int main (int argc, char **argv)
 	Test<Type> ({ 2, 3, 2, 10 });
 	Test<Type> ({ 2, -3, 2, -10 });
 
+	std::vector<Type> multi { };
+	for (int i = 0; i < 17; ++i)
+	{
+		multi.push_back (600 + 10 * i);
+		if (multi.size () >= 3)
+			Test (multi);
+	}
+
 	if (argc < 2)
 	{
 		std::cout << "Usage: " << argv [0] << " datafile [threadCount]" << std::endl;
@@ -165,7 +175,15 @@ int main (int argc, char **argv)
 		threadCount = boost::lexical_cast<size_t> (argv [2]);
 
 	const std::string infile (argv [1]);
-	const auto& pairs = LoadData (infile);
+	auto pairs = LoadData (infile);
+
+	auto first = pairs [0].first (0);
+	auto last = pairs.front ().first (0);
+	for (auto& pair : pairs)
+	{
+		pair.first (0) -= first * 1.5;
+		pair.first (0) /= last / 10;
+	}
 
 	std::vector<double> lVars;
 	for (double i = 0; i < 1e-3; i += 1e-4)
@@ -182,25 +200,13 @@ int main (int argc, char **argv)
 	const Interpolator<Type> srcInterp { pairs };
 	std::cout << "Derived polynome:" << std::endl;
 	PrintCoeffs (std::cout, VecToDouble (srcInterp.GetResult ())) << std::endl;
+	std::cout << "MSE: " << srcInterp.MSE (pairs) << std::endl;
 
 	auto results = calcStats ([] (const TrainingSet_t& pts)
 				{ return Interpolator<Type> { pts }.GetResultMat (); },
 			lVars, nVars, pairs, threadCount);
 
 	WriteCoeffs (srcInterp.GetResultMat (), results, infile);
-
-	/*
-	std::vector<Type> multi { };
-	for (int i = 0; i < 17; ++i)
-	{
-		multi.push_back (600 + 10 * i);
-		if (multi.size () >= 3)
-		{
-			Test (multi);
-			PerfTest (multi);
-		}
-	}
-	*/
 
 	return 0;
 }

@@ -38,7 +38,7 @@ std::ostream& PrintCoeffs (std::ostream& ostr, const std::vector<double>& coeffs
 			ostr << " + ";
 
 		first = false;
-		ostr << coeffs [i] << " * x^" << (coeffs.size () - i - 1);
+		ostr << coeffs [i] << " * x**" << (coeffs.size () - i - 1);
 	}
 	return ostr;
 }
