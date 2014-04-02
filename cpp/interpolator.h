@@ -121,8 +121,7 @@ class Interpolator
 {
 	std::vector<T> Result_;
 public:
-	template<typename U>
-	Interpolator (const TrainingSetBase_t<U>& points)
+	Interpolator (const TrainingSetBase_t<T>& points)
 	: Result_ (points.size ())
 	{
 		for (size_t i = 0; i < points.size (); ++i)
@@ -138,10 +137,16 @@ public:
 			std::sort (multipliers.begin (), multipliers.end ());
 			const auto denom = std::accumulate (multipliers.begin (), multipliers.end (), T { 1 }, std::multiplies<T> {});
 
-			const auto& coeffs = GetLNumeratorCoeffs (points, i);
+			const auto& coeffs = GetLNumeratorCoeffs2 (points, i);
 			for (size_t i = 0; i < Result_.size (); ++i)
 				Result_ [i] += coeffs [i] / denom * yi;
 		}
+	}
+
+	template<typename U>
+	Interpolator (const TrainingSetBase_t<U>& points)
+	: Interpolator { Convert<T> (points) }
+	{
 	}
 
 	std::vector<T> GetResult () const
