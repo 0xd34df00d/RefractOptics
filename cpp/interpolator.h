@@ -103,6 +103,19 @@ T Value (const std::vector<T>& coeffs, T x)
 	return result;
 }
 
+template<typename T, typename U>
+TrainingSetBase_t<T> Convert (const TrainingSetBase_t<U>& set)
+{
+	TrainingSetBase_t<T> result;
+	for (const auto& point : set)
+	{
+		SampleTypeBase_t<T> t;
+		t (0) = point.first (0);
+		result.push_back ({ t, static_cast<T> (point.second) });
+	}
+	return result;
+}
+
 template<typename T>
 class Interpolator
 {
