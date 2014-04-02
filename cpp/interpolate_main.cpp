@@ -183,14 +183,6 @@ int main (int argc, char **argv)
 	const std::string infile (argv [1]);
 	auto pairs = LoadData (infile);
 
-	auto first = pairs [0].first (0);
-	auto last = pairs.front ().first (0);
-	for (auto& pair : pairs)
-	{
-		pair.first (0) -= first * 1.5;
-		pair.first (0) /= last / 10;
-	}
-
 	std::vector<double> lVars;
 	for (double i = 0; i < 1e-3; i += 1e-4)
 		lVars.push_back (i);
