@@ -70,6 +70,14 @@ namespace
 			result.push_back (DoubleTraits<T>::ToDouble (item));
 		return result;
 	}
+
+	template<typename T>
+	void PrintSet (const TrainingSetBase_t<T>& data)
+	{
+		std::cout << data.size () << " points:" << std::endl;
+		for (const auto& point : data)
+			std::cout << "\t" << point.first (0) << " -> " << point.second << std::endl;
+	}
 }
 
 template<typename T>
