@@ -96,7 +96,7 @@ bool Test (const std::vector<T>& coeffs)
 		if (std::abs (DoubleTraits<T>::ToDouble (coeffs [i] - res [i])) / DoubleTraits<T>::ToDouble (coeffs [i] ? coeffs [i] : 1) <= 1e-2)
 			continue;
 
-		std::cout << "[ Fail ]" << std::endl;
+		std::cout << ip.MSE (set) << "\t\t[ Fail ]" << std::endl;
 		std::cout << "\tExpected: ";
 		PrintCoeffs (std::cout, VecToDouble (coeffs)) << std::endl;
 		std::cout << "\tGot:      ";
