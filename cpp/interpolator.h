@@ -67,6 +67,27 @@ std::vector<T> GetLNumeratorCoeffs (const TrainingSetBase_t<T>& points, size_t i
 }
 
 template<typename T>
+std::vector<T> GetLNumeratorCoeffs2 (const TrainingSetBase_t<T>& points, size_t idx)
+{
+	std::vector<T> xs;
+	for (size_t i = 0; i < points.size (); ++i)
+		if (i != idx)
+			xs.push_back (- points [i].first (0));
+	std::sort (xs.begin (), xs.end ());
+
+	std::vector<T> result { 1 };
+	for (const auto& x : xs)
+	{
+		const auto prevResult = result;
+
+		result.push_back (0);
+		for (size_t i = 0; i < prevResult.size (); ++i)
+			result [i + 1] += x * prevResult [i];
+	}
+	return result;
+}
+
+template<typename T>
 struct DoubleTraits
 {
 	static T Pow (const T& t1, size_t t2) { return std::pow (t1, t2); }
