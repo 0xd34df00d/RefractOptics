@@ -164,6 +164,12 @@ int main (int argc, char **argv)
 			Test (multi);
 	}
 
+	std::vector<Type> multiLow;
+	for (int i = 0; i < 17; ++i)
+		multiLow.push_back (DoubleTraits<Type>::Pow (1e-6, i));
+	std::reverse (multiLow.begin (), multiLow.end ());
+	Test (multiLow);
+
 	if (argc < 2)
 	{
 		std::cout << "Usage: " << argv [0] << " datafile [threadCount]" << std::endl;
