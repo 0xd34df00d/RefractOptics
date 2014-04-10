@@ -70,10 +70,10 @@ template<typename T>
 std::vector<T> GetLNumeratorCoeffs2 (const TrainingSetBase_t<T>& points, size_t idx)
 {
 	std::vector<T> xs;
+	xs.reserve (points.size () - 1);
 	for (size_t i = 0; i < points.size (); ++i)
 		if (i != idx)
 			xs.push_back (- points [i].first (0));
-	std::sort (xs.begin (), xs.end ());
 
 	std::vector<T> result { 1 };
 	for (const auto& x : xs)
@@ -130,11 +130,11 @@ public:
 			const T yi { points [i].second };
 
 			std::vector<T> multipliers;
+			multipliers.reserve (points.size () - 1);
 			for (size_t j = 0; j < points.size (); ++j)
 				if (j != i)
 					multipliers.push_back (xi - points [j].first (0));
 
-			std::sort (multipliers.begin (), multipliers.end ());
 			const auto denom = std::accumulate (multipliers.begin (), multipliers.end (), T { 1 }, std::multiplies<T> {});
 
 			const auto& coeffs = GetLNumeratorCoeffs2 (points, i);
