@@ -81,11 +81,8 @@ namespace
 }
 
 template<typename T>
-bool Test (const std::vector<T>& coeffs)
+TrainingSetBase_t<T> GetTrainingSet (const std::vector<T>& coeffs)
 {
-	std::cout << "*** testing\t\t";
-	PrintCoeffs (std::cout, VecToDouble (coeffs)) << "...\t\t\t";
-
 	TrainingSetBase_t<T> set;
 	auto add = [&set, &coeffs] (T x)
 	{
@@ -95,7 +92,18 @@ bool Test (const std::vector<T>& coeffs)
 	};
 
 	for (size_t i = 0; i < coeffs.size (); ++i)
-		add (i * 10 + 500);
+		add (i * 10 + 5);
+
+	return set;
+}
+
+template<typename T>
+bool Test (const std::vector<T>& coeffs)
+{
+	std::cout << "*** testing\t\t";
+	PrintCoeffs (std::cout, VecToDouble (coeffs)) << "...\t\t\t";
+
+	const auto& set = GetTrainingSet (coeffs);
 
 	Interpolator<T> ip { set };
 	const auto& res = ip.GetResult ();
