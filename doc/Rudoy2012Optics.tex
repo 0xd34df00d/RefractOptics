@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage{a4wide}
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
@@ -51,8 +51,6 @@
 \newtheorem{note}{Замечание}
 
 \begin{document}
-% Comment the following block when compiling this .tex with a saner compiler than texlive.
-\lstset{language=C++}
 
 \begin{center}
   АНАЛИЗ УСТОЙЧИВОСТИ СУЩЕСТВЕННО НЕЛИНЕЙНЫХ РЕГРЕССИОННЫХ МОДЕЛЕЙ К ПОГРЕШНОСТЯМ В ИЗМЕРЯЕМЫХ
@@ -583,6 +581,7 @@ $(\sigma_{\lambda}, \sigma_n)$.
 использована для надежного приближения экспериментальных данных ввиду большой чувствительности
 к шумам.
 
+\begin{comment}
 \paragraph{Исследование экспертного предположения.}
 
 Экспертом предположено, что формула также может иметь вид
@@ -633,6 +632,8 @@ $(\sigma_{\lambda}, \sigma_n)$.
 Все это позволяет заключить, что, хотя экспериментальные данные хорошо
 описываются формулой \eqref{eq:resonance}, они не являются корректными с
 экспертно-физической точки зрения.
+
+\end{comment}
 
 \section{Сходимость к классическому случаю}
 
