@@ -120,7 +120,7 @@ int main (int argc, char **argv)
 	std::ofstream ostr (std::string ("linear_log_") + argv [1] + "x_" + argv [2] + "_samples_" + argv [5] + "_variance_" + argv [6] + ".log");
 	std::ofstream ostrN (std::string ("linear_log_") + argv [1] + "x_" + argv [2] + "_samples_" + argv [5] + "_variance_" + argv [6] + "_norm.log");
 
-	for (size_t i = 0; i < 100; ++i)
+	for (size_t i = 0; i < 100000; ++i)
 	{
 		keeper.TryMore (1000);
 		const auto& stats = keeper.GetRunning ();
