@@ -125,6 +125,28 @@ namespace Resonance
 
 using namespace Series;
 
+void TryLOO (const TrainingSet_t& allPairs)
+{
+	for (size_t i = 0; i < allPairs.size (); ++i)
+	{
+		std::cout << "omitting point " << i << std::endl;
+
+		auto pairs = allPairs;
+		pairs.erase (pairs.begin () + i);
+
+		const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
+		std::cout << "inferred params: " << dlib::trans (p);
+
+		double sum = 0;
+		for (const auto& pair : pairs)
+		{
+			auto r = residual (pair, p);
+			sum += r * r;
+		}
+		std::cout << "MSE: " << sum / pairs.size () << std::endl << std::endl;;
+	}
+}
+
 int main (int argc, char **argv)
 {
 	if (argc < 2)
@@ -139,7 +161,7 @@ int main (int argc, char **argv)
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
 	const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
-	std::cout << "inferred params: " << dlib::trans (p) << std::endl;
+	std::cout << "inferred params: " << dlib::trans (p);
 
 	double sum = 0;
 	for (const auto& pair : pairs)
@@ -147,7 +169,9 @@ int main (int argc, char **argv)
 		auto r = residual (pair, p);
 		sum += r * r;
 	}
-	std::cout << "MSE: " << sum / pairs.size () << std::endl;
+	std::cout << "MSE: " << sum / pairs.size () << std::endl << std::endl;
+
+	TryLOO (pairs);
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
