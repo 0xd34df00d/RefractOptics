@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage{graphics,graphicx,epsfig}
-\usepackage{amssymb,amsfonts,amsthm,amsmath,mathtext,cite,enumerate,float}
+\usepackage{amssymb,amsfonts,amsthm,amsmath,mathtext,enumerate,float}
 \usepackage[english,russian]{babel}
 \usepackage[all]{xy}
 \usepackage{morefloats}
@@ -23,6 +23,7 @@
 \usepackage{xfrac}
 \usepackage{comment}
 \usepackage{rotating}
+\usepackage{cite}
 \usepackage{sectsty}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{decorations.pathmorphing}
@@ -35,6 +36,9 @@
     \@title
   \end{center}%
 }
+
+\renewcommand{\citedash}{]-[}
+\renewcommand{\citepunct}{], [}
 
 \sectionfont{\centering\normalfont\small\MakeUppercase}
 
