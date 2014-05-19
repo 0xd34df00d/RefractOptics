@@ -491,8 +491,12 @@ $\alpha = 0.05$, $\tau = 10$ получена следующая суперпо�
 
 \paragraph{Исследование стабильности решения.}
 
-Для оценки стабильности решения фиксировалась формула \eqref{eq:res_0} и исследовалась
-зависимость стандартного отклонения ее коэффициентов от стандартного отклонения
+Для оценки стабильности решения фиксировалась формула \eqref{eq:res_0} в виде
+\[
+  f(\lambda) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4},
+\]
+и исследовалась зависимость стандартного отклонения ее коэффициентов $\omega_1$,
+$\omega_2$ и $\omega_3$ от стандартного отклонения
 нормально распределенного случайного шума в исходных данных описанным выше методом.
 Критерием останова в нем являлось достижение 10000 итераций для каждой пары
 $(\sigma_{\lambda}, \sigma_n)$.
@@ -505,7 +509,7 @@ $(\sigma_{\lambda}, \sigma_n)$.
   \centering
   \footnotesize
   \begin{tabular}{l | c c c}
-	  & Коэффициент 1 & Коэффициент 2 & Коэффициент 3 \\ \hline
+	  & $\omega_1$ & $\omega_2$ & $\omega_3$ \\ \hline
 	\begin{rotate}{90}Полимер 1\end{rotate} &	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff2.dat.pdf} \\
 	\begin{rotate}{90}Полимер 2\end{rotate} &	\includegraphics[scale=0.4]{figs/even/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff2.dat.pdf}
   \end{tabular}
@@ -517,12 +521,12 @@ $(\sigma_{\lambda}, \sigma_n)$.
   \centering
   \footnotesize
   \begin{tabular}{| l | c | c | c | c |} \hline
-	Полимер		& Коэффициент 1			& Коэффициент 2			& Коэффициент 3			& MSE	\\ \hline
     1			& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\ \hline
     2			& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\ \hline
 	Разность	& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&	\\ \hline
   \end{tabular}
   \caption{Значения коэффициентов для формулы \eqref{eq:res_0} и их относительная разность.}
+				& $\omega_1$				& $\omega_2$				& $\omega_3$				& MSE	\\ \hline
   \label{tabl:res_even_coeffs}
 \end{table}
 
@@ -564,7 +568,7 @@ $(\sigma_{\lambda}, \sigma_n)$.
   \centering
   \footnotesize
   \begin{tabular}{l | c c c}
-	  & Коэффициент 1 & Коэффициент 2 & Коэффициент 3 \\ \hline
+	  & $\omega_1$ & $\omega_2$ & $\omega_3$ \\ \hline
 	\begin{rotate}{90}Полимер 1\end{rotate} &	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p1.txt_coeff2.dat.pdf} \\
 	\begin{rotate}{90}Полимер 2\end{rotate} &	\includegraphics[scale=0.4]{figs/all/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff2.dat.pdf}
   \end{tabular}
