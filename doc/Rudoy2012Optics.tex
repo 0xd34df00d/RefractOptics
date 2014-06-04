@@ -23,6 +23,10 @@
 \usepackage{xfrac}
 \usepackage{comment}
 \usepackage{rotating}
+\usepackage{cite}
+\usepackage{sectsty}
+\usepackage{caption}
+\usepackage{subcaption}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{decorations.pathmorphing}
 
@@ -34,6 +38,14 @@
     \@title
   \end{center}%
 }
+
+\renewcommand{\citedash}{]-[}
+\renewcommand{\citepunct}{], [}
+
+\renewcommand{\thesubfigure}{\asbuk{subfigure}}
+\addto\captionsrussian{\renewcommand{\figurename}{Фиг.}}
+
+\sectionfont{\centering\normalfont\small\MakeUppercase}
 
 %\renewcommand{\section}{\@startsection {section}{1}%
 %  \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
