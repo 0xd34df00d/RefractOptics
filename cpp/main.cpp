@@ -31,6 +31,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <limits>
+#include <dlib/svm.h>
 #include "solve.h"
 #include "util.h"
 
@@ -147,6 +148,165 @@ void TryLOO (const TrainingSet_t& allPairs)
 	}
 }
 
+template<typename Kernel>
+struct SVMResult
+{
+	double MSE_;
+	dlib::decision_function<Kernel> DF_;
+};
+
+template<template<typename T> class Kernel, typename S, typename T, typename... KernelParams>
+SVMResult<Kernel<typename S::value_type>> TrySVMSingle (S samples, T targets, double c, KernelParams... params)
+{
+	dlib::svr_trainer<Kernel<typename S::value_type>> trainer;
+	trainer.set_kernel ({ params... });
+	trainer.set_c (c);
+	trainer.set_epsilon_insensitivity (1e-10);
+
+	const auto& df = trainer.train (samples, targets);
+
+	dlib::randomize_samples (samples, targets);
+	return
+	{
+		dlib::cross_validate_regression_trainer (trainer, samples, targets, 3) (0),
+		df
+	};
+}
+
+template<typename T>
+void TrySVM (const TrainingSetBase_t<T>& allPairs)
+{
+	typedef SampleTypeBase_t<double> sample_t;
+
+	std::vector<sample_t> samples;
+	std::vector<T> targets;
+	for (const auto& pair : allPairs)
+	{
+		samples.push_back (pair.first);
+		targets.push_back (pair.second);
+	}
+
+	struct MinInfo
+	{
+		double c;
+		double gamma;
+		double mse;
+	} min { 0, 0, 1e6 };
+	// c = 10 seems optimal for now
+	for (auto c : { 1e-4, 1e-3, 1e-2, 0.1, 1.0, 10.0, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 })
+	{
+		for (auto gamma = 1e-6; gamma < 1e-4; gamma += 1e-6)
+		{
+			const auto result = TrySVMSingle<dlib::radial_basis_kernel> (samples, targets, c, gamma);
+			if (result.MSE_ < min.mse)
+				min = { c, gamma, result.MSE_ };
+		}
+	}
+	std::cout << "min: " << min.mse << " with c = " << min.c << "; gamma = " << min.gamma << std::endl;
+}
+
+template<typename T>
+void TrySVMPoly (const TrainingSetBase_t<T>& allPairs)
+{
+	typedef SampleTypeBase_t<double> sample_t;
+
+	std::vector<sample_t> samples;
+	std::vector<T> targets;
+	for (const auto& pair : allPairs)
+	{
+		samples.push_back (pair.first);
+		targets.push_back (pair.second);
+	}
+
+	struct MinInfo
+	{
+		double c;
+		double gamma;
+		double coeff;
+		double degree;
+		double mse;
+	} min { 0, 0, 0, 0, 1e6 };
+
+	for (auto c : { 1e-4, 1e-3, 1e-2, 0.1, 1.0, 10.0, 1e2, 1e3 })
+	{
+		for (auto gamma : { 0.01, 0.1, 1. })
+		{
+			for (auto coeff : { 0., 0.01, 0.1, 1., 10. })
+			{
+				for (auto degree : { 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1. })
+				{
+					const auto result = TrySVMSingle<dlib::polynomial_kernel> (samples, targets, c, gamma, coeff, degree);
+					/*
+					std::cout << "alpha count: " << result.DF_.alpha.size () << std::endl;
+					for (int i = 0; i < result.DF_.alpha.nr (); ++i)
+						std::cout << result.DF_.alpha (i) << " ";
+					std::cout << std::endl;
+					*/
+
+					if (result.MSE_ < min.mse)
+						min = { c, gamma, coeff, degree, result.MSE_ };
+				}
+			}
+			std::cout << "done gamma " << gamma << std::endl;
+		}
+	}
+
+	std::cout << "min: " << min.mse
+			<< " with c = " << min.c
+			<< "; gamma = " << min.gamma
+			<< "; coeff = " << min.coeff
+			<< "; degree = " << min.degree
+			<< std::endl;
+}
+
+template<typename T>
+void TrySVMSigmoid (const TrainingSetBase_t<T>& allPairs)
+{
+	typedef SampleTypeBase_t<double> sample_t;
+
+	std::vector<sample_t> samples;
+	std::vector<T> targets;
+	for (const auto& pair : allPairs)
+	{
+		samples.push_back (pair.first);
+		targets.push_back (pair.second);
+	}
+
+	struct MinInfo
+	{
+		double c;
+		double gamma;
+		double coeff;
+		double mse;
+	} min { 0, 0, 0, 1e6 };
+
+	for (auto c : { 1e-4, 1e-3, 1e-2, 0.1, 1.0, 10.0, 1e2, 1e3 })
+	{
+		for (auto gamma = 1e-07; gamma < 1e-6; gamma += 5e-08)
+		{
+			for (auto coeff = -1.0; coeff < -0.5; coeff += 0.01)
+			{
+				const auto result = TrySVMSingle<dlib::sigmoid_kernel> (samples, targets, c, gamma, coeff);
+				/*
+				std::cout << "alpha count: " << result.DF_.alpha.size () << std::endl;
+				for (int i = 0; i < result.DF_.alpha.nr (); ++i)
+					std::cout << result.DF_.alpha (i) << " ";
+				std::cout << std::endl;
+				*/
+
+				if (result.MSE_ < min.mse)
+					min = { c, gamma, coeff, result.MSE_ };
+			}
+		}
+	}
+
+	std::cout << "min: " << min.mse
+			<< " with c = " << min.c
+			<< "; gamma = " << min.gamma
+			<< "; coeff = " << min.coeff
+			<< std::endl;
+}
+
 int main (int argc, char **argv)
 {
 	if (argc < 2)
@@ -171,7 +331,10 @@ int main (int argc, char **argv)
 	}
 	std::cout << "MSE: " << sum / pairs.size () << std::endl << std::endl;
 
-	TryLOO (pairs);
+	//TryLOO (pairs);
+	//TrySVM (pairs);
+	//TrySVMPoly (pairs);
+	//TrySVMSigmoid (pairs);
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
