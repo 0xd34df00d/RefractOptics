@@ -681,38 +681,77 @@ $(\sigma_{\lambda}, \sigma_n)$.
 \]
 
 Соответствующие графики для функции $y = 2x + 1 + \xi_i$ на интервале $x \in [0; 10]$ при
-различном количестве порожденных точек (10 и 50) приведены на рис. \ref{fig:classic_all_0_all}
-для значений $D(\xi_i)$, равных 1 и 10. По оси $x$ отложено
-число итераций в тысячах (до $10^7$), по $y$~--- значения $\delta_1$ и $\delta_2$.
+$n = 10$ порождённых точках и $D(\xi_i) = 10$ приведены на фиг. \ref{fig:classic_var10_n10}.
+В частности, на фиг. \ref{fig:classic_var10_n10_begin}
+представлена начальная часть графика при количестве итераций $N$, меньшем $5 \cdot 10^5$, 
+на фиг. \ref{fig:classic_var10_n10_middle}~--- средняя часть (при $N$ от $5 \cdot 10^5$
+до $10^7$), а на фиг. \ref{fig:classic_var10_n10_end}~--- характер сходимости при больших $N$
+(от $10^7$ до $10^8$).
 
-На рис. $\ref{fig:classic_all_0_500}$ и $\ref{fig:classic_all_1000_all}$ приведены
-отдельные графики, соответствующие интервалам от 0 до $5 \cdot 10^5$ итераций и от $10^6$ до
-$10^7$ итераций соответственно. Рис. $\ref{fig:classic_all_0_500}$ демонстрирует
-сходимость в начале работы алгоритма, в то время как рис. $\ref{fig:classic_all_1000_all}$
-показывает характер сходимости при достаточно больших $N$.
+Аналогичные графики приведены для $n = 10$ и $D(\xi_i) = 1$ и $n = 50$ и $D(\xi_i) = 1$
+соответственно на фиг. \ref{fig:classic_var1_n10} и \ref{fig:classic_var1_n50}.
 
 Из графиков видно, что значения разности стабилизируются в районе $(1.5 \div 3) \cdot 10^6$
 итераций и не демонстрируют явной зависимости от числа точек или дисперсии погрешности.
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=1.2]{figs/classic/variance_all_0_all.eps}
-  \caption{График зависимости $\delta$ от числа итераций (от 0 до $10^7$ итераций).}
-  \label{fig:classic_all_0_all}
+\begin{figure}[h!]
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_10_variance_10_norm.log_0_500.eps}
+    \caption{$N \in [0;~5 \cdot 10^5]$}
+    \label{fig:classic_var10_n10_begin}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_10_variance_10_norm.log_500_10000.eps}
+    \caption{$N \in [5 \cdot 10^5;~10^7]$}
+    \label{fig:classic_var10_n10_middle}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_10_variance_10_norm.log_end.eps}
+    \caption{$N \in [10^7;~10^8]$}
+    \label{fig:classic_var10_n10_end}
+  \end{subfigure}
+  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 10$ и $n = 10$.}
+  \label{fig:classic_var10_n10}
 \end{figure}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=1.2]{figs/classic/variance_all_0_500.eps}
-  \caption{График зависимости $\delta$ от числа итераций (от 0 до $5 \cdot 10^5$ итераций).}
-  \label{fig:classic_all_0_500}
+\begin{figure}[h!]
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_10_variance_1_norm.log_0_500.eps}
+    \caption{$N \in [0;~5 \cdot 10^5]$}
+    \label{fig:classic_var1_n10_begin}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_10_variance_1_norm.log_500_10000.eps}
+    \caption{$N \in [5 \cdot 10^5;~10^7]$}
+    \label{fig:classic_var1_n10_middle}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_10_variance_1_norm.log_end.eps}
+    \caption{$N \in [10^7;~10^8]$}
+    \label{fig:classic_var1_n10_end}
+  \end{subfigure}
+  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $n = 10$.}
+  \label{fig:classic_var1_n10}
 \end{figure}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=1.2]{figs/classic/variance_all_1000_all.eps}
-  \caption{График зависимости $\delta$ от числа итераций (от $10^6$ до $10^7$ итераций).}
-  \label{fig:classic_all_1000_all}
+\begin{figure}[h!]
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_50_variance_1_norm.log_0_500.eps}
+    \caption{$N \in [0;~5 \cdot 10^5]$}
+    \label{fig:classic_var1_n50_begin}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_50_variance_1_norm.log_500_10000.eps}
+    \caption{$N \in [5 \cdot 10^5;~10^7]$}
+    \label{fig:classic_var1_n50_middle}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figs/classic/linear_log_1x_2_samples_50_variance_1_norm.log_end.eps}
+    \caption{$N \in [10^7;~10^8]$}
+    \label{fig:classic_var1_n50_end}
+  \end{subfigure}
+  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $n = 50$.}
+  \label{fig:classic_var1_n50}
 \end{figure}
 
 \section{Заключение}
