@@ -25,6 +25,8 @@
 \usepackage{rotating}
 \usepackage{cite}
 \usepackage{sectsty}
+\usepackage{caption}
+\usepackage{subcaption}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{decorations.pathmorphing}
 
@@ -39,6 +41,9 @@
 
 \renewcommand{\citedash}{]-[}
 \renewcommand{\citepunct}{], [}
+
+\renewcommand{\thesubfigure}{\asbuk{subfigure}}
+\addto\captionsrussian{\renewcommand{\figurename}{Фиг.}}
 
 \sectionfont{\centering\normalfont\small\MakeUppercase}
 
