@@ -84,7 +84,8 @@ public:
 
 	void TryMore (size_t tries)
 	{
-		std::random_device generator;
+		std::random_device seeder;
+		std::mt19937_64 generator { seeder () };
 
 		std::normal_distribution<double> lambdaDistr { 0, LVar_ };
 		std::normal_distribution<double> nDistr { 0, NVar_ };
