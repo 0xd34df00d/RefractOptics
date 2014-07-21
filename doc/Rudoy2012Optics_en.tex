@@ -293,46 +293,49 @@ is called the \emph{stability} of the function $f$ and is denoted as $\mathbb{T}
 In case of the dispersion regression, it is required to study the dependency of stability
 $\mathbb{T}_{\hat{f}}$ as function of $\sigma_n$ and $\sigma_{\lambda}$.
 
-\section{Алгоритм индуктивного порождения суперпозиций}
+\section{The algorithm for inductive models generation}
 
-Опишем предложенный в \cite{Rudoy13} алгоритм.
+In this section we briefly describe the algorithm proposed in \cite{Rudoy13}.
 
-Пусть задано некоторое множество $G = \{ g_1, \dots, g_k \}$ 
-порождающих функций. Набор суперпозиций $\mathcal{F} = \{ f \}$
-инициализируется случайными суперпозициями функций $g \in G$. Суперпозиции из
-$\mathcal{F}$ содержат как свободные переменные, соответствующие
-компонентам вектора-описания объектов из генеральной совокупности, так и
-константы, которые оптимизируются на каждом шаге алгоритмом Левенберга-Марквардта
-согласно введенному функционалу потерь \eqref{eq:s}. Также на каждой итерации
-над суперпозициями выполняется набор модифицирующих операций с целью улучшения
-качества $Q_f$ суперпозиций.
+Let $G = \{ g_1, \dots, g_k \}$ be the set of some elementary functions.
+The set $\mathcal{F} = \{ f \}$ of generated models is first initialized
+by random admissible superpositions of functions $g \in G$, taking their
+arity, domain and codomain into account. Superpositions in $\mathcal{F}$
+contain free variables corresponding to the components of the feature
+vectors from the learning set, as well as constants which are subject to
+optimization by the Levenberg-Marquardt procedure (according to functional
+\eqref{eq:s}) on each algorithm step. Each superposition can also be modified
+on each iteration in order to improve the quality $Q_f$ of best superpositions
+in the set $\mathcal{F}$.
 
-Качество $Q_f$ суперпозиции $f$ вычисляется по совокупности точности приближения
-экспериментальных данных и структурной сложности суперпозиции по следующей формуле:
+The quality $Q_f$ of the model $f$ is defined by the error on the learning
+set as well as the structural complexity of the superposition according to the
+following:
 \begin{equation}
   Q_f = \frac{1}{1 + S(f)} \left(\alpha + \frac{1 - \alpha}{1 + \text{exp} (C_f - \tau)}\right),
   \label{eq:s_f}
 \end{equation}
-где:
+where:
 \begin{itemize}
-  \item[] $S(f)$~--- значение функционала потерь \eqref{eq:s} на данной выборке $D$;
-  \item[] $C_f$~--- сложность суперпозиции, соответствующая количеству элементарных
-	функций, свободных переменных и констант;
-  \item[] $\alpha$~--- $0 \ll \alpha < 1$, характеризует влияние штрафа за сложность
-	на качество суперпозиции (большие значения $\alpha$ отдают предпочтение более
-	точным моделям, а меньшие~--- более простым);
-  \item[] $\tau$~--- коэффициент, характеризующий желаемую сложность модели.
+  \item[] $S(f)$ is the value of the loss functional \eqref{eq:s} on the learning set $D$;
+  \item[] $C_f$ is the complexity of the superposition $f$ defined by the number of
+	elementary functions, free variables and constants;
+  \item[] $\alpha, 0 \ll \alpha < 1$ adjusts the penalty of excessive model complexity
+	(bigger $\alpha$ values prefer more complex but more precise models, while smaller
+	choose simpler ones);
+  \item[] $\tau$ defines the desired complexity of the model, after which it is considered
+	excessive.
 \end{itemize}
 
-Второй множитель в \eqref{eq:s_f} выполняет роль штрафа за слишком
-большую сложность суперпозиции, что подавляет эффект переобучения и позволяет
-получать более простые суперпозиции ценой большей ошибки на обучающих данных
-при большей обобщающей способности.
+The second multiplier in \eqref{eq:s_f} is the penalty for excessive model complexity,
+which mitigates overfitting and allows obtaining simpler superpositions at the cost of
+bigger error on the learning set. The primary hypothesis is that simpler superpositions
+with slightly bigger learning set errors generalize better.
 
-Отметим, что параметры $\alpha$ и $\tau$ выбираются экспертом.
+It is worth noting that $\alpha$ and $\tau$ are chosen by experts.
 
-Таким образом, исходная задача минимизации функционала \eqref{eq:s} заменяется
-на задачу минимизации функционала \eqref{eq:s_f}:
+So, the initial problem of minimizing the functional \eqref{eq:s} is replaced by
+the problem of minimizing \eqref{eq:s_f}:
 \begin{equation}
   Q_f = \frac{1}{1 + S(f)} \left(\alpha + \frac{1 - \alpha}{1 + \text{exp} (C_f - \tau)}\right) \rightarrow \min_{f \in \mathcal{F}}.
   \label{eq:s_f_min}
