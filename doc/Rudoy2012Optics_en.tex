@@ -169,6 +169,7 @@ for each of them 17 data points are given, corresponding to the refraction index
 different wavelengths.
 
 \section{Problem statement}
+\label{sect:prob_stat}
 
 \paragraph{Regression problem.}
 Let $D$ be the data set of $\ell$ refraction index measurements for a polymer:
@@ -341,38 +342,38 @@ the problem of minimizing \eqref{eq:s_f}:
   \label{eq:s_f_min}
 \end{equation}
 
-\section{Метод исследования стабильности решения}
+\section{Stability estimation method}
 
-Для оценки устойчивости $\mathbb{T}_{\hat{f}}$ решения $\hat{f}$ задачи
-\eqref{eq:s_f}, как предложено выше, фиксируется структурный вид суперпозиции
-$\hat{f}$ и исследуется зависимость стандартного отклонения ее коэффициентов
-как функция стандартного отклонения нормально распределенной случайной добавки
-в исходных данных.
+In order to estimate the stability $\mathbb{T}_{\hat{f}}$ of some model $\hat{f}$
+which a solution of \eqref{eq:s_f}, the structure of the model $\hat{f}$ is fixed
+and the standard deviation of its parameters is studied as the function of the
+standard deviation of a noise in the learning set, as proposed in section
+\ref{sect:prob_stat}.
 
-Иными словами, выбираются значения $\sigma_{\lambda}$ и $\sigma_n$, затем для этих
-значений генерируется выборка $\acute{D}(\sigma_n, \sigma_{\lambda})$ согласно
-\eqref{eq:d_acute}. Для этой выборки вычисляются значения коэффициентов суперпозиции
-$\hat{f}$, минимизирующие функционал \eqref{eq:s} согласно \eqref{eq:hat_omega},
-методом Левенберга-Марквардта.
+In other words, some values for $\sigma_{\lambda}$ and $\sigma_n$ are chosen,
+then the modified learning set $\acute{D}(\sigma_n, \sigma_{\lambda})$ is
+generated for the chosen values according to \eqref{eq:d_acute}. The new
+parameters vector is then calculated which minimizes \eqref{eq:s} on the
+modified learning set $\acute{D}(\sigma_n, \sigma_{\lambda})$ according to
+\eqref{eq:hat_omega}.
 
-Данная процедура для фиксированной пары $\sigma_{\lambda}$ и $\sigma_n$ повторяется
-до достижения некоторого критерия останова (например, по количеству итераций),
-после которого и рассчитывается $\mathbb{T}_{\hat{f}}$.
+This procedure is repeated multiple times for each given pair of $\sigma_{\lambda}$ and $\sigma_n$
+until some stop condition is reached (like the number of iterations), after which
+empirical value for $\mathbb{T}_{\hat{f}}$ is computed.
 
-Повторяя описанные выше шаги для различных $\sigma_{\lambda}$ и $\sigma_n$, можно
-оценить зависимость стандартного отклонения коэффициентов суперпозиции от
-стандартного отклонения шума.
+By performing the above steps for different $\sigma_{\lambda}$ and $\sigma_n$,
+it is possible to estimate the dependency of the superposition coefficients
+standard deviation of the parameters $\sigma_{\lambda}$ and $\sigma_n$ of the noise.
 
-Из физических соображений ясно, что гладкая зависимость означает устойчивое в
-физическом смысле решение, тогда как отклонения от гладкости означают
-ту или иную ошибку в суперпозиции и могут являться свидетельством переобучения:
-чем меньше коэффициенты зависят от случайных шумов в данных, тем больше обобщающая
-способность.
+It is physically sensible to expect this dependency to be smooth, while extremely
+non-smooth dependency means an erroneously chosen superposition and can also be
+a sign of overfitting: the less the coefficients depend on the random error
+in the data, the better generalization is.
 
-Кроме того, сравнение различных суперпозиций может также производиться по
-критерию устойчивости в дополнение к сравнению по сложности и по значению
-функционала \eqref{eq:s}. В ряде практических приложений критерий устойчивости
-может иметь приоритетное значение.
+Moreover, different superpositions can be compared according to the proposed
+stability criteria in addition to the complexity and error criteria. In some
+applications the stability can even be more important than the error on the
+data set.
 
 \section{Вычислительный эксперимент}
 
