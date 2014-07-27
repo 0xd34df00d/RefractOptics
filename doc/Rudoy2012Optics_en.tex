@@ -487,12 +487,13 @@ and the dependency of standard deviation of $\omega_1$, $\omega_2$ and $\omega_3
 of standard deviation of a gaussian noise was studied by the method proposed above.
 The stop criteria was reaching $10^4$ iterations for each pair of $(\sigma_{\lambda}, \sigma_n)$.
 
-The dispersion surfaces of each coefficient of each polymer are shown in table \ref{tabl:res_even}.
+The standard deviation surfaces of each coefficient of each polymer are shown in
+table \ref{tabl:res_even}.
 
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Dispersion for \eqref{eq:res_0}.}
+  \caption{Standard deviation for \eqref{eq:res_0}.}
   \begin{tabular}{l | c c c}
 	  & $\omega_1$ & $\omega_2$ & $\omega_3$ \\ \hline
 	\begin{rotate}{90}Polymer 1\end{rotate} &	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff2.dat.eps} \\
@@ -527,8 +528,8 @@ The dispersion surfaces of each coefficient of each polymer are shown in table \
 \end{table}
 
 The graphs show that the inaccuracy in measuring the wavelength does not significantly affect
-first and second coefficients in the region of interest. At the same time, their dispersion
-depends on the dispersion of the refraction index almost linearly.
+first and second coefficients in the region of interest. At the same time, their standard deviation
+depends on the standard deviation of the refraction index almost linearly.
 
 These results can be interpreted in the following way: during experiment planning most attention
 should be paid to maximizing the certainity in measuring the refraction index, while the wavelength
@@ -541,106 +542,50 @@ are considerably smaller than the difference between the parameters for two poly
 by tables \ref{tabl:res_even_coeffs} and \ref{tabl:res_even_stddev}), which means that the polymers
 can be separated by such measurements even by an imprecise refractometer.
 
-\paragraph{Стабильность некорректного решения.}
+\paragraph{Stability of the overfitted model.}
 
-Аналогично исследуем стабильность решения \eqref{eq:res_incorrect}. Приведем только графики
-зависимости первых трех коэффициентов, см. таблицу \ref{tabl:res_incorrect}.
+The stability of the model \eqref{eq:res_incorrect} is studied analogously. Standard deviation
+graphs for the first three coefficients are shown in table \ref{tabl:res_incorrect}.
 
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Поверхности дисперсии для формулы \eqref{eq:res_incorrect}.}
+  \caption{Standard deviation for \eqref{eq:res_incorrect}.}
   \begin{tabular}{l | c c c}
 	  & $\omega_1$ & $\omega_2$ & $\omega_3$ \\ \hline
-	\begin{rotate}{90}Полимер 1\end{rotate} &	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/all/p1.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/all/p1.txt_coeff2.dat.eps} \\
-	\begin{rotate}{90}Полимер 2\end{rotate} &	\includegraphics[scale=0.4]{figs/all/p2.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff2.dat.eps}
+	\begin{rotate}{90}Polymer 1\end{rotate} &	\includegraphics[scale=0.4]{figs/all/p1.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/all/p1.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/all/p1.txt_coeff2.dat.eps} \\
+	\begin{rotate}{90}Polymer 2\end{rotate} &	\includegraphics[scale=0.4]{figs/all/p2.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/all/p2.txt_coeff2.dat.eps}
   \end{tabular}
   \label{tabl:res_incorrect}
 \end{table}
 
-Из графиков видно, что в случае формулы \eqref{eq:res_incorrect} дисперсия соответствующих
-параметров существенно превышает таковую для \eqref{eq:res_0}. В частности, второй, третий
-и четвертый коэффициенты имеют дисперсию, на порядки превышающую характерные значения самих
-коэффициентов.
+The graphs show that standard deviation values for \eqref{eq:res_incorrect} are considerably higher
+than the corresponding ones for \eqref{eq:res_0}. In particular, the second, third and fourth
+coefficients have standard deviation orders of magnitude higher than their corresponding values.
 
-Данные результаты свидетельствуют о переобучении, и что полученная модель не может быть
-использована для надежного приближения экспериментальных данных ввиду большой чувствительности
-к шумам.
+These results may be a sign of overfitting, and that the resulting model can't be used to
+describe the physical process measured, not to mention separating two polymers in their mixture.
 
-\begin{comment}
-\paragraph{Исследование экспертного предположения.}
+\section{Convergence to the linear case.}
 
-Экспертом предположено, что формула также может иметь вид
-\begin{equation}
-  n(\lambda) = a + \frac{b}{c - \frac{1}{\lambda^2}},
-  \label{eq:resonance}
-\end{equation}
-если измерения находятся вблизи точки резонанса.
-
-Результаты нахождения параметров $a, b$ и $c$ методом Левенберга-Марквардта
-приведены в таблице \ref{tabl:resonance_coeffs}.
-
-\begin{table}[h]
-  \centering
-  \footnotesize
-  \begin{tabular}{| c | r | r | r | c |} \hline
-	Материал	& $a$							& $b$					& $c$					& MSE						\\ \hline
-	1			& $7.333 \cdot 10^{-3}$		& $3.509 \cdot 10^{-4}$	& $1.935 \cdot 10^{-4}$	& $1.7 \cdot 10^{-8}$		\\ \hline
-	2			& $1.378$					& $2.352 \cdot 10^{-5}$	& $5.598 \cdot 10^{-5}$	& $3.6 \cdot 10^{-9}$		\\ \hline
-  \end{tabular}
-  \caption{Значения MSE и коэффициентов формулы \eqref{eq:resonance}.}
-  \label{tabl:resonance_coeffs}
-\end{table}
-
-\begin{table}[h]
-  \centering
-  \footnotesize
-  \begin{tabular}{l | c c c}
-	  & Коэффициент 1 & Коэффициент 2 & Коэффициент 3 \\ \hline
-	\begin{rotate}{90}Полимер 1\end{rotate} &	\includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p1.txt_coeff2.dat.pdf} \\
-	\begin{rotate}{90}Полимер 2\end{rotate} &	\includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff0.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff1.dat.pdf} & \includegraphics[scale=0.4]{figs/resonance/p2.txt_coeff2.dat.pdf}
-  \end{tabular}
-  \caption{Поверхности дисперсии для формулы \eqref{eq:resonance}.}
-  \label{tabl:res_resonance}
-\end{table}
-
-Исследуем стабильность данного решения тем же методом, что и в
-предыдущих случаях. Поверхности дисперсии приведены в таблице \ref{tabl:res_resonance}.
-
-Отметим, что характерные дисперсия первого коэффициента на порядки больше, чем
-для формулы \eqref{eq:res_0}, что затрудняет различение полимеров в смеси при
-достаточно большой погрешности измерения $\lambda$. Кроме того, полученные значения
-дисперсий коэффициентов позволяют говорить о, по-видимому, существенной неустойчивости
-решения и, как следствие, невозможности его использования в качестве корректной модели.
-Поверхности дисперсии также не являются настолько же гладкими, как для формулы
-\eqref{eq:res_0}.
-
-Все это позволяет заключить, что, хотя экспериментальные данные хорошо
-описываются формулой \eqref{eq:resonance}, они не являются корректными с
-экспертно-физической точки зрения.
-
-\end{comment}
-
-\section{Сходимость к классическому случаю}
-
-Рассмотрим случай, когда зависимость линейна:
+The case of linear regression is considered:
 \[
-  y = ax + b,
+  y = ax + b.
 \]
-и с учетом ошибок измерений представима в виде
+Taking the measurement errors into account:
 \[
   y_i = ax_i + b + \xi_i \mid i \in \{ 1, \dots, n \},
 \]
-где ошибки $\xi_i$ независимы, $E(\xi_i) = 0; D(\xi_i) = \sigma^2$ \cite{Vatunin05}.
-То есть, рассматривается случай независимости ошибки измерения от точки измерения,
-при этом независимая переменная измеряется точно.
+where the errors $\xi_i$ are independent, and $E(\xi_i) = 0; D(\xi_i) = \sigma^2$ \cite{Vatunin05}.
+In other words, the error doesn't depend on the measurement, and the dependent variable
+is measured precisely.
 
-Перейдем к представлению
+Transitioning to the following presentation:
 \[
   y_i = a(x_i - \overline{x}) + b + \xi_i \mid i \in \{ 1, \dots, n \},
 \]
-для которого, согласно \cite{Vatunin05}, случайные величины $a$ и $b$ независимы
-и нормально распределены, и, кроме того, их дисперсии выражаются известными соотношениями:
+results in $a$ and $b$ being independent normally distributed random variables, and
+their dispersions can be calculated according to \cite{Vatunin05}:
 \begin{equation}
   \label{eq:classic_da}
   D(a) = \frac{\sigma^2}{\sum_{i = 1}^n (x_i - \overline{x})^2}.
@@ -650,10 +595,10 @@ can be separated by such measurements even by an imprecise refractometer.
   D(b) = \frac{\sigma^2}{n}.
 \end{equation}
 
-Рассмотрим, насколько результаты предложенного метода отличаются от значений,
-полученных согласно \eqref{eq:classic_da} и \eqref{eq:classic_db}. Для этого исследуем
-зависимость относительной разности между этими значениями и эмпирическими значениями устойчивости от
-числа итераций N:
+Next the results obtained by the proposed method are compared to the ones resulting
+from\eqref{eq:classic_da} and \eqref{eq:classic_db}. For this, the relative difference
+between these values and empiric standard deviations is considered as a function of
+number of iterations $N$:
 \[
   \delta_1 = \frac{| \mathbf{T}^N_y(1) - D(a) |}{D(a)},
 \]
@@ -661,19 +606,19 @@ can be separated by such measurements even by an imprecise refractometer.
   \delta_2 = \frac{| \mathbf{T}^N_y(2) - D(b) |}{D(b)}.
 \]
 
-Соответствующие графики для функции $y = 2x + 1 + \xi_i$ на интервале $x \in [0; 10]$ при
-$n = 10$ порождённых точках и $D(\xi_i) = 10$ приведены на фиг. \ref{fig:classic_var10_n10}.
-В частности, на фиг. \ref{fig:classic_var10_n10_begin}
-представлена начальная часть графика при количестве итераций $N$, меньшем $5 \cdot 10^5$, 
-на фиг. \ref{fig:classic_var10_n10_middle}~--- средняя часть (при $N$ от $5 \cdot 10^5$
-до $10^7$), а на фиг. \ref{fig:classic_var10_n10_end}~--- характер сходимости при больших $N$
-(от $10^7$ до $10^8$).
+Corresponding graphs for the function $y = 2x + 1 + \xi_i$ with $x \in [0; 10]$,
+$n = 10$ sample points and $D(\xi_i) = 10$ are shown on fig. \ref{fig:classic_var10_n10}.
+Particularly, the fig. \ref{fig:classic_var10_n10_begin} shows the initial part of the
+graph for $N$ smaller than $5 \cdot 10^5$, the fig. \ref{fig:classic_var10_n10_middle}
+shows the part for $N$ between $5 \cdot 10^5$ and $10^7$, and fig.
+\ref{fig:classic_var10_n10_end} represents the convergence on big $N$ (from $10^7$ to $10^8$).
 
-Аналогичные графики приведены для $n = 10$ и $D(\xi_i) = 1$ и $n = 50$ и $D(\xi_i) = 1$
-соответственно на фиг. \ref{fig:classic_var1_n10} и \ref{fig:classic_var1_n50}.
+Analogous graphs are also shown for $n = 10$ and $D(\xi_i) = 1$, and $n = 50$ and $D(\xi_i) = 1$,
+on fig. \ref{fig:classic_var1_n10} and \ref{fig:classic_var1_n50} respectively.
 
-Из графиков видно, что значения разности стабилизируются в районе $(1.5 \div 3) \cdot 10^6$
-итераций и не демонстрируют явной зависимости от числа точек или дисперсии погрешности.
+The graphs show that the relative difference stabilizes around $(1.5 \div 3) \cdot 10^6$
+iterations and doesn't explicit dependence on the number of sample points or standard
+deviation of the error.
 
 \begin{figure}[h!]
   \begin{subfigure}[b]{0.3\textwidth}
@@ -691,7 +636,7 @@ $n = 10$ порождённых точках и $D(\xi_i) = 10$ приведен
     \caption{$N \in [10^7;~10^8]$}
     \label{fig:classic_var10_n10_end}
   \end{subfigure}
-  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 10$ и $n = 10$.}
+  \caption{Dependence of $\delta$ on $N$ with $D(\xi) = 10$ and $n = 10$.}
   \label{fig:classic_var10_n10}
 \end{figure}
 
@@ -711,7 +656,7 @@ $n = 10$ порождённых точках и $D(\xi_i) = 10$ приведен
     \caption{$N \in [10^7;~10^8]$}
     \label{fig:classic_var1_n10_end}
   \end{subfigure}
-  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $n = 10$.}
+  \caption{Dependence of $\delta$ on $N$ with $D(\xi) = 1$ and $n = 10$.}
   \label{fig:classic_var1_n10}
 \end{figure}
 
@@ -731,7 +676,7 @@ $n = 10$ порождённых точках и $D(\xi_i) = 10$ приведен
     \caption{$N \in [10^7;~10^8]$}
     \label{fig:classic_var1_n50_end}
   \end{subfigure}
-  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $n = 50$.}
+  \caption{Dependence of $\delta$ on $N$ with $D(\xi) = 1$ and $n = 50$.}
   \label{fig:classic_var1_n50}
 \end{figure}
 
