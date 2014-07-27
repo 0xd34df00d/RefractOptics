@@ -680,24 +680,25 @@ deviation of the error.
   \label{fig:classic_var1_n50}
 \end{figure}
 
-\section{Заключение}
+\section{Conclusion}
 
-Предложенный в \cite{Rudoy13} алгоритм позволяет получить интерпретируемую аналитическую
-формулу, описывающую зависимость коэффициента преломления среды от длины волны.
-Введенный штраф за сложность позволяет избежать переобучения без использования методов
-вроде скользящего контроля, и, таким образом, отпадает необходимость в контрольной выборке.
+The algorithm proposed in \cite{Rudoy13} allows generating interpretable analytic
+model describing the dependency of refraction index on the wavelength. The complexity
+penalty introduced in the algorithm mitigates overfitting without resorting to methods
+like crossvalidation.
 
-Хотя другие алгоритмы, такие как SVM-регрессия, могут демонстрировать более высокое
-качество приближения данных, их результаты неинтерпретируемы и не защищены от переобучения
-<<по построению>>, поэтому требуют разделения выборки на обучающую и контрольную. Кроме
-того, их структурные параметры так же требуют оценки по методам вроде кросс-валидации.
+Though other algorithms like SVM regression can learn models with lower mean square error,
+the learned models are uninterpretable and prone to overfitting. Moreover, their
+structural parameters need to be estimated according to, for example,
+cross-validation, while the proposed method's hyperparameters can be chosen directly
+according to expert considerations.
 
-Предложенный в настоящей работе метод оценки стабильности решения позволяет исследовать вклад различных
-членов результирующей суперпозиции и зависимость изменения этих членов от
-случайных шумов во входных данных. В частности, в прикладных областях данный метод позволяет
-выявить, какие именно элементы признакового описания объектов в генеральной совокупности
-наиболее чувствительны к шуму. Кроме того, для корректных с экспертной точки зрения
-решений оказывается, что они стабильны, в то время как некорректные результаты нестабильны.
+The stability criteria proposed in this paper allows studying the contribution of each
+term of the resulting superposition and the relation between measurements inaccuracies
+and inaccuracies in determining the superposition coefficients. Particularly, this method
+also allows detecting which components of feature vectors are the least susceptible to
+noise in the learning data. Moreover, expertly correct models tend to be more stable
+than incorrect ones.
 
 \FloatBarrier
 
