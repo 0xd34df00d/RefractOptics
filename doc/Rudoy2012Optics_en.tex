@@ -375,22 +375,20 @@ stability criteria in addition to the complexity and error criteria. In some
 applications the stability can even be more important than the error on the
 data set.
 
-\section{Вычислительный эксперимент}
+\section{Computational experiment}
 
-В вычислительном эксперименте используются данные, полученные в ходе
-изучения возможности определения состава смеси прозрачных
-полимеров по суммарной дисперсионной зависимости, если известна экспериментальная
-зависимость дисперсии для каждого конкретного полимера. Рассматривается два
-полимера, для каждого из которых имеется 17 экспериментальных точек,
-соответствующих коэффициенту преломления при разных значениях длины волны.
-Значения приведены в таблице \ref{tabl:source_data}.
+The data used in this section are the measurements of the refraction index
+of transparent polymers as a function of wavelength. Two different polymers
+are considered, each of them having 17 data points corresponding to the
+refraction index at different wavelengths. The values of the measurements
+are shown in table \ref{tabl:source_data}.
 
 \begin{table}[h]
   \footnotesize
-  \caption{Экспериментальные значения коэффициентов преломления.}
+  \caption{Measured refraction indexes at different wavelengths.}
   \centering
   \begin{tabular}{r | r | r}
-	$\lambda$, нм	& Полимер 1 & Полимер 2 \\ \hline
+	$\lambda$, nm	& Polymer 1 & Polymer 2 \\ \hline
 	435.8 & 1.36852 & 1.35715 \\
 	447.1 & 1.36745 & 1.35625 \\
 	471.3 & 1.36543 & 1.35449 \\
@@ -412,108 +410,93 @@ data set.
   \label{tabl:source_data}
 \end{table}
 
-Предполагается, что дисперсионные свойства полимеров описываются одной и той
-же функциональной зависимостью, так как подчиняются одним и тем же физическим
-закономерностям. Поэтому сначала получена суперпозиция $\hat{f}$,
-минимизирующая \eqref{eq:s_f} для первого полимера, а затем для каждого
-из полимеров находятся соответствующие векторы параметров
-$\hat{\boldsymbol{\omega}}_{\hat{f}}$ и оценивается устойчивость полученного решения.
+The dispersion of both polymers is assumed to be described by the functional dependency
+of the same structure, as it obeys the same physical laws. Because of this, firstly the
+model $\hat{f}$ is chosen which minimizes \eqref{eq:s_f} for the first polymer, and then
+for each of the polymers optimal parameter vectors $\hat{\boldsymbol{\omega}}_{\hat{f}}$
+are found for the given model, and their stability is estimated.
 
-Разделение на обучающую и контрольную выборку не производилось, однако переобучения
-удается избежать и без такого разделения, опираясь целиком на штраф за сложность.
+The data set was not splitted to learning set and control set, as overfitting was
+mitigated by the complexity penalty.
 
-Из физических соображений следует \cite{Serova11}, что зависимость коэффициента
-преломления $n$ от длины волны $\lambda$ должна выражаться суммой
-четных степеней длины волны, поэтому множество элементарных функций состоит из
-стандартных операций сложения и умножения:
+Physical considerations show \cite{Serova11} that dispersion should be a sum of even
+powers of the wavelength, so the elementary function set consists of the functions
+\[
+  g_3(\lambda, p) = \frac{1}{\lambda^{2p}},
+\]
+in addition to standard addition and multiplication operations:
 \[
   g_1(x_1, x_2) = x_1 + x_2,
 \]
 \[
-  g_2(x_1, x_2) = x_1 x_2,
-\]
-а также из функции
-\[
-  g_3(\lambda, p) = \frac{1}{\lambda^{2p}}.
+  g_2(x_1, x_2) = x_1 x_2.
 \]
 
-В ходе вычислительного эксперимента константы, меньшие $10^{-7}$,
-заменялись на $0$.
+During the experiment constants with absolute value less than $10^{-7}$
+were zeroed.
 
-В результате применения описанного выше алгоритма со значениями
-$\alpha = 0.05$, $\tau = 10$ получена следующая суперпозиция
-(константы округлены до пятой значащей цифры):
+The algorithm described above generated the following superposition at $\alpha = 0.05$, $\tau = 10$:
 \begin{equation}
-  f(\lambda) = 1.3495 + \frac{3.5465 \cdot 10^3}{\lambda^2} + \frac{2.023 \cdot 10^3}{\lambda^4},
+  f(\lambda) = 1.3495 + \frac{3.5465 \cdot 10^3}{\lambda^2} + \frac{2.023 \cdot 10^3}{\lambda^4}.
   \label{eq:res_0}
 \end{equation}
-со сложностью $13$, среднеквадратичной ошибкой $2.4 \cdot 10^{-8}$ и значением $Q_f \approx 0.095$.
-Длины волн выражаются в нанометрах.
+The complexity of this model is $13$, MSE is $2.4 \cdot 10^{-8}$ and $Q_f \approx 0.095$.
+Wavelengths are assumed to be in nanometers.
 
-Отметим, что обычно в приложениях учитывают только квадратичный член, а более
-высокими степенями пренебрегают. Величина поправки, вносимой в результирующее значение
-суперпозиции последним слагаемым, указывает на полное согласие полученных результатов
-с принятой практикой.
+It is worth noting that only two first terms are considered in practical applications, while
+higher powers are neglected. The value of the last term in \eqref{eq:res_0}
+agrees with this practice.
 
-\paragraph{Влияние штрафа за сложность.}
+\paragraph{Complexity penalty.}
 
-Исследуем, как влияет добавление нечетных степеней на результат решения задачи \eqref{eq:s_f_min},
-заменив функцию $g_3$ в порождающем наборе на
+The effect of adding odd powers to the elementary function set is studied here by replacing
+$g_3$ with 
 \[
   g_3(\lambda, p) = \frac{1}{\lambda^p}.
 \]
 
-Следует отметить, что при тех же $\alpha = 0.05$ и $\tau = 10$ результирующей функцией остается
+With the same parameters $\alpha = 0.05$ and $\tau = 10$ the resulting function is still
 \eqref{eq:res_0}.
 
-Увеличим $\tau$ до 30. Получим следующую формулу (константы округлены до третьей значащей цифры):
+Increasing $\tau$ up to 30 results in the following model:
 \begin{equation}
-  n(\lambda) = 1.34 + \frac{11.6}{\lambda} + \frac{17.37}{\lambda^2} + \frac{0.0866}{\lambda^3} + \frac{2.95 \cdot 10^{-4}}{\lambda^4} + \frac{8.54 \cdot 10^{-7}}{\lambda^5},
+  n(\lambda) = 1.34 + \frac{11.6}{\lambda} + \frac{17.37}{\lambda^2} + \frac{0.0866}{\lambda^3} + \frac{2.95 \cdot 10^{-4}}{\lambda^4} + \frac{8.54 \cdot 10^{-7}}{\lambda^5}.
   \label{eq:res_incorrect}
 \end{equation}
-сложность которой составляет $31$, и для которой среднеквадратичная ошибка
-на выборке составляет $\approx 3.9 \cdot 10^{-9}$,
-а значение $Q_f \approx 0.31$.
+Its complexity is $31$, MSE is $\approx 3.9 \cdot 10^{-9}$ and $Q_f \approx 0.31$.
 
-Иными словами, при большей желаемой сложности,
-регулируемой параметром $\tau$, выигрывает более сложная (а в данном случае и
-физически некорректная) модель, которая лучше описывает экспериментальные данные.
+In other words, bigger target complexity (expressed by $\tau$) leads to selecting
+more complex (and, in this case, physically incorrect) model with smaller mean square error.
 
-Как и следовало ожидать, чрезмерное увеличение $\tau$ ведет к переобучению.
+Naturally, excessive values of $\tau$ lead to overfitting.
 
 \paragraph{SVM.}
 
-В качестве базового алгоритма используется SVM-регрессия с RBF-ядром \cite{Vapnik79}.
-Параметр $\gamma$ ядра подбирался по методу скользящего контроля, наилучшим результатом является
-комбинация из $15$ опорных векторов c $\gamma \approx 2 \cdot 10^{-6}$, при этом
-среднеквадратичная ошибка при кросс-валидации с тестовой выборкой, содержащей по 2
-объекта, составляет $8.96 \cdot 10^{-8}$. Однако, проинтерпретировать полученную
-решающую функцию не представляется возможным.
+SVM with RBF kernel \cite{Vapnik79} was used as baseline algorithm. The $\gamma$ kernel
+parameter was selected by crossvalidation. The best result was a combination of 15
+support vectors with $\gamma \approx 2 \cdot 10^{-6}$. MSE during 2-fold crossvalidation
+was $8.96 \cdot 10^{-8}$. The resulting model, though, is uninterpretable.
 
-\paragraph{Исследование стабильности решения.}
+\paragraph{Model stability.}
 
-Для оценки стабильности решения фиксировалась формула \eqref{eq:res_0} в виде
+In order to estimate the stability, the structure of \eqref{eq:res_0} had been fixed as
 \[
   f(\lambda) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4},
 \]
-и исследовалась зависимость стандартного отклонения ее коэффициентов $\omega_1$,
-$\omega_2$ и $\omega_3$ от стандартного отклонения
-нормально распределенного случайного шума в исходных данных описанным выше методом.
-Критерием останова в нем являлось достижение 10000 итераций для каждой пары
-$(\sigma_{\lambda}, \sigma_n)$.
+and the dependency of standard deviation of $\omega_1$, $\omega_2$ and $\omega_3$
+of standard deviation of a gaussian noise was studied by the method proposed above.
+The stop criteria was reaching $10^4$ iterations for each pair of $(\sigma_{\lambda}, \sigma_n)$.
 
-В таблице \ref{tabl:res_even} представлены
-поверхности уровня дисперсии для первого, второго и третьего коэффициентов каждого из полимеров
-соответственно.
+The dispersion surfaces of each coefficient of each polymer are shown in table \ref{tabl:res_even}.
 
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Поверхности дисперсии для формулы \eqref{eq:res_0}.}
+  \caption{Dispersion for \eqref{eq:res_0}.}
   \begin{tabular}{l | c c c}
 	  & $\omega_1$ & $\omega_2$ & $\omega_3$ \\ \hline
-	\begin{rotate}{90}Полимер 1\end{rotate} &	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff2.dat.eps} \\
-	\begin{rotate}{90}Полимер 2\end{rotate} &	\includegraphics[scale=0.4]{figs/even/p2.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff2.dat.eps}
+	\begin{rotate}{90}Polymer 1\end{rotate} &	\includegraphics[scale=0.4]{figs/even/p1.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/even/p1.txt_coeff2.dat.eps} \\
+	\begin{rotate}{90}Polymer 2\end{rotate} &	\includegraphics[scale=0.4]{figs/even/p2.txt_coeff0.dat.eps} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff1.dat.eps} & \includegraphics[scale=0.4]{figs/even/p2.txt_coeff2.dat.eps}
   \end{tabular}
   \label{tabl:res_even}
 \end{table}
@@ -521,12 +504,12 @@ $(\sigma_{\lambda}, \sigma_n)$.
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Значения коэффициентов для формулы \eqref{eq:res_0} и их относительная разность.}
+  \caption{Coefficients of model \eqref{eq:res_0} and their relative residual.}
   \begin{tabular}{l | c | c | c | c}
 				& $\omega_1$				& $\omega_2$				& $\omega_3$				& MSE	\\ \hline
-    Полимер 1	& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\
-    Полимер 2	& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\
-	Разность		& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&	\\
+    Polymer 1	& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\
+    Polymer 2	& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\
+	Residual		& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&	\\
   \end{tabular}
   \label{tabl:res_even_coeffs}
 \end{table}
@@ -534,7 +517,7 @@ $(\sigma_{\lambda}, \sigma_n)$.
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Значения стандартного отклонения для коэффициентов формулы \eqref{eq:res_0} для первого полимера в зависимости от относительных дисперсий.}
+  \caption{Standard eviation values for coefficients of \eqref{eq:res_0} for the first polymer for some selected noise parameters.}
   \begin{tabular}{l | c | c | c}
 	$\omega_i$	& $\frac{\sigma_{\lambda}}{\lambda} = 2 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-5}$	& $ \frac{\sigma_{\lambda}}{\lambda} = 6 \cdot 10^{-4}; \frac{\sigma_n}{n} = 6 \cdot 10^{-5} $	& $ \frac{\sigma_{\lambda}}{\lambda} = 9 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-4} $ \\ \hline
 	1		& $1.22 \cdot 10^{-5}$																			& $ 3.59 \cdot 10^{-5} $																		& $ 1.19 \cdot 10^{-4} $		\\
@@ -543,22 +526,20 @@ $(\sigma_{\lambda}, \sigma_n)$.
   \label{tabl:res_even_stddev}
 \end{table}
 
-Из графиков видно, что от шума, накладываемого на значения длины волны, дисперсия значений
-первого и второго коэффициентов практически не зависит в достаточно широком диапазоне точности
-определения длины волны, представляющем практический интерес. В то же время дисперсия значений
-первого коэффициента зависит от дисперсии шума коэффициента преломления практически линейно,
-тогда как для второго коэффициента после некоторого характерного значения зависимость становится слабой.
+The graphs show that the inaccuracy in measuring the wavelength does not significantly affect
+first and second coefficients in the region of interest. At the same time, their dispersion
+depends on the dispersion of the refraction index almost linearly.
 
-Физическая интерпретация этих результатов~--- при построении прибора для измерения дисперсии
-такого типа полимеров в их полосе прозрачности значительное внимание следует уделять точности измерения коэффициента преломления,
-тогда как измерения длины волны могут быть неточны вплоть до нескольких нанометров. Кроме того,
-предложенный метод прямо указывает, на каких интервалах шума каким будет выигрыш в точности
-определения параметров регрессионной модели в зависимости от увеличения точности измерений.
+These results can be interpreted in the following way: during experiment planning most attention
+should be paid to maximizing the certainity in measuring the refraction index, while the wavelength
+can be measured quite inaccurately with errors up to few nanometers. Moreover, the suggested method
+directly shows how the uncertainity in determining the coefficients depends on the measurement errors
+of different parameters.
 
-Принципиально важно, что значения стандартного отклонения параметров регрессионной
-модели существенно меньше разности между самими значениями этих параметров по порядку величины
-(см. таблицы \ref{tabl:res_even_coeffs} и \ref{tabl:res_even_stddev}), что означает, в частности,
-что полимеры могут быть различены даже не очень точным рефрактометром.
+It is fundamentally important that the standard deviation of the parameters of the model \eqref{eq:res_0}
+are considerably smaller than the difference between the parameters for two polymers (as shown
+by tables \ref{tabl:res_even_coeffs} and \ref{tabl:res_even_stddev}), which means that the polymers
+can be separated by such measurements even by an imprecise refractometer.
 
 \paragraph{Стабильность некорректного решения.}
 
