@@ -41,6 +41,7 @@
 
 \renewcommand{\citedash}{]-[}
 \renewcommand{\citepunct}{], [}
+\renewcommand{\baselinestretch}{1.57}
 
 \renewcommand{\thesubfigure}{\asbuk{subfigure}}
 \addto\captionsrussian{\renewcommand{\figurename}{Фиг.}}
@@ -75,9 +76,9 @@
   A set of inductively generated non-linear regression models is considered to find an optimal
   one. Firstly, a previously suggested model generation method taking the complexity of the
   models into account is applied. Then, a new model selection criteria is proposed, called
-  model stability, which shows the dependency of the inaccuracy in determining the coefficients
+  model stability, which shows the dependency of the error in determining the parameters
   of the generated models on the variation of the data in the learning set. This criteria
-  is used directly to determine the inaccuracy of the model coefficients, which is of interest
+  is used directly to determine the error of the model parameters, which is of interest
   to the experts, as well as to select the optimal model amongst different ones generated
   using different algorithm hyperparameters.
   The data obtained during experiments on optical dispersion of transparent polymers is used
@@ -104,7 +105,7 @@ and the optimization of their numeric parameters is performed, for example, usin
 the Levenberg-Marquardt algorithm\cite{Marquardt1963Algorithm,more:78}.
 
 On the other hand, during physical experiment analysis not only the model
-parameters themselves are important for the expert, but the uncertainities in
+parameters themselves are important for the expert, but the errors in
 determining their values resulting from the intrinsic measurement inaccuracies.
 For the linear regression this problem is known to have a theoretical solution\cite{Vatunin05}
 in the particular case of the independent variable measured exactly and the
@@ -127,8 +128,8 @@ $n(\lambda) = \alpha n_1(\lambda) + (1 - \alpha) n_2(\lambda)$, the concentratio
 of the first polymer $\alpha$ should be derived.
 
 The refraction indexes for the transparent polymers of a similar chemical
-composition differ only slightly. Thus, the uncertainity in determining the
-$n(\lambda)$ function coefficients and its dependency on the inaccuracies of measurements
+composition differ only slightly. Thus, the error in determining the
+$n(\lambda)$ function parameters and its dependency on the measurement errors
 of the wavelength $\lambda$ and refraction index $n$ must be considered.
 This dependency is also important because it defines the requirements for the
 precision of the devices and, consecutively, it largely
@@ -140,21 +141,21 @@ of the monochromator being used and is thorougly considered, for example, in
 \cite{Malishev79,Zaidel72}. In most cases the inaccuracy of $\lambda$ can be
 computed as well as determined experimentally using narrow light sources like
 lasers, known atomic transitions like the mercury triplet or sodium dublet.
-Typical relative wavelength measurement inaccuracy is around $0.03 \div 0.5\%$,
-thus absolute inaccuracy depends on the wavelength itself. Inaccuracy of
-the refraction index $n$ depends on the measurement method and, for example,
+Typical relative wavelength measurement error is around $0.03 \div 0.5\%$,
+thus absolute measurement error depends on the wavelength itself. Refraction
+index error depends on the measurement method and, for example,
 in case of using the total internal refraction angle, is defined by the degree
-of non-parallelism of the light beams used, the inaccuracy in angle measurement
-and so on. The inaccuracy ranges from $(1 \div 2) \cdot 10^{-5}$ for high-class
+of non-parallelism of the light beams used, the angle measurement error
+and so on. The error ranges from $(1 \div 2) \cdot 10^{-5}$ for high-class
 devices to $(1 \div 10) \cdot 10^{-4}$ for simpler devices. Thus, it is important
-for this paper that the inaccuracies can be considered to be known and perhaps
+for this paper that the errors can be considered to be known and perhaps
 different for each data point.
 
 In this paper the dependency of the refraction index of the wavelength is used
 to illustrate the model generation algorithm proposed in \cite{Rudoy13}.
 Its results are compared with the SVM regression. Moreover, the impact of the
 complexity penalty on the quality and complexity of the generated models
-is investigated. The problem of determining the model coefficients stability
+is investigated. The problem of determining the stability of model parameters
 in the general case of multivariate models is formally stated, a method for evaluating
 solution stability is proposed, and the dependency of these characteristics of
 the model hyperparameters is studied for the given case of determining the dispersion
@@ -166,7 +167,7 @@ used to generate the regression model, is briefly described. In the third part a
 numeric method for stability estimation is proposed. In the fourth part the results
 of the computational experiment are shown. In the experiment two polymers are considered,
 for each of them 17 data points are given, corresponding to the refraction index at
-different wavelengths.
+various wavelengths.
 
 \section{Problem statement}
 \label{sect:prob_stat}
@@ -192,7 +193,7 @@ In other words,
 
 \paragraph{Stability estimation.}
 We define the notion of the stability of some superposition $f$ in general case.
-The stability describes the behavior of the coefficients of the superposition
+The stability describes the behavior of the parameters $\boldsymbol{w}$ of the superposition
 $f$ during slight random variation of the source learning data set
 $D = \{ \mathbf{x}_i, y_i \}$,
 where $\mathbf{x}_i$ is the feature vector of $i$-th object measured during
@@ -279,8 +280,8 @@ described in the introduction, thus the $r$ function may just choose any argumen
 Each component of the $\mathbf{T}^N_f(i)$ vector describes the ratio between the standard deviation
 of the $\hat{\omega}_i$ parameter (normalized by the value of that parameter) and the standard
 deviation of the corresponding feature vector element (again, normalized by the value of that element).
-For instance, if this ration is greater than one, then the uncertainity in determining the coefficient
-grows faster than the measurement inaccuracy of the corresponding variable.
+For instance, if this ratio is greater than one, then the error in determining the $\hat{\omega}_i$
+parameter is bigger than the measurement error of the corresponding variable.
 
 In the particular case of the dispersion regression considered in this paper, taking into account
 the constant relative measurement error:
@@ -362,12 +363,12 @@ until some stop condition is reached (like the number of iterations), after whic
 empirical value for $\mathbb{T}_{\hat{f}}$ is computed.
 
 By performing the above steps for different $\sigma_{\lambda}$ and $\sigma_n$,
-it is possible to estimate the dependency of the superposition coefficients
+it is possible to estimate the dependency of the superposition parameters
 standard deviation of the parameters $\sigma_{\lambda}$ and $\sigma_n$ of the noise.
 
 It is physically sensible to expect this dependency to be smooth, while extremely
 non-smooth dependency means an erroneously chosen superposition and can also be
-a sign of overfitting: the less the coefficients depend on the random error
+a sign of overfitting: the less the parameters depend on the random error
 in the data, the better generalization is.
 
 Moreover, different superpositions can be compared according to the proposed
@@ -487,7 +488,7 @@ and the dependency of standard deviation of $\omega_1$, $\omega_2$ and $\omega_3
 of standard deviation of a gaussian noise was studied by the method proposed above.
 The stop criteria was reaching $10^4$ iterations for each pair of $(\sigma_{\lambda}, \sigma_n)$.
 
-The standard deviation surfaces of each coefficient of each polymer are shown in
+The standard deviation surfaces of each parameter $\omega_i$ are shown in
 table \ref{tabl:res_even}.
 
 \begin{table}[h]
@@ -518,7 +519,7 @@ table \ref{tabl:res_even}.
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Standard eviation values for coefficients of \eqref{eq:res_0} for the first polymer for some selected noise parameters.}
+  \caption{Standard deviation of \eqref{eq:res_0} parameters for the first polymer for selected noise parameters.}
   \begin{tabular}{l | c | c | c}
 	$\omega_i$	& $\frac{\sigma_{\lambda}}{\lambda} = 2 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-5}$	& $ \frac{\sigma_{\lambda}}{\lambda} = 6 \cdot 10^{-4}; \frac{\sigma_n}{n} = 6 \cdot 10^{-5} $	& $ \frac{\sigma_{\lambda}}{\lambda} = 9 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-4} $ \\ \hline
 	1		& $1.22 \cdot 10^{-5}$																			& $ 3.59 \cdot 10^{-5} $																		& $ 1.19 \cdot 10^{-4} $		\\
@@ -527,15 +528,14 @@ table \ref{tabl:res_even}.
   \label{tabl:res_even_stddev}
 \end{table}
 
-The graphs show that the inaccuracy in measuring the wavelength does not significantly affect
-first and second coefficients in the region of interest. At the same time, their standard deviation
+The graphs show that the wavelength measurement error does not significantly affect
+first and second parameters in the region of interest. At the same time, their standard deviation
 depends on the standard deviation of the refraction index almost linearly.
 
 These results can be interpreted in the following way: during experiment planning most attention
 should be paid to maximizing the certainity in measuring the refraction index, while the wavelength
 can be measured quite inaccurately with errors up to few nanometers. Moreover, the suggested method
-directly shows how the uncertainity in determining the coefficients depends on the measurement errors
-of different parameters.
+directly shows how the parameters error depends on the measurement errors of different variables.
 
 It is fundamentally important that the standard deviation of the parameters of the model \eqref{eq:res_0}
 are considerably smaller than the difference between the parameters for two polymers (as shown
@@ -545,7 +545,7 @@ can be separated by such measurements even by an imprecise refractometer.
 \paragraph{Stability of the overfitted model.}
 
 The stability of the model \eqref{eq:res_incorrect} is studied analogously. Standard deviation
-graphs for the first three coefficients are shown in table \ref{tabl:res_incorrect}.
+graphs for the first three parameters are shown in table \ref{tabl:res_incorrect}.
 
 \begin{table}[h]
   \centering
@@ -560,11 +560,11 @@ graphs for the first three coefficients are shown in table \ref{tabl:res_incorre
 \end{table}
 
 The graphs show that standard deviation values for \eqref{eq:res_incorrect} are considerably higher
-than the corresponding ones for \eqref{eq:res_0}. In particular, the second, third and fourth
-coefficients have standard deviation orders of magnitude higher than their corresponding values.
+than the corresponding ones for \eqref{eq:res_0}. Particularly the second, third and fourth
+parameters have standard deviation orders of magnitude higher than their corresponding values.
 
 These results may be a sign of overfitting, and that the resulting model can't be used to
-describe the physical process measured, not to mention separating two polymers in their mixture.
+describe the physical process, not to mention separating two polymers in their mixture.
 
 \section{Convergence to the linear case.}
 
@@ -694,8 +694,8 @@ cross-validation, while the proposed method's hyperparameters can be chosen dire
 according to expert considerations.
 
 The stability criteria proposed in this paper allows studying the contribution of each
-term of the resulting superposition and the relation between measurements inaccuracies
-and inaccuracies in determining the superposition coefficients. Particularly, this method
+term of the resulting superposition and the relation between measurement errors
+and errors in determining the superposition parameters. Particularly, this method
 also allows detecting which components of feature vectors are the least susceptible to
 noise in the learning data. Moreover, expertly correct models tend to be more stable
 than incorrect ones.
