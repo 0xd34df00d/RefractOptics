@@ -4,7 +4,7 @@
 \usepackage[T2A]{fontenc}
 \usepackage{graphics,graphicx,epsfig}
 \usepackage{amssymb,amsfonts,amsthm,amsmath,mathtext,cite,enumerate,float}
-\usepackage[english,russian]{babel}
+\usepackage[russian,english]{babel}
 \usepackage[all]{xy}
 \usepackage{morefloats}
 \usepackage{pgf}
@@ -39,8 +39,6 @@
   \end{center}%
 }
 
-\renewcommand{\citedash}{]-[}
-\renewcommand{\citepunct}{], [}
 \renewcommand{\baselinestretch}{1.57}
 
 \renewcommand{\thesubfigure}{\asbuk{subfigure}}
@@ -69,20 +67,22 @@
   STABILITY OF NON-LINEAR REGRESSION MODELS WITH RESPECT TO VARIATIONS IN THE MEASURED DATA
 
   \bigskip
-  G.~Rudoy.
+  G.~Rudoy
 \end{center}
 
 \begin{abstract}
-  A set of inductively generated non-linear regression models is considered to find an optimal
-  one. Firstly, a previously suggested model generation method taking the complexity of the
-  models into account is applied. Then, a new model selection criteria is proposed, called
-  model stability, which shows the dependency of the error in determining the parameters
-  of the generated models on the variation of the data in the learning set. This criteria
-  is used directly to determine the error of the model parameters, which is of interest
-  to the experts, as well as to select the optimal model amongst different ones generated
-  using different algorithm hyperparameters.
-  The data obtained during experiments on optical dispersion of transparent polymers is used
-  to illustrate the method.
+  To find an optimal non-linear regression model describing a physical experiment, a set
+  of inductively generated ones is considered.
+  A new model selection criteria is proposed, called model stability, showing the
+  dependency of the error in determining the parameters of a model on the variation of
+  samples in the learning set.
+  To generate a set of competitive models, a model generation method taking the complexity
+  of the models into account is applied. The proposed stability criteria
+  is used to determine the error of the model parameters, which is of interest
+  to the experts, as well as to select the optimal model among different ones generated
+  using different algorithm parameters.
+  Experimental data for refraction index of transparent polymers at different wavelengths is
+  used as illustration.
 
   \bigskip
   \textbf{Keywords}: \emph{symbolic regression, non-linear models, inductive generation,
@@ -91,49 +91,67 @@
 
 \section*{Introduction}
 
-Analysing the results of a physical experiment typically requires finding a functional
-dependency between the measured data. It is also very desirable for the dependency to
-be interpretable by an expert in the corresponding physical field. In many cases some
+Analysis of a physical experiment results requires finding a functional
+dependency between the measured data. For example, given a set of measurements
+of wavelength and the corresponding refraction index of a substance, a dependency
+between them should be derived. It is also very desirable for such dependency to
+be interpretable by an expert in the corresponding field.
+
+In many cases some
 theoretical assumptions about the structure of the functional dependency are available,
-or a choice should be made between different proposed models.
+or a choice should be made between different proposed models. For instance, in the above
+case of refraction index measurements the data can be described either by a sum
+of even powers of the wavelength in the common case, or by a known physical formula
+near the resonance wavelength \cite{...}.
 
 One of the methods allowing to find interpretable models is symbolic regression
 \cite{davidson:2000:snrea,reference/ml/X10vc,StrijovW10,Strijov08InductMethods,Rudoy13},
 which generates structurally complex non-linear models. Different models
-can be compared by their respective errors on the measured data,
-and the optimization of their numeric parameters is performed, for example, using
+are usually compared by their respective errors on the measured data,
+and the exact finding of their numeric parameters is performed, for example, using
 the Levenberg-Marquardt algorithm\cite{Marquardt1963Algorithm,more:78}.
 
 On the other hand, during physical experiment analysis not only the model
 parameters themselves are important for the expert, but the errors in
 determining their values resulting from the intrinsic measurement inaccuracies.
-For the linear regression this problem is known to have a theoretical solution\cite{Vatunin05}
-in the particular case of the independent variable measured exactly and the
+The errors determine whether the physical experiment and the used model makes
+sense, whether its results can be used in particular applications, and they also
+define the requirements for the used experimental devices.
+
+For linear regression this problem has a theoretical solution\cite{Vatunin05}
+in the particular case of independent variable being measured exactly and the
 dependent variable having the same Gaussian distribution of the error at all
-measured samples. More complex case of non-linear regression, including the case
-of independent variables measured inexactly, as well as all samples having
-different error distributions, has not been considered as far as we know.
+measured samples. The case of non-linear regression with independent variables
+measured inexactly, as well as all samples having
+different error distributions (like varying standard deviations in case of gaussian
+error distribution), has not been considered as far as we know.
 
 In this paper the non-linear symbolic regression method is applied to find
-the dependency of the refraction index $n$ of a polymer as a function of the
-wavelength $\lambda$ for those frequencies where the considered polymer is
-transparent, including visible and near infrared light. The goal of the
+the dependency of a liquid polymer refraction index $n(\lambda) = n(\lambda, \boldsymbol{\omega})$ as a function of
+wavelength $\lambda$, where $n$ is a function in a parametric family,
+parametrized by $\boldsymbol{\omega}$, with a fixed parameter vector
+describing a concrete polymer. The frequencies where the polymer is
+transparent, including visible and near infrared fields, are considered.
+The goal of the
 experimenters was to, first, find the dispersion for each polymer, and then
-derive the concentration of each polymer in their mixture, given that the
-dispersion of the mixture of polymers is a weighted sum of their respective
-dispersions. In other words, in case of two polymers, knowing the functions
-$n_1(\lambda)$ and $n_2(\lambda)$, the mixture dispersion dependency $n(\lambda)$ 
-should be measured and, since
-$n(\lambda) = \alpha n_1(\lambda) + (1 - \alpha) n_2(\lambda)$, the concentration
-of the first polymer $\alpha$ should be derived.
+derive the concentration of each polymer in their mixture, assuming the
+refraction index of the mixture of polymers to be a weighted sum of their refraction
+indexes. In other words, for two polymers, knowing the functions
+$n_1(\lambda)$ and $n_2(\lambda)$ and the mixture dispersion dependency $n(\lambda)$ ,
+the concentration of the first polymer $\alpha$ should be derived, since
+$n(\lambda) = \alpha n_1(\lambda) + (1 - \alpha) n_2(\lambda)$.
 
-The refraction indexes for the transparent polymers of a similar chemical
-composition differ only slightly. Thus, the error in determining the
-$n(\lambda)$ function parameters and its dependency on the measurement errors
-of the wavelength $\lambda$ and refraction index $n$ must be considered.
-This dependency is also important because it defines the requirements for the
-precision of the devices and, consecutively, it largely
-affects the cost and duration of the experiment.
+The refraction indexes for transparent polymers of a similar chemical
+composition differ only slightly. Thus, the error in determining
+parameters $\boldsymbol{\omega}$ of $n(\lambda) = n(\lambda, \boldsymbol{\omega})$
+and their dependencies on the measurement errors
+of the wavelength $\lambda$ and refraction index $n$ must be considered, since
+if the errors of parameters of the $n(\lambda)$ function
+is of the same magnitude (or even bigger) as the difference between the
+corresponding parameters, then the polymers are effectively indistinguishable.
+These dependencies are also important because they define requirements for 
+devices and, consecutively, largely affecting the cost and duration of the
+experiment.
 
 Typically broad spectrum sources are used in refractometers, and the
 inaccuracy in extracting a single wavelength is defined by the hardware function
@@ -155,12 +173,15 @@ In this paper the dependency of the refraction index of the wavelength is used
 to illustrate the model generation algorithm proposed in \cite{Rudoy13}.
 Its results are compared with the SVM regression. Moreover, the impact of the
 complexity penalty on the quality and complexity of the generated models
-is investigated. The problem of determining the stability of model parameters
-in the general case of multivariate models is formally stated, a method for evaluating
-solution stability is proposed, and the dependency of these characteristics of
-the model hyperparameters is studied for the given case of determining the dispersion
+is investigated.
+
+The problem of determining the stability of model parameters
+in the general non-linear case of multivariate models is formally stated, a method for evaluating
+model stability is proposed, and their dependency on the model selection
+parameters is studied for the given case of determining the dispersion
 of transparent polymers.
 
+\begin{comment}
 In the first part of this paper the dispersion problem is formally stated, and the
 stability criteria is proposed. In the second part the algorithm proposed in\cite{Rudoy13},
 used to generate the regression model, is briefly described. In the third part a
@@ -168,6 +189,7 @@ numeric method for stability estimation is proposed. In the fourth part the resu
 of the computational experiment are shown. In the experiment two polymers are considered,
 for each of them 17 samples are given, corresponding to the refraction index at
 various wavelengths.
+\end{comment}
 
 \section{Problem statement}
 \label{sect:prob_stat}
