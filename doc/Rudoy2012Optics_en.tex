@@ -110,8 +110,8 @@ determining their values resulting from the intrinsic measurement inaccuracies.
 For the linear regression this problem is known to have a theoretical solution\cite{Vatunin05}
 in the particular case of the independent variable measured exactly and the
 dependent variable having the same Gaussian distribution of the error at all
-measured points. More complex case of non-linear regression, including the case
-of independent variables measured inexactly, as well as all points having
+measured samples. More complex case of non-linear regression, including the case
+of independent variables measured inexactly, as well as all samples having
 different error distributions, has not been considered as far as we know.
 
 In this paper the non-linear symbolic regression method is applied to find
@@ -149,7 +149,7 @@ of non-parallelism of the light beams used, the angle measurement error
 and so on. The error ranges from $(1 \div 2) \cdot 10^{-5}$ for high-class
 devices to $(1 \div 10) \cdot 10^{-4}$ for simpler devices. Thus, it is important
 for this paper that the errors can be considered to be known and perhaps
-different for each data point.
+different for each sample.
 
 In this paper the dependency of the refraction index of the wavelength is used
 to illustrate the model generation algorithm proposed in \cite{Rudoy13}.
@@ -166,7 +166,7 @@ stability criteria is proposed. In the second part the algorithm proposed in\cit
 used to generate the regression model, is briefly described. In the third part a
 numeric method for stability estimation is proposed. In the fourth part the results
 of the computational experiment are shown. In the experiment two polymers are considered,
-for each of them 17 data points are given, corresponding to the refraction index at
+for each of them 17 samples are given, corresponding to the refraction index at
 various wavelengths.
 
 \section{Problem statement}
@@ -380,7 +380,7 @@ data set.
 
 The data used in this section are the measurements of the refraction index
 of transparent polymers as a function of wavelength. Two different polymers
-are considered, each of them having 17 data points corresponding to the
+are considered, each of them having 17 samples corresponding to the
 refraction index at different wavelengths. The values of the measurements
 are shown in table \ref{tabl:source_data}.
 
@@ -607,7 +607,7 @@ number of iterations $N$:
 \]
 
 Corresponding graphs for the function $y = 2x + 1 + \xi_i$ with $x \in [0; 10]$,
-$n = 10$ sample points and $D(\xi_i) = 10$ are shown on fig. \ref{fig:classic_var10_n10}.
+$n = 10$ samples and $D(\xi_i) = 10$ are shown on fig. \ref{fig:classic_var10_n10}.
 Particularly, the fig. \ref{fig:classic_var10_n10_begin} shows the initial part of the
 graph for $N$ smaller than $5 \cdot 10^5$, the fig. \ref{fig:classic_var10_n10_middle}
 shows the part for $N$ between $5 \cdot 10^5$ and $10^7$, and fig.
@@ -617,7 +617,7 @@ Analogous graphs are also shown for $n = 10$ and $D(\xi_i) = 1$, and $n = 50$ an
 on fig. \ref{fig:classic_var1_n10} and \ref{fig:classic_var1_n50} respectively.
 
 The graphs show that the relative difference stabilizes around $(1.5 \div 3) \cdot 10^6$
-iterations and doesn't explicit dependence on the number of sample points or standard
+iterations and doesn't explicit dependence on the number of samples or standard
 deviation of the error.
 
 \begin{figure}[h!]
