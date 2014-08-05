@@ -232,7 +232,7 @@ We denote the matrix representing the data set as $X = \| x_{ij} \|$, where
 rows are feature vectors of the objects in $D$. In other words, $x_{ij}$
 is the $j$-th component of the feature vector of the $i$-th object.
 
-We consider the parameters vector
+Consider the parameter vector
 $\boldsymbol{\omega}_f = \{ \omega_i^f \mid i \in \{ 1, \dots, l_f \} \}$
 of some superposition $f$: $f(\mathbf{x}) = f(\mathbf{x}, \boldsymbol{\omega}_f)$.
 Let $\hat{\boldsymbol{\omega}}_f(D)$ be the parameters vector minimizing the
@@ -257,7 +257,7 @@ deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
   \label{eq:d_acute}
 \end{equation}
 
-For this new learning set $\acute{D}$ we find the new parameters vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
+For this new learning set $\acute{D}$ we find the new parameter vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
 for the superposition $f$ minimizing the functional \eqref{eq:s}:
 \begin{equation}
   \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_{f_D} \in R^{\mid \hat{\boldsymbol{\omega}}_f \mid}} S (f_D (\cdot, \boldsymbol{\omega}_{f_D}), \acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
@@ -376,7 +376,7 @@ standard deviation of a noise in the learning set, as proposed in section
 In other words, some values for $\sigma_{\lambda}$ and $\sigma_n$ are chosen,
 then the modified learning set $\acute{D}(\sigma_n, \sigma_{\lambda})$ is
 generated for the chosen values according to \eqref{eq:d_acute}. The new
-parameters vector is then calculated which minimizes \eqref{eq:s} on the
+parameter vector is then calculated which minimizes \eqref{eq:s} on the
 modified learning set $\acute{D}(\sigma_n, \sigma_{\lambda})$ according to
 \eqref{eq:hat_omega}.
 
