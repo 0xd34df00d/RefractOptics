@@ -381,7 +381,8 @@ and the standard deviation of its parameters is studied as the function of the
 standard deviation of a noise in the sample set, as proposed in section
 \ref{sect:prob_stat}.
 
-In other words, some values for $\sigma_{\lambda}$ and $\sigma_n$ are chosen,
+For the case of transparent polymers dispersion curve considered,
+some values for $\sigma_{\lambda}$ and $\sigma_n$ are chosen,
 then the modified sample set $\acute{D}(\sigma_n, \sigma_{\lambda})$ is
 generated for the chosen values according to \eqref{eq:d_acute}. The new
 parameter vector is then calculated which minimizes \eqref{eq:s} on the
@@ -394,9 +395,10 @@ empirical value for $\mathbb{T}_{\hat{f}}$ is computed.
 
 By performing the above steps for different $\sigma_{\lambda}$ and $\sigma_n$,
 it is possible to estimate the dependency of the superposition parameters
-standard deviation of the parameters $\sigma_{\lambda}$ and $\sigma_n$ of the noise.
+standard deviation on the parameters $\sigma_{\lambda}$ and $\sigma_n$ of the noise.
 
-It is physically sensible to expect this dependency to be smooth, while extremely
+It is reasonable to expect that smooth dependency of superposition coefficients
+on the noise means stable (in expert sense) model, while extremely
 non-smooth dependency means an erroneously chosen superposition and can also be
 a sign of overfitting: the less the parameters depend on the random error
 in the data, the better generalization is.
