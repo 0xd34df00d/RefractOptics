@@ -197,7 +197,7 @@ various wavelengths.
 \paragraph{Regression problem.}
 Let $D$ be the data set of $\ell$ refraction index measurements for a polymer:
 $D = \{ \lambda_i, n_i \mid i \in \{ 1, \dots, \ell \} \}$, where $\lambda_i$ is the wavelength,
-and $n_i$ is the measured refraction index.
+and $n_i$ is the measured refraction index in the $i$th measurement.
 
 It is required to find a function $\hat{f} = \hat{f}(\lambda)$, minimizing the standard
 loss function, assuming Gaussian error:
@@ -205,41 +205,39 @@ loss function, assuming Gaussian error:
   S(f, D) = \sum_{i = 1}^\ell (f(\lambda_i) - n_i)^2 \rightarrow \min_{f \in \mathcal{F}},
   \label{eq:s}
 \end{equation}
-where $\mathcal{F}$ is some set of superpositions from which an optimal one is to be found.
-
-In other words,
+where $\mathcal{F}$ is a superpositions set from which an optimal one must be found. In other words,
 \begin{equation}
   \hat{f}(\lambda) = \hat{f}_D(\lambda) = \mathop{\arg \min}\limits_{f \in \mathcal{F}} S(f, D).
   \label{eq:fhat}
 \end{equation}
 
 \paragraph{Stability estimation.}
-We define the notion of the stability of some superposition $f$ in general case.
-The stability describes the behavior of the parameters $\boldsymbol{w}$ of the superposition
-$f$ during slight random variation of the source learning data set
+Define the notion of the stability of some superposition $f$ in general case of non-linear
+multivariate models.
+
+The stability describes the variance of the superposition $f$ parameters $\boldsymbol{w}$
+during slight random variation $\xi$ of the source sample set
 $D = \{ \mathbf{x}_i, y_i \}$,
 where $\mathbf{x}_i$ is the feature vector of $i$-th object measured during
 the experiment, and $y_i$ is the corresponding measured value of the target function
-to be recovered.
-
-The loss function \eqref{eq:s} in this case is:
+to be recovered. The loss function \eqref{eq:s} in this case is:
 \begin{equation}
   S(f, D) = \sum_{i = 1}^\ell (f(\mathbf{x}_i) - y_i)^2 \rightarrow \min_{f \in \mathcal{F}}.
   \label{eq:s_common}
 \end{equation}
 
-We denote the matrix representing the data set as $X = \| x_{ij} \|$, where 
+Denote the matrix representing the data set as $X = [ x_{ij} ]$, where
 rows are feature vectors of the objects in $D$. In other words, $x_{ij}$
 is the $j$-th component of the feature vector of the $i$-th object.
 
 Consider the parameter vector
 $\boldsymbol{\omega}_f = \{ \omega_i^f \mid i \in \{ 1, \dots, l_f \} \}$
 of some superposition $f$: $f(\mathbf{x}) = f(\mathbf{x}, \boldsymbol{\omega}_f)$.
-Let $\hat{\boldsymbol{\omega}}_f(D)$ be the parameters vector minimizing the
+Let $\hat{\boldsymbol{\omega}}_f(D)$ be the parameter vector minimizing the
 functional \eqref{eq:s_common} for some sample set $D = \{ \mathbf{x}_i, y_i \}$ and
 function $f$ with fixed structure:
 \[
-  \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f} S(f, D).
+  \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f \in R^{| \boldsymbol{\omega}_f |}} S(f, D).
 \]
 
 Let
@@ -250,8 +248,8 @@ is the standard deviation of the $j$-th component of the feature vector
 $\mathbf{x}_i$ of the $i$-th object of the sample set. Let
 $\boldsymbol{\sigma}^y = [ \sigma^y_1, \dots, \sigma^y_\ell ]$
 be the vector of standard deviations of the dependent variable, where $\sigma^y_i$
-is the standard deviation of the measured variable for the $i$-th object.
-We then consider the modified sample set $\acute{D}$ derived from the
+is the standard deviation of the dependent variable for the $i$-th object.
+The modified sample set $\acute{D}$ is then considered, which is derived from the
 source data set $D$ by adding to its components some realizations of the
 random variables from the Gaussian distribution with zero mean and 
 deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
@@ -260,8 +258,8 @@ deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
   \label{eq:d_acute}
 \end{equation}
 
-For this new sample set $\acute{D}$ we find the new parameter vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
-for the superposition $f$ minimizing the functional \eqref{eq:s}:
+For this new sample set $\acute{D}$ the new parameter vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
+is found for the superposition $f$ minimizing the functional \eqref{eq:s}:
 \begin{equation}
   \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_{f_D} \in R^{\mid \hat{\boldsymbol{\omega}}_f \mid}} S (f_D (\cdot, \boldsymbol{\omega}_{f_D}), \acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
   \label{eq:hat_omega}
@@ -306,7 +304,7 @@ Each component of the $\mathbf{T}^N_f(i)$ vector describes the ratio between the
 of the $\hat{\omega}_i$ parameter (normalized by the value of that parameter) and the standard
 deviation of the corresponding feature vector components (again, normalized by the value of that components).
 For instance, if this ratio is greater than one, then the error in determining the $\hat{\omega}_i$
-parameter is bigger than the measurement error of the corresponding variable.
+parameter is bigger than the measurement error of corresponding variable.
 
 In the particular case of the dispersion regression considered in this paper, taking into account
 the constant relative measurement error:
