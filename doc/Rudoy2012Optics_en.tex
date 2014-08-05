@@ -325,16 +325,18 @@ In this section we briefly describe the algorithm proposed in \cite{Rudoy13}.
 Let $G = \{ g_1, \dots, g_k \}$ be the set of some elementary functions.
 The set $\mathcal{F} = \{ f \}$ of generated models is first initialized
 by random admissible superpositions of functions $g \in G$, taking their
-arity, domain and codomain into account. Superpositions in $\mathcal{F}$
-contain free variables corresponding to the components of the feature
-vectors from the sample set, as well as constants which are subject to
-optimization by the Levenberg-Marquardt procedure (according to functional
-\eqref{eq:s}) on each algorithm step. Each superposition can also be modified
-on each iteration in order to improve the quality $Q_f$ of best superpositions
+arity, domain and codomain into account. Each superposition in $\mathcal{F}$
+may contain free variables corresponding to the components of the feature
+vectors from the sample set $\mathcal{D}$, as well as constants, which are
+considered as the superposition parameters $\boldsymbol{\omega}_f$.
+The algorithm then works in lockstep: the parameters $\boldsymbol{\omega}_f$
+are optimized by the Levenberg-Marquardt procedure according to
+\eqref{eq:s}, and then each superposition can be modified
+in order to improve the quality $Q_f$ of best superpositions
 in the set $\mathcal{F}$.
 
 The quality $Q_f$ of the model $f$ is defined by the error on the sample
-set as well as the structural complexity of the superposition according to the
+set $D$ as well as the structural complexity of the superposition according to the
 following:
 \begin{equation}
   Q_f = \frac{1}{1 + S(f)} \left(\alpha + \frac{1 - \alpha}{1 + \text{exp} (C_f - \tau)}\right),
@@ -343,7 +345,7 @@ following:
 where:
 \begin{itemize}
   \item[] $S(f)$ is the value of the loss functional \eqref{eq:s} on the sample set $D$;
-  \item[] $C_f$ is the complexity of the superposition $f$ defined by the number of
+  \item[] $C_f$ is the complexity of the superposition $f$, equal to the number of
 	elementary functions, free variables and constants;
   \item[] $\alpha, 0 \ll \alpha < 1$ adjusts the penalty of excessive model complexity
 	(bigger $\alpha$ values prefer more complex but more precise models, while smaller
@@ -355,16 +357,16 @@ where:
 The second multiplier in \eqref{eq:s_f} is the penalty for excessive model complexity,
 which mitigates overfitting and allows obtaining simpler superpositions at the cost of
 bigger error on the sample set. The primary hypothesis is that simpler superpositions
-with slightly bigger sample set errors generalize better.
+(even with slightly bigger sample set errors) generalize better. It is worth noting that
+$\alpha$ and $\tau$ are chosen by experts.
 
-It is worth noting that $\alpha$ and $\tau$ are chosen by experts.
-
-So, the initial problem of minimizing the functional \eqref{eq:s} is replaced by
-the problem of minimizing \eqref{eq:s_f}:
+The initial problem of minimizing the functional \eqref{eq:s} is replaced by
+the problem of finding the superposition $\hat{f}$ minimizing \eqref{eq:s_f}:
 \begin{equation}
-  Q_f = \frac{1}{1 + S(f)} \left(\alpha + \frac{1 - \alpha}{1 + \text{exp} (C_f - \tau)}\right) \rightarrow \min_{f \in \mathcal{F}}.
+  \hat{f} = \arg \min_{f \in \mathcal{F}} Q_f,
   \label{eq:s_f_min}
 \end{equation}
+and minimizing $\eqref{eq:s}$ becomes an intermediate step.
 
 \section{Stability estimation method}
 
