@@ -242,10 +242,13 @@ function $f$ with fixed structure:
   \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f} S(f, D).
 \]
 
-Let $\Sigma^{\mathbf{x}} = \| \sigma^{\mathbf{x}}_{ij} \|$ be the matrix of
+Let
+$\Sigma^{\mathbf{x}} = [ \sigma^{\mathbf{x}}_{ij} ], i \in \{ 1, \dots, \ell \}, j \in \{ 1, \dots, | \mathbf{x} | \}$
+be the matrix of
 standard deviations of independend variables, where $\sigma^{\mathbf{x}}_{ij}$
 is the standard deviation of the $j$-th component of the feature vector
-$\mathbf{x}_i$ of the $i$-th object of the learning set. Let $\boldsymbol{\sigma}^y$
+$\mathbf{x}_i$ of the $i$-th object of the sample set. Let
+$\boldsymbol{\sigma}^y = [ \sigma^y_1, \dots, \sigma^y_\ell ]$
 be the vector of standard deviations of the dependent variable, where $\sigma^y_i$
 is the standard deviation of the measured variable for the $i$-th object.
 We then consider the modified sample set $\acute{D}$ derived from the
