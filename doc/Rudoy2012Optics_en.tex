@@ -244,7 +244,7 @@ function $f$ with fixed structure:
 
 Let $\Sigma^{\mathbf{x}} = \| \sigma^{\mathbf{x}}_{ij} \|$ be the matrix of
 standard deviations of independend variables, where $\sigma^{\mathbf{x}}_{ij}$
-is the standard deviation of the $j$-th element of the feature vector
+is the standard deviation of the $j$-th component of the feature vector
 $\mathbf{x}_i$ of the $i$-th object of the learning set. Let $\boldsymbol{\sigma}^y$
 be the vector of standard deviations of the dependent variable, where $\sigma^y_i$
 is the standard deviation of the measured variable for the $i$-th object.
@@ -288,7 +288,7 @@ and source learning set $D$ is the following vector of length $| \mathbf{x} | + 
   \label{eq:t_rel}
 \end{equation}
 where $r(\boldsymbol{\alpha}, \mathbf{a}) = r(\frac{\alpha_1}{a_1}, \dots, \frac{\alpha_{|\boldsymbol{\alpha}|}}{a_{|\mathbf{a}|}})$ is
-a function mapping a vector (comprised from quotients of the corresponding elements of vectors $\boldsymbol{\alpha}$ and $\mathbf{a}$),
+a function mapping a vector (comprised from quotients of the corresponding components of vectors $\boldsymbol{\alpha}$ and $\mathbf{a}$),
 to a scalar value.
 \end{defin}
 
@@ -301,7 +301,7 @@ described in the introduction, thus the $r$ function may just choose any argumen
 
 Each component of the $\mathbf{T}^N_f(i)$ vector describes the ratio between the standard deviation
 of the $\hat{\omega}_i$ parameter (normalized by the value of that parameter) and the standard
-deviation of the corresponding feature vector element (again, normalized by the value of that element).
+deviation of the corresponding feature vector components (again, normalized by the value of that components).
 For instance, if this ratio is greater than one, then the error in determining the $\hat{\omega}_i$
 parameter is bigger than the measurement error of the corresponding variable.
 
