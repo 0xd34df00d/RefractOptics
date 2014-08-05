@@ -236,7 +236,7 @@ Consider the parameter vector
 $\boldsymbol{\omega}_f = \{ \omega_i^f \mid i \in \{ 1, \dots, l_f \} \}$
 of some superposition $f$: $f(\mathbf{x}) = f(\mathbf{x}, \boldsymbol{\omega}_f)$.
 Let $\hat{\boldsymbol{\omega}}_f(D)$ be the parameters vector minimizing the
-functional \eqref{eq:s_common} for some learning set $D = \{ \mathbf{x}_i, y_i \}$ and
+functional \eqref{eq:s_common} for some sample set $D = \{ \mathbf{x}_i, y_i \}$ and
 function $f$ with fixed structure:
 \[
   \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f} S(f, D).
@@ -248,7 +248,7 @@ is the standard deviation of the $j$-th component of the feature vector
 $\mathbf{x}_i$ of the $i$-th object of the learning set. Let $\boldsymbol{\sigma}^y$
 be the vector of standard deviations of the dependent variable, where $\sigma^y_i$
 is the standard deviation of the measured variable for the $i$-th object.
-We then consider the modified learning set $\acute{D}$ derived from the
+We then consider the modified sample set $\acute{D}$ derived from the
 source data set $D$ by adding to its components some realizations of the
 random variables from the Gaussian distribution with zero mean and 
 deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
@@ -257,7 +257,7 @@ deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
   \label{eq:d_acute}
 \end{equation}
 
-For this new learning set $\acute{D}$ we find the new parameter vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
+For this new sample set $\acute{D}$ we find the new parameter vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
 for the superposition $f$ minimizing the functional \eqref{eq:s}:
 \begin{equation}
   \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_{f_D} \in R^{\mid \hat{\boldsymbol{\omega}}_f \mid}} S (f_D (\cdot, \boldsymbol{\omega}_{f_D}), \acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
@@ -270,7 +270,7 @@ a random vector, and, consecutively
 \]
 is also a random vector.
 
-Let $\acute{\mathcal{D}}_N$ be a set of $N$ such modified learning sets, where each
+Let $\acute{\mathcal{D}}_N$ be a set of $N$ such modified sample sets, where each
 set is obtained by adding a separate realization of the corresponding random variables
 to the source data set:
 \[
@@ -282,7 +282,7 @@ random vector on the $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\s
 \begin{defin}
 \emph{Relative stability} (or simply \emph{stability}) of the parameter
 $\omega_i$ given $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
-and source learning set $D$ is the following vector of length $| \mathbf{x} | + 1$:
+and source sample set $D$ is the following vector of $| \mathbf{x} | + 1$ components:
 \begin{equation}
   \mathbf{T}^N_f(i) = \Big\{ \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^\mathbf{x}_{\cdot 1}, \mathbf{x}_{\cdot 1})}, \dots, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^\mathbf{x}_{\cdot |\mathbf{x}|}, \mathbf{x}_{\cdot |\mathbf{x}|})}, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^y, \mathbf{y})} \Big\},
   \label{eq:t_rel}
@@ -326,13 +326,13 @@ The set $\mathcal{F} = \{ f \}$ of generated models is first initialized
 by random admissible superpositions of functions $g \in G$, taking their
 arity, domain and codomain into account. Superpositions in $\mathcal{F}$
 contain free variables corresponding to the components of the feature
-vectors from the learning set, as well as constants which are subject to
+vectors from the sample set, as well as constants which are subject to
 optimization by the Levenberg-Marquardt procedure (according to functional
 \eqref{eq:s}) on each algorithm step. Each superposition can also be modified
 on each iteration in order to improve the quality $Q_f$ of best superpositions
 in the set $\mathcal{F}$.
 
-The quality $Q_f$ of the model $f$ is defined by the error on the learning
+The quality $Q_f$ of the model $f$ is defined by the error on the sample
 set as well as the structural complexity of the superposition according to the
 following:
 \begin{equation}
@@ -341,7 +341,7 @@ following:
 \end{equation}
 where:
 \begin{itemize}
-  \item[] $S(f)$ is the value of the loss functional \eqref{eq:s} on the learning set $D$;
+  \item[] $S(f)$ is the value of the loss functional \eqref{eq:s} on the sample set $D$;
   \item[] $C_f$ is the complexity of the superposition $f$ defined by the number of
 	elementary functions, free variables and constants;
   \item[] $\alpha, 0 \ll \alpha < 1$ adjusts the penalty of excessive model complexity
@@ -353,8 +353,8 @@ where:
 
 The second multiplier in \eqref{eq:s_f} is the penalty for excessive model complexity,
 which mitigates overfitting and allows obtaining simpler superpositions at the cost of
-bigger error on the learning set. The primary hypothesis is that simpler superpositions
-with slightly bigger learning set errors generalize better.
+bigger error on the sample set. The primary hypothesis is that simpler superpositions
+with slightly bigger sample set errors generalize better.
 
 It is worth noting that $\alpha$ and $\tau$ are chosen by experts.
 
@@ -370,14 +370,14 @@ the problem of minimizing \eqref{eq:s_f}:
 In order to estimate the stability $\mathbb{T}_{\hat{f}}$ of some model $\hat{f}$
 which a solution of \eqref{eq:s_f}, the structure of the model $\hat{f}$ is fixed
 and the standard deviation of its parameters is studied as the function of the
-standard deviation of a noise in the learning set, as proposed in section
+standard deviation of a noise in the sample set, as proposed in section
 \ref{sect:prob_stat}.
 
 In other words, some values for $\sigma_{\lambda}$ and $\sigma_n$ are chosen,
-then the modified learning set $\acute{D}(\sigma_n, \sigma_{\lambda})$ is
+then the modified sample set $\acute{D}(\sigma_n, \sigma_{\lambda})$ is
 generated for the chosen values according to \eqref{eq:d_acute}. The new
 parameter vector is then calculated which minimizes \eqref{eq:s} on the
-modified learning set $\acute{D}(\sigma_n, \sigma_{\lambda})$ according to
+modified sample set $\acute{D}(\sigma_n, \sigma_{\lambda})$ according to
 \eqref{eq:hat_omega}.
 
 This procedure is repeated multiple times for each given pair of $\sigma_{\lambda}$ and $\sigma_n$
