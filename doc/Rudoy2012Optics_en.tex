@@ -286,16 +286,18 @@ Let $\overline{\sigma}_i$ be the sample standard deviation of the $i$-th compone
 $\Delta\hat{\boldsymbol{\omega}}_f(\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) )$
 random vector on the $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$ set.
 \begin{defin}
-\emph{Relative stability} (or simply \emph{stability}) of the parameter
-$\omega_i$ given $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
-and source sample set $D$ is the following vector of $| \mathbf{x} | + 1$ components:
+\emph{Relative stability} of the parameter $\omega_i$ to $j$-th feature vector component
+given $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
+and source sample set $D$ is the following value:
 \begin{equation}
-  \mathbf{T}^N_f(i) = \Big\{ \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^\mathbf{x}_{\cdot 1}, \mathbf{x}_{\cdot 1})}, \dots, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^\mathbf{x}_{\cdot |\mathbf{x}|}, \mathbf{x}_{\cdot |\mathbf{x}|})}, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^y, \mathbf{y})} \Big\},
+  T_{ij}(f) =
+	\begin{cases}
+	  \displaystyle \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r\big(\{ \frac{\sigma_{kj}^{\mathbf{x}}}{x_{kj}} \}_{k \in \{ 1, \dots, \ell \}}\big)} & j \leq |\mathbf{x}| \\
+	  \displaystyle \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r\big(\{ \frac{\sigma_{k}^{y}}{y_k} \}_{k \in \{ 1, \dots, \ell \}}\big)} & j = |\mathbf{x}| + 1
+	\end{cases}
   \label{eq:t_rel}
 \end{equation}
-where $r(\boldsymbol{\alpha}, \mathbf{a}) = r(\frac{\alpha_1}{a_1}, \dots, \frac{\alpha_{|\boldsymbol{\alpha}|}}{a_{|\mathbf{a}|}})$ is
-a function mapping a vector (comprised from quotients of the corresponding components of vectors $\boldsymbol{\alpha}$ and $\mathbf{a}$),
-to a scalar value.
+where $r$ is a function mapping a vector of quotients to a single scalar value.
 \end{defin}
 
 The function $r$ maps to a single scalar value a set of (perhaps different) ratios of standard
@@ -305,23 +307,28 @@ experts based on the assumptions about the error distribution characteristics. F
 in the case of polymers dispersion data the relative measurement error is constant as was
 described in the introduction, thus the $r$ function may just choose any argument.
 
-Each component of the $\mathbf{T}^N_f(i)$ vector describes the ratio between the standard deviation
-of the $\hat{\omega}_i$ parameter (normalized by the value of that parameter) and the standard
-deviation of the corresponding feature vector components (again, normalized by the value of that components).
+$T_{ij}(f)$ describes the ratio between the standard deviation of the $\hat{\omega}_i$ parameter
+(normalized by the value of that parameter) and the standard deviation of the corresponding
+$j$-th feature vector component (again, normalized by the value of that components).
 For instance, if this ratio is greater than one, then the error in determining the $\hat{\omega}_i$
 parameter is bigger than the measurement error of corresponding variable.
 
 In the particular case of the dispersion regression considered in this paper, taking into account
 the constant relative measurement error:
 \[
-  \mathbf{T}_f(i) = \Big\{ \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_n}{n}}, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_{\lambda}}{\lambda}} \Big\}.
+  T_{i0}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_n}{n}},
+\]
+\[
+  T_{i1}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_{\lambda}}{\lambda}}.
 \]
 
-Matrix comprised of vector columns $\mathbf{T}_f(i) \mid i \in \{ 1, \dots, l_f \}$
-is called the \emph{stability} of the function $f$ and is denoted as $\mathbb{T}_f$.
+In case of the optical dispersion regression, it is required to study the dependency of stability
+$T_{i0}(f)$ and $T_{i1}(f)$ as function of $\sigma_n$ and $\sigma_{\lambda}$.
 
-In case of the dispersion regression, it is required to study the dependency of stability
-$\mathbb{T}_{\hat{f}}$ as function of $\sigma_n$ and $\sigma_{\lambda}$.
+For simple cases of regression functions depending on a single scalar parameter (like the optical
+dispersion case illustrating this approach) it is probably more interpretable to study the
+dependency of \emph{absolute stability} $\frac{\overline{\sigma}_i}{\hat{\omega}_i}$ on the
+normalized slight variations in sample set, $\frac{\sigma_n}{n}$ and $\frac{\sigma_{\lambda}}{\lambda}$.
 
 \section{The algorithm for inductive models generation}
 
