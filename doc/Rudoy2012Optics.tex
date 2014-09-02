@@ -27,6 +27,7 @@
 \usepackage{sectsty}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage[doublespacing]{setspace}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{decorations.pathmorphing}
 
@@ -46,6 +47,8 @@
 \addto\captionsrussian{\renewcommand{\figurename}{Фиг.}}
 
 \sectionfont{\centering\normalfont\small\MakeUppercase}
+
+\doublespacing
 
 %\renewcommand{\section}{\@startsection {section}{1}%
 %  \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
@@ -312,6 +315,13 @@ $\hat{\omega}_i$ растут быстрее погрешностей измер
 
 Требуется исследовать зависимость устойчивости $\mathbb{T}_{\hat{f}}$ относительно
 $\sigma_n$ и $\sigma_{\lambda}$.
+
+Отметим, что для простых случаев одномерной регрессии (каковым является исследование
+дисперсионной зависимости полимеров), возможно, более наглядным является исследование
+\emph{абсолютной стабильности}~--- зависимости величины
+$\frac{\overline{\sigma}_i}{\hat{\omega}_i}$ от нормализованных вариаций в обучающей
+выборке, $\frac{\sigma_n}{n}$ и $\frac{\sigma_{\lambda}}{\lambda}$ соответственно.
+В этом случае возможно проиллюстрировать искомую зависимость интерпретируемым графиком.
 
 \section{Алгоритм индуктивного порождения суперпозиций}
 
