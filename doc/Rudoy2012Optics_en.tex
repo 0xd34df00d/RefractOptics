@@ -308,8 +308,9 @@ in the case of polymers dispersion data the relative measurement error is consta
 described in the introduction, thus the $r$ function may just choose any argument.
 
 $T_{ij}(f)$ describes the ratio between the standard deviation of the $\hat{\omega}_i$ parameter
-(normalized by the value of that parameter) and the standard deviation of the corresponding
-$j$-th feature vector component (again, normalized by the value of that components).
+(normalized by the value of that parameter) and the some average (defined by $r$)
+standard deviation of the corresponding $j$-th feature vector component (again, normalized by
+the value of that component).
 For instance, if this ratio is greater than one, then the error in determining the $\hat{\omega}_i$
 parameter is bigger than the measurement error of corresponding variable.
 
@@ -634,10 +635,10 @@ from\eqref{eq:classic_da} and \eqref{eq:classic_db}. The relative difference
 between these values and empiric standard deviations is considered as a function of
 number of iterations $N$:
 \[
-  \delta_1 = \frac{| \overline{\sigma}_a - D(a) |}{D(a)},
+  \delta_1 = \frac{| \overline{\sigma}_a^2 - D(a) |}{D(a)},
 \]
 \[
-  \delta_2 = \frac{| \overline{\sigma}_b - D(b) |}{D(b)}.
+  \delta_2 = \frac{| \overline{\sigma}_b^2 - D(b) |}{D(b)}.
 \]
 
 Corresponding graphs for the function $y = 2x + 1 + \xi_i$ with $x \in [0; 10]$,
