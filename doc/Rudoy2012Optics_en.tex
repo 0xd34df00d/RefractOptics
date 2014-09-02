@@ -41,8 +41,8 @@
 
 \renewcommand{\baselinestretch}{1.57}
 
-\renewcommand{\thesubfigure}{\asbuk{subfigure}}
-\addto\captionsrussian{\renewcommand{\figurename}{Фиг.}}
+%\renewcommand{\thesubfigure}{\asbuk{subfigure}}
+%\addto\captionsrussian{\renewcommand{\figurename}{Фиг.}}
 
 \sectionfont{\centering\normalfont\small\MakeUppercase}
 
@@ -412,8 +412,8 @@ in the data, the better generalization is.
 
 \section{Computational experiment}
 
-The data used in this section are the measurements of the refraction index
-of transparent polymers as a function of wavelength. Two different polymers
+The data $D$ used in this section are the measurements of the refraction index $n$
+of transparent polymers as a function of wavelength $\lambda$. Two different polymers
 are considered, each of them having 17 samples corresponding to the
 refraction index at different wavelengths. The values of the measurements
 are shown in table \ref{tabl:source_data}.
@@ -449,17 +449,17 @@ The dispersion of both polymers is assumed to be described by the functional dep
 of the same structure, as it obeys the same physical laws. Because of this, firstly the
 model $\hat{f}$ is chosen which minimizes \eqref{eq:s_f} for the first polymer, and then
 for each of the polymers optimal parameter vectors $\hat{\boldsymbol{\omega}}_{\hat{f}}$
-are found for the given model, and their stability is estimated.
+are found for the given model $\hat{f}$, and their stability $T$ is estimated.
 
 The data set was not splitted to learning set and control set, as overfitting was
 mitigated by the complexity penalty.
 
 Physical considerations show \cite{Serova11} that dispersion should be a sum of even
-powers of the wavelength, so the elementary function set consists of the functions
+powers of the wavelength, so the elementary function set consists of the function
 \[
   g_3(\lambda, p) = \frac{1}{\lambda^{2p}},
 \]
-in addition to standard addition and multiplication operations:
+and standard addition and multiplication operations:
 \[
   g_1(x_1, x_2) = x_1 + x_2,
 \]
@@ -467,7 +467,7 @@ in addition to standard addition and multiplication operations:
   g_2(x_1, x_2) = x_1 x_2.
 \]
 
-During the experiment constants with absolute value less than $10^{-7}$
+During computational experiment constants with absolute value less than $10^{-7}$
 were zeroed.
 
 The algorithm described above generated the following superposition at $\alpha = 0.05$, $\tau = 10$:
@@ -503,9 +503,9 @@ Its complexity is $31$, MSE is $\approx 3.9 \cdot 10^{-9}$ and $Q_f \approx 0.31
 In other words, bigger target complexity (expressed by $\tau$) leads to selecting
 more complex (and, in this case, physically incorrect) model with smaller mean square error.
 
-Naturally, excessive values of $\tau$ lead to overfitting.
+Thus, excessive values of $\tau$ lead to overfitting.
 
-\paragraph{SVM.}
+\paragraph{Support vector machine.}
 
 SVM with RBF kernel \cite{Vapnik79} was used as baseline algorithm. The $\gamma$ kernel
 parameter was selected by crossvalidation. The best result was a combination of 15
@@ -519,10 +519,10 @@ In order to estimate the stability, the structure of \eqref{eq:res_0} had been f
   f(\lambda) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4},
 \]
 and the dependency of standard deviation of $\omega_1$, $\omega_2$ and $\omega_3$
-of standard deviation of a gaussian noise was studied by the method proposed above.
+of standard deviation of a gaussian noise was studied by proposed method.
 The stop criteria was reaching $10^4$ iterations for each pair of $(\sigma_{\lambda}, \sigma_n)$.
 
-The standard deviation surfaces of each parameter $\omega_i$ are shown in
+The standard deviation surfaces for parameters $\omega_i$ for both polymers are shown in
 table \ref{tabl:res_even}.
 
 \begin{table}[h]
@@ -574,11 +574,11 @@ directly shows how the parameters error depends on the measurement errors of dif
 It is fundamentally important that the standard deviation of the parameters of the model \eqref{eq:res_0}
 are considerably smaller than the difference between the parameters for two polymers (as shown
 by tables \ref{tabl:res_even_coeffs} and \ref{tabl:res_even_stddev}), which means that the polymers
-can be separated by such measurements even by an imprecise refractometer.
+can be separated by such measurements even with an imprecise refractometer.
 
 \paragraph{Stability of the overfitted model.}
 
-The stability of the model \eqref{eq:res_incorrect} is studied analogously. Standard deviation
+The stability of model \eqref{eq:res_incorrect} is studied analogously. Standard deviation
 graphs for the first three parameters are shown in table \ref{tabl:res_incorrect}.
 
 \begin{table}[h]
@@ -598,7 +598,7 @@ than the corresponding ones for \eqref{eq:res_0}. Particularly the second, third
 parameters have standard deviation orders of magnitude higher than their corresponding values.
 
 These results may be a sign of overfitting, and that the resulting model can't be used to
-describe the physical process, not to mention separating two polymers in their mixture.
+describe the physical process, and can not be used to separate two polymers in their mixture.
 
 \section{Convergence to the linear case.}
 
@@ -611,15 +611,15 @@ Taking the measurement errors into account:
   y_i = ax_i + b + \xi_i \mid i \in \{ 1, \dots, n \},
 \]
 where the errors $\xi_i$ are independent, and $E(\xi_i) = 0; D(\xi_i) = \sigma^2$ \cite{Vatunin05}.
-In other words, the error doesn't depend on the measurement, and the dependent variable
+In other words, the error doesn't depend on the measurement, and the independent variable
 is measured precisely.
 
-Transitioning to the following presentation:
+According to \cite{Vatunin05} for the following presentation:
 \[
   y_i = a(x_i - \overline{x}) + b + \xi_i \mid i \in \{ 1, \dots, n \},
 \]
-results in $a$ and $b$ being independent normally distributed random variables, and
-their dispersions can be calculated according to \cite{Vatunin05}:
+$a$ and $b$ are independent normally distributed random variables, and
+their dispersions can be exactly calculated:
 \begin{equation}
   \label{eq:classic_da}
   D(a) = \frac{\sigma^2}{\sum_{i = 1}^n (x_i - \overline{x})^2}.
@@ -630,14 +630,14 @@ their dispersions can be calculated according to \cite{Vatunin05}:
 \end{equation}
 
 Next the results obtained by the proposed method are compared to the ones resulting
-from\eqref{eq:classic_da} and \eqref{eq:classic_db}. For this, the relative difference
+from\eqref{eq:classic_da} and \eqref{eq:classic_db}. The relative difference
 between these values and empiric standard deviations is considered as a function of
 number of iterations $N$:
 \[
-  \delta_1 = \frac{| \mathbf{T}^N_y(1) - D(a) |}{D(a)},
+  \delta_1 = \frac{| \overline{\sigma}_a - D(a) |}{D(a)},
 \]
 \[
-  \delta_2 = \frac{| \mathbf{T}^N_y(2) - D(b) |}{D(b)}.
+  \delta_2 = \frac{| \overline{\sigma}_b - D(b) |}{D(b)}.
 \]
 
 Corresponding graphs for the function $y = 2x + 1 + \xi_i$ with $x \in [0; 10]$,
@@ -652,7 +652,8 @@ on fig. \ref{fig:classic_var1_n10} and \ref{fig:classic_var1_n50} respectively.
 
 The graphs show that the relative difference stabilizes around $(1.5 \div 3) \cdot 10^6$
 iterations and doesn't explicit dependence on the number of samples or standard
-deviation of the error.
+deviation of the error. The resulting relative difference is close to zero, but is
+not equal to it probably to rounding errors and other similar computational effects.
 
 \begin{figure}[h!]
   \begin{subfigure}[b]{0.3\textwidth}
@@ -722,14 +723,15 @@ penalty introduced in the algorithm mitigates overfitting without resorting to m
 like crossvalidation.
 
 Though other algorithms like SVM regression can learn models with lower mean square error,
-the learned models are uninterpretable and prone to overfitting. Moreover, their
+such models are uninterpretable and prone to overfitting. Moreover, their
 structural parameters need to be estimated according to, for example,
 cross-validation, while the proposed method's hyperparameters can be chosen directly
 according to expert considerations.
 
 The stability criteria proposed in this paper allows studying the contribution of each
-term of the resulting superposition and the relation between measurement errors
-and errors in determining the superposition parameters. Particularly, this method
+term of the resulting superposition in the overall error
+and the relation between measurement errors
+and errors in determining the superposition parameters. Particularly, the offered method
 also allows detecting which components of feature vectors are the least susceptible to
 noise in the learning data. Moreover, expertly correct models tend to be more stable
 than incorrect ones.
