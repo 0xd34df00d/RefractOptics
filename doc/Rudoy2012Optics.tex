@@ -270,15 +270,19 @@ $\Delta\hat{\boldsymbol{\omega}}_f(\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\
 на множестве $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$.
 \begin{defin}
 \emph{Относительной устойчивостью} (или просто \emph{устойчивостью}) параметра
-$\omega_i$ относительно $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
-при исходной обучающей выборке $D$ будем называть следующий вектор
-из $| \mathbf{x} | + 1$ компонент:
+$\omega_i$ относительно $j$-ой компоненты векторного описания при исходной
+обучающей выборке $D$ и параметрах $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
+будем называть следующую величину:
 \begin{equation}
-  \mathbf{T}^N_f(i) = \Big\{ \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^\mathbf{x}_{\cdot 1}, \mathbf{x}_{\cdot 1})}, \dots, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^\mathbf{x}_{\cdot |\mathbf{x}|}, \mathbf{x}_{\cdot |\mathbf{x}|})}, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r(\boldsymbol{\sigma}^y, \mathbf{y})} \Big\},
+  T_{ij}(f) =
+	\begin{cases}
+	  \displaystyle \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r\big(\{ \frac{\sigma_{kj}^{\mathbf{x}}}{x_{kj}} \}_{k \in \{ 1, \dots, \ell \}}\big)} & j \leq |\mathbf{x}| \\
+	  \displaystyle \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r\big(\{ \frac{\sigma_{k}^{y}}{y_k} \}_{k \in \{ 1, \dots, \ell \}}\big)} & j = |\mathbf{x}| + 1
+	\end{cases}
   \label{eq:t_rel}
 \end{equation}
-где $r(\boldsymbol{\alpha}, \mathbf{a}) = r(\frac{\alpha_1}{a_1}, \dots, \frac{\alpha_{|\boldsymbol{\alpha}|}}{a_{|\mathbf{a}|}})$~---
-функция, переводящая вектор, составленный из отношений соответствующих компонент векторов $\boldsymbol{\alpha}$ и $\mathbf{a}$, в скаляр.
+где $r$~--- некоторая функция, переводящая вектор, составленный из соответствующих
+дробей, в единственный скаляр.
 \end{defin}
 
 Функция $r$ позволяет сопоставить, вообще говоря, различным отношениям стандартного
@@ -291,20 +295,20 @@ $\omega_i$ относительно $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}},
 все значения соответствующих переменных были равны, поэтому функция $r$ может выбирать
 любой из своих аргументов.
 
-Каждый компонент вектора $\mathbf{T}^N_f(i)$ показывает, как относится стандартное отклонение
+Величина $T_{ij}(f)$ показывает, как относится стандартное отклонение
 параметра $\hat{\omega}_i$, нормированное на значение этого параметра, к характерному стандартному
-отклонению соответствующего элемента признакового описания, нормированного на значение этого
+отклонению $j$-го элемента признакового описания, нормированного на значение этого
 элемента. Например, если это отношение больше единицы, то погрешности определения коэффициента
-растут быстрее погрешностей измерения параметра.
+$\hat{\omega}_i$ растут быстрее погрешностей измерения параметра.
 
 В частности, в искомой задаче восстановления дисперсионной зависимости с учетом неизменной
 относительной ошибки эксперимента:
 \[
-  \mathbf{T}_f(i) = \Big\{ \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_n}{n}}, \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_{\lambda}}{\lambda}} \Big\}.
+  T_{i0}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_n}{n}},
 \]
-
-Матрицу, столбцами которой являются векторы $\mathbf{T}_f(i) \mid i \in \{ 1, \dots, l_f \}$,
-будем называть устойчивостью функции $f$ и обозначать $\mathbb{T}_f$.
+\[
+  T_{i1}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_{\lambda}}{\lambda}}.
+\]
 
 Требуется исследовать зависимость устойчивости $\mathbb{T}_{\hat{f}}$ относительно
 $\sigma_n$ и $\sigma_{\lambda}$.
