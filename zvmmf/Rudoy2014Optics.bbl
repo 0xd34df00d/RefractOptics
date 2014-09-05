@@ -1,0 +1,109 @@
+\begin{thebibliography}{10}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{davidson:2000:snrea}
+\selectlanguageifdefined{english}
+\BibEmph{Davidson~J.~W., Savic~D.~A., Walters~G.~A.} Symbolic and numerical
+  regression: experiments and applications~// Developments in Soft Computing~/
+  Ed. by Robert~John, Ralph~Birkenhead.
+\newblock De Montfort University, Leicester, UK: Physica Verlag, 2001. ---
+  29-30 \bbljun 2000.
+\newblock Pp.~175--182.
+
+\bibitem{reference/ml/X10vc}
+\selectlanguageifdefined{english}
+\BibEmph{Sammut~C., Webb~G.~I.} Symbolic Regression~// Encyclopedia of Machine
+  Learning~/ Ed. by Claude~Sammut, Geoffrey~I.~Webb.
+\newblock Springer, 2010.
+\newblock P.~954. \BibUrl{ http://dx.doi.org/10.1007/978-0-387-30164-8}.
+
+\bibitem{StrijovW10}
+\selectlanguageifdefined{english}
+\BibEmph{Strijov~V., Weber~G.-W.} Nonlinear regression model generation using
+  hyperparameter optimization~// \BibEmph{Computers \& Mathematics with
+  Applications}.
+\newblock 2010.
+\newblock Vol.~60, no.~4.
+\newblock Pp.~981--988. \BibUrl{
+  http://dx.doi.org/10.1016/j.camwa.2010.03.021}.
+
+\bibitem{Strijov08InductMethods}
+\selectlanguageifdefined{russian}
+\BibEmph{Стрижов~В.~В.} Методы индуктивного
+  порождения регрессионных моделей.
+\newblock Препринт ВЦ РАН им. А. А. Дородницына.
+  --- М., 2008.
+
+\bibitem{Rudoy13}
+\selectlanguageifdefined{russian}
+\BibEmph{Рудой~Г.~И., Стрижов~В.~В.} {Алгоритмы
+  индуктивного порождения суперпозиций для
+  аппроксимации измеряемых данных}~//
+  \BibEmph{Информатика и ее применения}.
+\newblock 2013.
+\newblock Т.~7, {№}~1.
+\newblock {С.}~44–53.
+
+\bibitem{Marquardt1963Algorithm}
+\selectlanguageifdefined{english}
+\BibEmph{Marquardt~D.~W.} An Algorithm for Least-squares Estimation of
+  Non-linear Parameters~// \BibEmph{Journal of the Society of Industrial and
+  Applied Mathematics}.
+\newblock 1963.
+\newblock Vol.~11, no.~2.
+\newblock Pp.~431--441.
+
+\bibitem{more:78}
+\selectlanguageifdefined{english}
+\BibEmph{More~J.~J.} The {Levenberg-Marquardt} Algorithm: Implementation and
+  Theory~// G.A. Watson.
+\newblock Lecture Notes in Mathematics 630.
+\newblock Springer-Verlag, Berlin, 1978.
+\newblock Pp.~105--116.
+\newblock Cited in {\AA ke Bj\"orck's} bibliography on least squares, which is
+  available by anonymous ftp from {\tt math.liu.se} in {\tt pub/references}.
+
+\bibitem{Vatunin05}
+\selectlanguageifdefined{russian}
+\BibEmph{Ватутин~В.~А., Ивченко~Г.~И.,
+  Медведев~Ю.~И., Чистяков~В.~П.} Теория
+  вероятностей и математическая статистика
+  в задачах.
+\newblock 3 {изд.}
+\newblock Дрофа, 2005.
+\newblock {С.}~315.
+
+\bibitem{Malishev79}
+\selectlanguageifdefined{russian}
+\BibEmph{Малышев~В.~И.} Введение в
+  экспериментальную спектроскопию.
+\newblock Наука, 1979.
+\newblock {С.}~489.
+
+\bibitem{Zaidel72}
+\selectlanguageifdefined{russian}
+\BibEmph{Зайдель~И.~Н.} Техника и практика
+  спектроскопии.
+\newblock Наука, 1972.
+\newblock {С.}~376.
+
+\bibitem{Serova11}
+\selectlanguageifdefined{russian}
+\BibEmph{Серова~Н.~В.} {Полимерные оптические
+  материалы}.
+\newblock Научные основы и технологии, 2011.
+\newblock {С.}~383.
+
+\bibitem{Vapnik79}
+\selectlanguageifdefined{russian}
+\BibEmph{Вапник~В.~Н.} {Восстановление
+  зависимостей по эмпирическим данным}.
+\newblock М.: Наука, 1979.
+
+\end{thebibliography}
