@@ -1,0 +1,114 @@
+\begin{thebibliography}{1}
+  \providebibliographyfont{name}{}%
+  \providebibliographyfont{lastname}{}%
+  \providebibliographyfont{title}{\emph}%
+  \providebibliographyfont{jtitle}{\btxtitlefont}%
+  \providebibliographyfont{etal}{\emph}%
+  \providebibliographyfont{journal}{}%
+  \providebibliographyfont{volume}{}%
+  \providebibliographyfont{ISBN}{\MakeUppercase}%
+  \providebibliographyfont{ISSN}{\MakeUppercase}%
+  \providebibliographyfont{url}{\url}%
+  \providebibliographyfont{numeral}{}%
+  \expandafter\btxselectlanguage\expandafter {\btxfallbacklanguage}
+
+\btxselectlanguage {english}
+\bibitem {davidson:2000:snrea}
+\btxnamefont {\btxlastnamefont {Davidson}, J.\btxfnamespacelong W.},
+  \btxnamefont {\btxlastnamefont {Savic}, D.\btxfnamespacelong A.}\btxandcomma
+  {} \btxandlong {}\ \btxnamefont {\btxlastnamefont {Walters},
+  G.\btxfnamespacelong A.}\btxauthorcolon\ \btxtitlefont {\btxifchangecase
+  {Symbolic and numerical regression: experiments and applications}{Symbolic
+  and numerical regression: experiments and applications}}.
+\newblock \Btxinlong {}\ \btxnamefont {\btxlastnamefont {John}, Robert}
+  \btxandlong {}\ \btxnamefont {\btxlastnamefont {Birkenhead}, Ralph}\
+  (\btxeditorslong {}): \btxtitlefont {Developments in Soft Computing},
+  \btxpageslong {}\ 175--182, De Montfort University, Leicester, UK,
+  \btxprintmonthyear{.}{29-30 6 2000.}{2001}{long}. \btxpublisherfont {Physica
+  Verlag}\ifbtxprintISBN {, \mbox{\btxISBN~\btxISBNfont {3-7908-1361-3}}}.
+
+\bibitem {reference/ml/X10vc}
+\btxnamefont {\btxlastnamefont {Sammut}, C.} \btxandlong {}\ \btxnamefont
+  {\btxlastnamefont {Webb}, G.\btxfnamespacelong I.}\btxauthorcolon\
+  \btxtitlefont {\btxifchangecase {Symbolic regression}{Symbolic Regression}}.
+\newblock \Btxinlong {}\ \btxnamefont {\btxlastnamefont {Sammut}, Claude}
+  \btxandlong {}\ \btxnamefont {\btxlastnamefont {Webb},
+  Geoffrey\btxfnamespacelong I.}\ (\btxeditorslong {}): \btxtitlefont
+  {Encyclopedia of Machine Learning}, \btxpagelong {}\ 954. \btxpublisherfont
+  {Springer}, 2010\ifbtxprintISBN {, \mbox{\btxISBN~\btxISBNfont
+  {978-0-387-30768-8}}}.
+\newblock {\latintext
+  \btxurlfont{http://dx.doi.org/10.1007/978-0-387-30164-8}}.
+
+\bibitem {StrijovW10}
+\btxnamefont {\btxlastnamefont {Strijov}, V.} \btxandlong {}\ \btxnamefont
+  {\btxlastnamefont {Weber}, G.\btxfnamespacelong W.}\btxauthorcolon\
+  \btxjtitlefont {\btxifchangecase {Nonlinear regression model generation using
+  hyperparameter optimization}{Nonlinear regression model generation using
+  hyperparameter optimization}}.
+\newblock \btxjournalfont {Computers \& Mathematics with Applications},
+  60(4):981--988, 2010.
+\newblock {\latintext
+  \btxurlfont{http://dx.doi.org/10.1016/j.camwa.2010.03.021}}.
+
+\btxselectlanguage {russian}
+\bibitem {Strijov08InductMethods}
+\btxnamefont {\btxlastnamefont {Стрижов}, В.\btxfnamespacelong
+  В.}\btxauthorcolon\ \btxtitlefont {\btxifchangecase {Методы
+  индуктивного порождения регрессионных
+  моделей}{Методы индуктивного порождения
+  регрессионных моделей}}.
+\newblock Препринт ВЦ РАН им. А. А. Дородницына.
+  --- М., 2008.
+
+\bibitem {Rudoy13}
+\btxnamefont {\btxlastnamefont {Рудой}, Г.\btxfnamespacelong И.}
+  \btxandlong {}\ \btxnamefont {\btxlastnamefont {Стрижов},
+  В.\btxfnamespacelong В.}\btxauthorcolon\ \btxjtitlefont {\btxifchangecase
+  {{Алгоритмы индуктивного порождения
+  суперпозиций для аппроксимации
+  измеряемых данных}}{{Алгоритмы
+  индуктивного порождения суперпозиций для
+  аппроксимации измеряемых данных}}}.
+\newblock \btxjournalfont {Информатика и ее
+  применения}, 7(1):44–53, 2013.
+
+\bibitem {Vatunin05}
+\btxnamefont {\btxlastnamefont {Ватутин}, В.\btxfnamespacelong А.},
+  \btxnamefont {\btxlastnamefont {Ивченко}, Г.\btxfnamespacelong И.},
+  \btxnamefont {\btxlastnamefont {Медведев}, Ю.\btxfnamespacelong
+  И.}\btxandcomma {} \btxandlong {}\ \btxnamefont {\btxlastnamefont
+  {Чистяков}, В.\btxfnamespacelong П.}\btxauthorcolon\ \btxtitlefont
+  {Теория вероятностей и математическая
+  статистика в задачах}.
+\newblock \btxpublisherfont {Дрофа}, \btxeditionnumlong {3}{}, 2005.
+
+\btxselectlanguage {english}
+\bibitem {Marquardt1963Algorithm}
+\btxnamefont {\btxlastnamefont {Marquardt}, D.\btxfnamespacelong
+  W.}\btxauthorcolon\ \btxjtitlefont {\btxifchangecase {An algorithm for
+  least-squares estimation of non-linear parameters}{An Algorithm for
+  Least-squares Estimation of Non-linear Parameters}}.
+\newblock \btxjournalfont {Journal of the Society of Industrial and Applied
+  Mathematics}, 11(2):431--441, 1963.
+
+\bibitem {more:78}
+\btxnamefont {\btxlastnamefont {More}, J.\btxfnamespacelong J.}\btxauthorcolon\
+  \btxtitlefont {\btxifchangecase {The {Levenberg-Marquardt} algorithm:
+  Implementation and theory}{The {Levenberg-Marquardt} Algorithm:
+  Implementation and Theory}}.
+\newblock \Btxinlong {}\ \btxtitlefont {G.A. Watson}, Lecture Notes in
+  Mathematics 630, \btxpageslong {}\ 105--116. \btxpublisherfont
+  {Springer-Verlag, Berlin}, 1978.
+\newblock Cited in {\AA ke Bj\"orck's} bibliography on least squares, which is
+  available by anonymous ftp from {\tt math.liu.se} in {\tt pub/references}.
+
+\expandafter\btxselectlanguage\expandafter {\btxfallbacklanguage}
+\bibitem {pearson1901}
+\btxnamefont {\btxlastnamefont {Pearson}, K.}\btxauthorcolon\ \btxjtitlefont
+  {\btxifchangecase {{On lines and planes of closest fit to systems of points
+  in space}}{{On lines and planes of closest fit to systems of points in
+  space}}}.
+\newblock \btxjournalfont {Philosophical Magazine}, 2(6):559--572, 1901.
+
+\end{thebibliography}

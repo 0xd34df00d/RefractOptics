@@ -1,0 +1,15 @@
+On applying Monte-Carlo methods to analysis of non-linear regression models.
+
+Author: Rudoy G. I.
+
+Keywords: symbolic regression, non-linear models, solution stability,
+transparent medium dispersion, Monte-Carlo methods.
+
+Abstract:
+The paper presents a criteria, called coefficients stability, for inaccuracy in determining
+the coefficients of non-linear regression models describing inexact data. A method for
+coefficients stability estimation is also described. The proposed criteria is illustrated
+by a computational experiment with the data obtained in measurements of refractive index
+dependence on wavelengh in 400-1000 nm band for transparent polymer. The convergence of
+proposed criteria to the known analytical solution for the case of linear regression is also
+studied.
