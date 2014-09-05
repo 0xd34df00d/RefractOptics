@@ -21,7 +21,7 @@ void WriteCoeffs (const Params& p, const Stats_t& results, const std::string& in
 			{
 				const auto nVar = nIt->first;
 				const auto& stats = nIt->second;
-				ostr << lVar * 1000 << " " << nVar * 1000 << " " << stats [i].stddev () / std::abs (p (i)) * 1000  << std::endl;
+				ostr << lVar * 1000 << " " << nVar * 1000 << " " << stats [i].stddev () / (std::abs (p (i)) + 1e-12) * 1000  << std::endl;
 			}
 			ostr << std::endl;
 		}
