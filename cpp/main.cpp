@@ -346,9 +346,30 @@ int main (int argc, char **argv)
 	for (double i = 0; i < 5e-4; i += 2e-5)
 		nVars.push_back (i);
 
-	auto results = calcStats ([] (const TrainingSet_t& pts)
-				{ return solve<ParamsCount> (pts, residual, residualDer); },
-			lVars, nVars, pairs);
+	auto symbRegSolver = [] (const TrainingSet_t& pts)
+	{
+		return solve<ParamsCount> (pts, residual, residualDer);
+	};
+	auto svmSolver = [] (const TrainingSet_t& pts)
+	{
+		dlib::svr_trainer<dlib::radial_basis_kernel<SampleType_t>> trainer;
+		trainer.set_kernel ({ 4e-07 });
+		trainer.set_c (0.1);
+		trainer.set_epsilon_insensitivity (1e-30);
+
+		std::vector<SampleType_t> samples;
+		std::vector<double> targets;
+		for (const auto& pair : pts)
+		{
+			samples.push_back (pair.first);
+			targets.push_back (pair.second);
+		}
+
+		const auto& df = trainer.train (samples, targets);
+		return df.alpha;
+	};
+	const auto& myp = svmSolver (pairs);
+	auto results = calcStats (svmSolver, lVars, nVars, pairs);
 
 	/*
 	for (size_t i = 0; i < ParamsCount; ++i)
@@ -378,5 +399,5 @@ int main (int argc, char **argv)
 	}
 	*/
 
-	WriteCoeffs (p, results, infile);
+	WriteCoeffs (myp, results, infile);
 }
