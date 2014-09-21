@@ -91,6 +91,28 @@ namespace Series
 			res (i) = 1 / std::pow (x, 2 * i);
 		return res;
 	}
+
+	namespace
+	{
+		double subDerivative (double x, int64_t i, double p_i)
+		{
+			std::cout << "calc " << x << "; " << i << "; " << p_i << " -> " << (-2 * i * p_i) << "; " << std::pow (x, -2 * i - 1) << std::endl;
+			return -2 * i * p_i * std::pow (x, -2 * i - 1);
+		}
+	}
+
+	SampleType_t varsDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		const auto x = data.first (0);
+
+		double result = 0;
+		for (size_t i = 1; i < ParamsCount; ++i)
+			result += subDerivative (x, static_cast<int64_t> (i), p (i));
+
+		SampleType_t res;
+		res (0) = result;
+		return res;
+	}
 }
 
 namespace Resonance
