@@ -35,21 +35,64 @@
 #include <dlib/svm.h>
 
 template<typename T> using SampleTypeBase_t = dlib::matrix<T, 1, 1>;
-template<typename T> using TrainingSetBase_t = std::vector<std::pair<SampleTypeBase_t<T>, T>>;
+template<typename T> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T>, T>;
+template<typename T> using TrainingSetBase_t = std::vector<TrainingSetInstanceBase_t<T>>;
 
-typedef SampleTypeBase_t<double> SampleType_t;
-typedef TrainingSetBase_t<double> TrainingSet_t;
+using SampleType_t = SampleTypeBase_t<double>;
+using TrainingSetInstance_t = TrainingSetInstanceBase_t<double>;
+using TrainingSet_t = TrainingSetBase_t<double>;
 
 template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
 
 template<size_t ParamsCount, typename R, typename D>
-Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D der)
+Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D paramsDer)
 {
 	Params_t<ParamsCount> p;
 	for (size_t i = 0; i < ParamsCount; ++i)
 		p (i) = 0;
-	dlib::solve_least_squares_lm (dlib::objective_delta_stop_strategy(1e-11),
-			res, der, pairs, p, 0.01);
+	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-11 },
+			res, paramsDer, pairs, p, 10);
+	return p;
+}
+
+template<size_t ParamsCount,
+		typename ResidualT,
+		typename ParamsDerivativeT,
+		typename VariablesDerivativeT,
+		typename YSigmaGetterT,
+		typename XSigmasGetterT>
+Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
+		ResidualT res, ParamsDerivativeT paramsDer, VariablesDerivativeT varsDer,
+		YSigmaGetterT ySigma, XSigmasGetterT xSigmas)
+{
+	Params_t<ParamsCount> p;
+	for (size_t i = 0; i < ParamsCount; ++i)
+		p (i) = 0;
+
+	for (int i = 0; i < 1000; ++i)
+	{
+		const auto prevP = p;
+
+#if 1
+		auto wrappedRes = [res, ySigma, xSigmas, varsDer] (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p) -> double
+		{
+			const auto srcVal = res (data, p);
+
+			const auto& derivatives = varsDer (data, p);
+			const double denom = ySigma (data) + xSigmas (data) * derivatives;
+
+			return srcVal / std::sqrt (denom);
+		};
+#else
+		const auto& wrappedRes = res;
+#endif
+
+		dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-11, 1 },
+				wrappedRes, paramsDer, pairs, p, 10);
+
+		if (dlib::length (prevP - p) < 1e-11)
+			break;
+	}
 	return p;
 }
 
