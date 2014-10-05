@@ -96,7 +96,6 @@ namespace Series
 	{
 		double subDerivative (double x, int64_t i, double p_i)
 		{
-			std::cout << "calc " << x << "; " << i << "; " << p_i << " -> " << (-2 * i * p_i) << "; " << std::pow (x, -2 * i - 1) << std::endl;
 			return -2 * i * p_i * std::pow (x, -2 * i - 1);
 		}
 	}
