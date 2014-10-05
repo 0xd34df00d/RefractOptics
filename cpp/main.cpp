@@ -341,7 +341,10 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
-	const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
+	const auto& p = solve<ParamsCount> (pairs,
+			residual, residualDer, varsDer,
+			[] (const TrainingSetInstance_t& pair) { return pair.second * 0.01; },
+			[] (const TrainingSetInstance_t& pair) { return pair.first (0) * 0.1; });
 	std::cout << "inferred params: " << dlib::trans (p);
 
 	double sum = 0;
