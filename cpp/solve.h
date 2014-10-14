@@ -74,7 +74,7 @@ Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
 		const auto prevP = p;
 
 #if 1
-		auto wrappedRes = [res, ySigma, xSigmas, varsDer] (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p) -> double
+		auto wrappedRes = [res, ySigma, xSigmas, varsDer] (const auto& data, const auto& p) -> double
 		{
 			const auto srcVal = res (data, p);
 
