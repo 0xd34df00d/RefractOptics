@@ -50,7 +50,7 @@ Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D paramsDer)
 	Params_t<ParamsCount> p;
 	for (size_t i = 0; i < ParamsCount; ++i)
 		p (i) = 0;
-	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-11 },
+	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-12 },
 			res, paramsDer, pairs, p, 1e4);
 	return p;
 }
@@ -69,7 +69,7 @@ Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
 	for (size_t i = 0; i < ParamsCount; ++i)
 		p (i) = 0;
 
-	for (int i = 0; i < 1000; ++i)
+	for (int i = 0; i < 10002; ++i)
 	{
 		const auto prevP = p;
 
@@ -87,10 +87,10 @@ Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
 		const auto& wrappedRes = res;
 #endif
 
-		dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-11, 1 },
+		dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-12, 2 },
 				wrappedRes, paramsDer, pairs, p, 1e4);
 
-		if (dlib::length (prevP - p) < 1e-11)
+		if (dlib::length (prevP - p) < 1e-12)
 			break;
 	}
 	return p;
