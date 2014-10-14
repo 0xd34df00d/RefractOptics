@@ -351,18 +351,17 @@ int main (int argc, char **argv)
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
 	const auto& p = solve<ParamsCount> (pairs,
+			residual, residualDer);
+	std::cout << "inferred params: " << dlib::trans (p);
+	std::cout << "MSE: " << GetMse (pairs, p) << std::endl << std::endl;
+
+	const auto& fixedP = solve<ParamsCount> (pairs,
 			residual, residualDer, varsDer,
 			[] (const TrainingSetInstance_t& pair) { return pair.second * 0.01; },
 			[] (const TrainingSetInstance_t& pair) { return pair.first (0) * 0.1; });
-	std::cout << "inferred params: " << dlib::trans (p);
+	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
-	double sum = 0;
-	for (const auto& pair : pairs)
-	{
-		auto r = residual (pair, p);
-		sum += r * r;
-	}
-	std::cout << "MSE: " << sum / pairs.size () << std::endl << std::endl;
+	std::cout << "MSE: " << GetMse (pairs, fixedP) << std::endl << std::endl;
 
 	//TryLOO (pairs);
 	//TrySVM (pairs);
