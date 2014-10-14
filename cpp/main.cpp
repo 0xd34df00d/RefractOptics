@@ -328,6 +328,15 @@ void TrySVMSigmoid (const TrainingSetBase_t<T>& allPairs)
 			<< std::endl;
 }
 
+double GetMse (const TrainingSet_t& pairs, const Params_t<ParamsCount>& p)
+{
+	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
+			[&p] (double sum, auto pair)
+			{
+				return sum + std::pow (residual (pair, p), 2);
+			});
+}
+
 int main (int argc, char **argv)
 {
 	if (argc < 2)
