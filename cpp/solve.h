@@ -79,7 +79,7 @@ Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
 			const auto srcVal = res (data, p);
 
 			const auto& derivatives = varsDer (data, p);
-			const double denom = ySigma (data) + xSigmas (data) * derivatives;
+			const double denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
 
 			return srcVal / std::sqrt (denom);
 		};
