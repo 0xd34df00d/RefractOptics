@@ -99,15 +99,21 @@ int main (int argc, char **argv)
 	auto res = [] (const std::pair<SampleType_t, double>& data, const Params_t<2>& p)
 		{ return p (0) + p (1) * data.first (0) - data.second; };
 	auto der = [] (const std::pair<SampleType_t, double>& data, const Params_t<2>& p) -> Params_t<2>
-		{
-			Params_t<2> res;
-			res (0) = 1;
-			res (1) = data.first (0);
-			return res;
-		};
+	{
+		Params_t<2> res;
+		res (0) = 1;
+		res (1) = data.first (0);
+		return res;
+	};
 
 	const auto& p = solve<2> (pairs, res, der);
 	std::cout << "inferred params: " << dlib::trans (p) << std::endl;
+
+	const auto& pca = solve<2> (pairs, res, der,
+			[] (auto, const Params_t<2>& p) { return p (1); },
+			[] (auto) { return 0.01; },
+			[] (auto) { return 0.01; });
+	std::cout << "inferred 'fixed' L-M params: " << dlib::trans (pca) << std::endl;
 
 	const auto da0 = variance * variance / samples;
 	const auto da1 = variance * variance / diffs;
