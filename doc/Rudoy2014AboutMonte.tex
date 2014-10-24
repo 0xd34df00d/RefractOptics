@@ -153,18 +153,18 @@
 зависимой переменной $y$ одна и та же $D(y_i) = \sigma^2$, а значения независимой
 переменной $x_i$ известны точно: $D(x) = 0$. Тогда при переходе к представлению
 \[
-  y_i = a(x_i - \overline{x}) + b + \xi_i \mid i \in \{ 1, \dots, n \},
+  y_i = a(x_i - \overline{x}) + b + \xi_i \mid i \in \{ 1, \dots, \ell \},
 \]
-где $\overline{x} = \frac{\sum_{i = 1}^n x_i}{n}$, а $\xi_i \sim \mathcal{N}(0, \sigma^2)$,
+где $\overline{x} = \frac{\sum_{i = 1}^\ell x_i}{\ell}$, а $\xi_i \sim \mathcal{N}(0, \sigma^2)$,
 согласно \cite{Vatunin05}, случайные величины $a$ и $b$ независимы
 и нормально распределены, и, кроме того, их дисперсии выражаются известными соотношениями:
 \begin{equation}
   \label{eq:classic_da}
-  D(a) = \frac{\sigma^2}{\sum_{i = 1}^n (x_i - \overline{x})^2}.
+  D(a) = \frac{\sigma^2}{\sum_{i = 1}^\ell (x_i - \overline{x})^2}.
 \end{equation}
 \begin{equation}
   \label{eq:classic_db}
-  D(b) = \frac{\sigma^2}{n}.
+  D(b) = \frac{\sigma^2}{\ell}.
 \end{equation}
 
 В настоящей работе предложен общий метод определения
@@ -177,7 +177,7 @@ $n(\lambda)$ для прозрачного полимера определена
 
 \section{Основная гипотеза}
 
-Пусть имеется выборка $D = \{ (x_i, y_i) \} \mid i = \{ 1, \dots, n \}$,
+Пусть имеется выборка $D = \{ (x_i, y_i) \} \mid i = \{ 1, \dots, \ell \}$,
 причем для каждого значения $x_i, y_i$ известно распределение вероятности отклонения
 независимой и зависимой переменных $P_i^x(x - x_i)$ и
 $P_i^y(y - y_i)$ от их средних значений, принимаемых равными $x_i$ и
@@ -189,7 +189,7 @@ $P_i^y(y - y_i)$ обычно принимаются гауссовыми, и д
 зависимость $y(x, \boldsymbol{\omega})$, минимизирующая некоторый функционал S,
 например среднеквадратичное отклонение:
 \begin{equation}
-  S = \sum_{i=1}^n \big(y (x_i, \boldsymbol{\omega}) - y_i\big)^2 \underset{\boldsymbol{\omega}}{\rightarrow} \min.
+  S = \sum_{i=1}^\ell \big(y (x_i, \boldsymbol{\omega}) - y_i\big)^2 \underset{\boldsymbol{\omega}}{\rightarrow} \min.
   \label{eq:S}
 \end{equation}
 Для таким образом определенного функционала, а также для его модификаций,
@@ -200,7 +200,7 @@ $P_i^y(y - y_i)$ обычно принимаются гауссовыми, и д
 многократно повторяем следующую вычислительную процедуру:
 \begin{enumerate}
   \item На $k$-м шаге генерируется случайная выборка
-	$D_k = \{ (x_i^k, y_i^k) \} \mid i = \{ 1, \dots, n \}$. Значение $x_i^k$
+	$D_k = \{ (x_i^k, y_i^k) \} \mid i = \{ 1, \dots, \ell \}$. Значение $x_i^k$
 	получается из соответствующего значения $x_i$ исходной
 	выборки $D$ путем добавления случайного шума, распределенного согласно
 	$P_i^x$:
@@ -226,7 +226,7 @@ $P_i^y(y - y_i)$ обычно принимаются гауссовыми, и д
 	  \end{equation}
 	  \begin{equation}
 		\label{eq:omega_stddev}
-		D(\boldsymbol{\omega}_p) = \sqrt{\frac{1}{M - 1} \sum_{i = 1}^M (\boldsymbol{\omega}_p^i - \overline{\boldsymbol{\omega}_p})}.
+		D(\boldsymbol{\omega}_p) = \sigma_{\boldsymbol{\omega}_p}^2 = \frac{1}{M - 1} \sum_{i = 1}^M (\boldsymbol{\omega}_p^i - \overline{\boldsymbol{\omega}_p})^2.
 	  \end{equation}
 \end{enumerate}
 
@@ -258,7 +258,7 @@ $D(\boldsymbol{\omega}_p)$ становится меньше экспертно 
 экспериментальной точки.
 В вычислительном эксперименте моделируемая зависимость имела вид
 $y = ax + b \mid a = 3, b = 10$. Независимая переменная
-определена в $n = 10$ (в другом эксперименте~--- в 50) точках
+определена в $\ell = 10$ (в другом эксперименте~--- в 50) точках
 отрезка $[0, 10]$, количество реализаций
 составляло 100 миллионов. Оптимизация коэффициентов регрессии проводилась с помощью
 алгоритма Левенберга-Марквардта по аналогии с более общим
@@ -280,7 +280,7 @@ $y = ax + b \mid a = 3, b = 10$. Независимая переменная
     \caption{$N \in [10^7;~10^8]$}
     \label{fig:classic_var10_n10_end}
   \end{subfigure}
-  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 10$ и $n = 10$.}
+  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 10$ и $\ell = 10$.}
   \label{fig:classic_var10_n10}
 \end{figure}
 
@@ -300,7 +300,7 @@ $y = ax + b \mid a = 3, b = 10$. Независимая переменная
     \caption{$N \in [10^7;~10^8]$}
     \label{fig:classic_var1_n10_end}
   \end{subfigure}
-  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $n = 10$.}
+  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $\ell = 10$.}
   \label{fig:classic_var1_n10}
 \end{figure}
 
@@ -320,7 +320,7 @@ $y = ax + b \mid a = 3, b = 10$. Независимая переменная
     \caption{$N \in [10^7;~10^8]$}
     \label{fig:classic_var1_n50_end}
   \end{subfigure}
-  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $n = 50$.}
+  \caption{Зависимость $\delta$ от числа итераций $N$ при $D(\xi) = 1$ и $\ell = 50$.}
   \label{fig:classic_var1_n50}
 \end{figure}
 
