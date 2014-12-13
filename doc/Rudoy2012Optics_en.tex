@@ -242,7 +242,7 @@ Let $\hat{\boldsymbol{\omega}}_f(D)$ be the parameter vector minimizing the
 functional \eqref{eq:s_common} for some sample set $D = \{ \mathbf{x}_i, y_i \}$ and
 function $f$ with fixed structure:
 \[
-  \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f \in R^{| \boldsymbol{\omega}_f |}} S(f, D).
+  \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f} S(f, D).
 \]
 
 Let
@@ -266,7 +266,7 @@ deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
 For this new sample set $\acute{D}$ the new parameter vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
 is found for the superposition $f$ minimizing the functional \eqref{eq:s}:
 \begin{equation}
-  \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_{f_D} \in R^{\mid \hat{\boldsymbol{\omega}}_f \mid}} S (f_D (\cdot, \boldsymbol{\omega}_{f_D}), \acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
+  \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_{f_D}} S (f_D (\cdot, \boldsymbol{\omega}_{f_D}), \acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
   \label{eq:hat_omega}
 \end{equation}
 Thus, $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$ is
