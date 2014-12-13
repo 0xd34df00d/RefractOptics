@@ -102,7 +102,7 @@ theoretical assumptions about the structure of the functional dependency are ava
 or a choice should be made between different proposed models. For instance, in the above
 case of refraction index measurements the data can be described either by a sum
 of even powers of the wavelength in the common case, or by a known physical formula
-near the resonance wavelength \cite{...}.
+near the resonance wavelength.
 
 One of the methods allowing to find interpretable models is symbolic regression
 \cite{davidson:2000:snrea,reference/ml/X10vc,StrijovW10,Strijov08InductMethods,Rudoy13},
@@ -123,7 +123,7 @@ stability criteria suggested in this paper in addition to the complexity and
 error criteria. In some applications the stability can even be more important
 than the error on the sample set.
 
-For linear regression this problem has a theoretical solution\cite{Vatunin05}
+For linear regression this problem has a theoretical solution\cite{Vatunin05_en}
 in the particular case of independent variable being measured exactly and the
 dependent variable having the same Gaussian distribution of the error at all
 measured samples. The case of non-linear regression with independent variables
@@ -161,7 +161,7 @@ experiment.
 Typically broad spectrum sources are used in refractometers, and the
 tolerance of single wavelength extraction is defined by the hardware function
 of the monochromator being used and is thoroughly considered, for example, in
-\cite{Malishev79,Zaidel72}. In most cases the inaccuracy of $\lambda$ can be
+\cite{Malishev79_en,Zaidel72_en}. In most cases the inaccuracy of $\lambda$ can be
 computed as well as determined experimentally using narrow light sources like
 lasers, known atomic transitions like the mercury triplet or sodium dublet.
 Typical relative wavelength measurement error is around $0.03 \div 0.5\%$,
@@ -455,7 +455,7 @@ are found for the given model $\hat{f}$, and their stability $T$ is estimated.
 The data set was not splitted to learning set and control set, as overfitting was
 mitigated by the complexity penalty.
 
-Physical considerations show \cite{Serova11} that dispersion should be a sum of even
+Physical considerations show \cite{Serova11_en} that dispersion should be a sum of even
 powers of the wavelength, so the elementary function set consists of the function
 \[
   g_3(\lambda, p) = \frac{1}{\lambda^{2p}},
@@ -508,7 +508,7 @@ Thus, excessive values of $\tau$ lead to overfitting.
 
 \paragraph{Support vector machine.}
 
-SVM with RBF kernel \cite{Vapnik79} was used as baseline algorithm. The $\gamma$ kernel
+SVM with RBF kernel \cite{Vapnik79_en} was used as baseline algorithm. The $\gamma$ kernel
 parameter was selected by crossvalidation. The best result was a combination of 15
 support vectors with $\gamma \approx 2 \cdot 10^{-6}$. MSE during 2-fold crossvalidation
 was $8.96 \cdot 10^{-8}$. The resulting model, though, is uninterpretable.
@@ -611,11 +611,11 @@ Taking the measurement errors into account:
 \[
   y_i = ax_i + b + \xi_i \mid i \in \{ 1, \dots, n \},
 \]
-where the errors $\xi_i$ are independent, and $E(\xi_i) = 0; D(\xi_i) = \sigma^2$ \cite{Vatunin05}.
+where the errors $\xi_i$ are independent, and $E(\xi_i) = 0; D(\xi_i) = \sigma^2$ \cite{Vatunin05_en}.
 In other words, the error doesn't depend on the measurement, and the independent variable
 is measured precisely.
 
-According to \cite{Vatunin05} for the following presentation:
+According to \cite{Vatunin05_en} for the following presentation:
 \[
   y_i = a(x_i - \overline{x}) + b + \xi_i \mid i \in \{ 1, \dots, n \},
 \]
