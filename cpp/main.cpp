@@ -35,8 +35,6 @@
 #include "solve.h"
 #include "util.h"
 
-const size_t ParamsCount = 3;
-
 std::string format (double value)
 {
 	std::ostringstream ostr;
@@ -74,6 +72,8 @@ std::string format (double value)
 
 namespace Series
 {
+	const size_t ParamsCount = 3;
+
 	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
 	{
 		double result = 0;
@@ -117,6 +117,7 @@ namespace Series
 namespace Laser
 {
 	const auto L = 150.0;
+	const size_t ParamsCount = 2;
 
 	double alpha0MinusLn (double alpha0, double r0)
 	{
@@ -165,6 +166,8 @@ namespace Laser
 
 namespace Resonance
 {
+	const size_t ParamsCount = 3;
+
 	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto x = data.first (0);
@@ -194,7 +197,7 @@ namespace Resonance
 	}
 }
 
-using namespace Series;
+using namespace Laser;
 
 void TryLOO (const TrainingSet_t& allPairs)
 {
@@ -419,6 +422,7 @@ int main (int argc, char **argv)
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
+	/*
 	std::vector<double> lVars;
 	for (double i = 0; i < 1e-3; i += 1e-4)
 		lVars.push_back (i);
@@ -426,6 +430,9 @@ int main (int argc, char **argv)
 	std::vector<double> nVars;
 	for (double i = 0; i < 5e-4; i += 2e-5)
 		nVars.push_back (i);
+	*/
+	std::vector<double> lVars { 1e-3, 1e-2 };
+	std::vector<double> nVars { 2e-5, 1e-4, 3e-4 };
 
 	auto symbRegSolver = [] (const TrainingSet_t& pts)
 	{
@@ -449,8 +456,8 @@ int main (int argc, char **argv)
 		const auto& df = trainer.train (samples, targets);
 		return df.alpha;
 	};
-	const auto& myp = svmSolver (pairs);
-	auto results = calcStats (svmSolver, lVars, nVars, pairs);
+	const auto& myp = symbRegSolver (pairs);
+	auto results = calcStats (symbRegSolver, lVars, nVars, pairs);
 
 	/*
 	for (size_t i = 0; i < ParamsCount; ++i)
