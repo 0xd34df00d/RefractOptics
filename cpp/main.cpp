@@ -114,6 +114,55 @@ namespace Series
 	}
 }
 
+namespace Laser
+{
+	const auto L = 150.0;
+
+	double alpha0MinusLn (double alpha0, double r0)
+	{
+		return alpha0 - std::log (r0) / (2 * L);
+	}
+
+	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		const auto r0 = data.first (0);
+		const auto g0 = p (0);
+		const auto alpha0 = p (1);
+
+		return (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1) - data.second;
+	}
+
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		const auto r0 = data.first (0);
+		const auto g0 = p (0);
+		const auto alpha0 = p (1);
+
+		const auto dg0 = (1 - r0) / (1 + r0) / alpha0MinusLn (alpha0, r0);
+
+		const auto dalpha0 = -g0 * (1 - r0) / (1 + r0) / std::pow (alpha0MinusLn (alpha0, r0), 2);
+
+		Params_t<ParamsCount> res;
+		res (0) = dg0;
+		res (1) = dalpha0;
+		return res;
+	}
+
+	SampleType_t varsDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	{
+		const auto r0 = data.first (0);
+		const auto g0 = p (0);
+		const auto alpha0 = p (1);
+
+		auto result = -2 * (g0 / alpha0MinusLn (alpha0, r0) - 1) / (1 + r0) / (1 + r0);
+		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * std::pow (alpha0MinusLn (alpha0, r0), 2));
+
+		SampleType_t res;
+		res (0) = result;
+		return res;
+	}
+}
+
 namespace Resonance
 {
 	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
