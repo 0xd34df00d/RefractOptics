@@ -117,7 +117,7 @@ namespace Series
 namespace Laser
 {
 	const auto L = 150.0;
-	const size_t ParamsCount = 2;
+	const size_t ParamsCount = 3;
 
 	double alpha0MinusLn (double alpha0, double r0)
 	{
@@ -129,8 +129,9 @@ namespace Laser
 		const auto r0 = data.first (0);
 		const auto g0 = p (0);
 		const auto alpha0 = p (1);
+		const auto k = p (2);
 
-		return (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1) - data.second;
+		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1) - data.second;
 	}
 
 	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
@@ -138,14 +139,16 @@ namespace Laser
 		const auto r0 = data.first (0);
 		const auto g0 = p (0);
 		const auto alpha0 = p (1);
+		const auto k = p (2);
 
-		const auto dg0 = (1 - r0) / (1 + r0) / alpha0MinusLn (alpha0, r0);
-
-		const auto dalpha0 = -g0 * (1 - r0) / (1 + r0) / std::pow (alpha0MinusLn (alpha0, r0), 2);
+		const auto dg0 = k * (1 - r0) / (1 + r0) / alpha0MinusLn (alpha0, r0);
+		const auto dalpha0 = -g0 * k * (1 - r0) / (1 + r0) / std::pow (alpha0MinusLn (alpha0, r0), 2);
+		const auto dk = (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1);
 
 		Params_t<ParamsCount> res;
 		res (0) = dg0;
 		res (1) = dalpha0;
+		res (2) = dk;
 		return res;
 	}
 
@@ -154,12 +157,13 @@ namespace Laser
 		const auto r0 = data.first (0);
 		const auto g0 = p (0);
 		const auto alpha0 = p (1);
+		const auto k = p (2);
 
 		auto result = -2 * (g0 / alpha0MinusLn (alpha0, r0) - 1) / (1 + r0) / (1 + r0);
 		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * std::pow (alpha0MinusLn (alpha0, r0), 2));
 
 		SampleType_t res;
-		res (0) = result;
+		res (0) = result * k;
 		return res;
 	}
 }
