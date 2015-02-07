@@ -106,13 +106,14 @@ int main (int argc, char **argv)
 		return res;
 	};
 
-	const auto& p = solve<2> (pairs, res, der);
+	const auto& p = solve<2> (pairs, res, der, {{ 1, 1 }});
 	std::cout << "inferred params: " << dlib::trans (p) << std::endl;
 
 	const auto& pca = solve<2> (pairs, res, der,
 			[] (auto, const Params_t<2>& p) { return p (1); },
 			[] (auto) { return 0.01; },
-			[] (auto) { return 0.01; });
+			[] (auto) { return 0.01; },
+			{{ 1, 1 }});
 	std::cout << "inferred 'fixed' L-M params: " << dlib::trans (pca) << std::endl;
 
 	const auto da0 = variance * variance / samples;
@@ -120,7 +121,7 @@ int main (int argc, char **argv)
 	std::cout << "book stuff: " << da0 << "; " << da1 << std::endl;
 
 	std::cout << "real stuff diff: " << std::endl;
-	auto solver = [res, der] (const TrainingSet_t& set) { return solve<2> (set, res, der); };
+	auto solver = [res, der] (const TrainingSet_t& set) { return solve<2> (set, res, der, {{ 1, 1 }}); };
 	StatsKeeper<decltype (solver)> keeper (solver, 0, variance, pairs, false);
 
 	std::ofstream ostr (std::string ("linear_log_") + argv [1] + "x_" + argv [2] + "_samples_" + argv [5] + "_variance_" + argv [6] + ".log");

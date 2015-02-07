@@ -212,7 +212,7 @@ void TryLOO (const TrainingSet_t& allPairs)
 		auto pairs = allPairs;
 		pairs.erase (pairs.begin () + i);
 
-		const auto& p = solve<ParamsCount> (pairs, residual, residualDer);
+		const auto& p = solve<ParamsCount> (pairs, residual, residualDer, {{ 0, 0, 0 }});
 		std::cout << "inferred params: " << dlib::trans (p);
 
 		double sum = 0;
@@ -407,14 +407,15 @@ int main (int argc, char **argv)
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
 	const auto& p = solve<ParamsCount> (pairs,
-			residual, residualDer);
+			residual, residualDer, {{ 0.002, 0.0002, 100 }});
 	std::cout << "inferred params: " << dlib::trans (p);
 	std::cout << "MSE: " << GetMse (pairs, p) << std::endl << std::endl;
 
 	const auto& fixedP = solve<ParamsCount> (pairs,
 			residual, residualDer, varsDer,
-			[] (const TrainingSetInstance_t& pair) { return pair.second * 0.01; },
-			[] (const TrainingSetInstance_t& pair) { return pair.first (0) * 0.1; });
+			[] (const TrainingSetInstance_t& pair) { return pair.second * 0.02; },
+			[] (const TrainingSetInstance_t& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
+			{{ 0.002, 0.0002, 100 }});
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
 	std::cout << "MSE: " << GetMse (pairs, fixedP) << std::endl << std::endl;
@@ -440,7 +441,7 @@ int main (int argc, char **argv)
 
 	auto symbRegSolver = [] (const TrainingSet_t& pts)
 	{
-		return solve<ParamsCount> (pts, residual, residualDer);
+		return solve<ParamsCount> (pts, residual, residualDer, {{ 0.002, 0.0002, 100 }});
 	};
 	auto svmSolver = [] (const TrainingSet_t& pts)
 	{
@@ -460,8 +461,7 @@ int main (int argc, char **argv)
 		const auto& df = trainer.train (samples, targets);
 		return df.alpha;
 	};
-	const auto& myp = symbRegSolver (pairs);
-	auto results = calcStats (symbRegSolver, lVars, nVars, pairs);
+	auto results = calcStats (symbRegSolver, xVars, yVars, pairs);
 
 	/*
 	for (size_t i = 0; i < ParamsCount; ++i)
@@ -491,5 +491,5 @@ int main (int argc, char **argv)
 	}
 	*/
 
-	WriteCoeffs (myp, results, infile);
+	WriteCoeffs (p, results, infile);
 }

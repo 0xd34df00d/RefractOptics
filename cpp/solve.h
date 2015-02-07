@@ -45,11 +45,11 @@ using TrainingSet_t = TrainingSetBase_t<double>;
 template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
 
 template<size_t ParamsCount, typename R, typename D>
-Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D paramsDer)
+Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D paramsDer, const std::array<double, ParamsCount>& initial)
 {
 	Params_t<ParamsCount> p;
-	for (size_t i = 0; i < ParamsCount; ++i)
-		p (i) = 0;
+	for (auto i = 0u; i < ParamsCount; ++i)
+		p (i) = initial [i];
 	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-18, 500 },
 			res, paramsDer, pairs, p, 1e4);
 	return p;
@@ -63,11 +63,12 @@ template<size_t ParamsCount,
 		typename XSigmasGetterT>
 Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
 		ResidualT res, ParamsDerivativeT paramsDer, VariablesDerivativeT varsDer,
-		YSigmaGetterT ySigma, XSigmasGetterT xSigmas)
+		YSigmaGetterT ySigma, XSigmasGetterT xSigmas,
+		const std::array<double, ParamsCount>& initial)
 {
 	Params_t<ParamsCount> p;
-	for (size_t i = 0; i < ParamsCount; ++i)
-		p (i) = 0;
+	for (auto i = 0u; i < ParamsCount; ++i)
+		p (i) = initial [i];
 
 	for (int i = 0; i < 10002; ++i)
 	{
