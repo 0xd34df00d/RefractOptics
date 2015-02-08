@@ -102,10 +102,25 @@ typedef std::vector<std::pair<SampleType_t, double>> PairsList_t;
 typedef std::vector<dlib::running_stats<double>> RunningStatsList_t;
 typedef std::map<double, std::map<double, RunningStatsList_t>> Stats_t;
 
+namespace detail
+{
+	template<typename Solver>
+	auto MakeSolverWrapper (Solver s, std::result_of_t<Solver (PairsList_t, double, double)>* = nullptr)
+	{
+		return s;
+	}
+
+	template<typename Solver>
+	auto MakeSolverWrapper (Solver s, std::result_of_t<Solver (PairsList_t)>* = nullptr)
+	{
+		return [s] (const PairsList_t& pairs, double, double) { return s (pairs); };
+	}
+}
+
 template<typename Solver>
 class StatsKeeper
 {
-	Solver Solver_;
+	decltype(detail::MakeSolverWrapper (std::declval<Solver> ()))  Solver_;
 
 	double LVar_;
 	double NVar_;
@@ -118,7 +133,7 @@ class StatsKeeper
 	const bool Relative_ = true;
 public:
 	StatsKeeper (Solver s, double lVar, double nVar, const PairsList_t& pairs, bool relative = true)
-	: Solver_ (s)
+	: Solver_ (detail::MakeSolverWrapper (s))
 	, LVar_ (lVar)
 	, NVar_ (nVar)
 	, Pairs_ (pairs)
@@ -155,7 +170,7 @@ public:
 				}
 			}
 
-			const auto& p = Solver_ (localPairs);
+			const auto& p = Solver_ (localPairs, LVar_, NVar_);
 
 			if (Stats_.size () < p.nr ())
 			{
