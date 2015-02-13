@@ -458,9 +458,13 @@ int main (int argc, char **argv)
 		5e-2,
 	};
 
-	auto symbRegSolver = [] (const TrainingSet_t& pts)
+	auto symbRegSolver = [] (const TrainingSet_t& pts, double xVar, double yVar)
 	{
-		return solve<ParamsCount> (pts, residual, residualDer, {{ 0.002, 0.0002, 100 }});
+		return solve<ParamsCount> (pts,
+				residual, residualDer, varsDer,
+				[yVar] (const TrainingSetInstance_t& pair) { return pair.second * yVar; },
+				[xVar] (const TrainingSetInstance_t& pair) { return pair.first (0) * xVar; },
+				{{ 0.002, 0.0002, 100 }});
 	};
 	auto svmSolver = [] (const TrainingSet_t& pts)
 	{
