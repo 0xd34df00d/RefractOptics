@@ -220,6 +220,37 @@ Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector
 	if (!threadCount)
 		threadCount = std::thread::hardware_concurrency () - 1;
 
+	std::vector<std::pair<double, double>> combs;
+	for (auto lVar : lVars)
+		for (auto nVar : nVars)
+			combs.emplace_back (lVar, nVar);
+
+	for (auto i = combs.begin (); i != combs.end (); )
+	{
+		std::map<std::pair<double, double>, std::future<StatsVec_t>> vars2future;
+		for (size_t t = 0; i != combs.end () && t < threadCount; ++i, ++t)
+			vars2future [*i] = std::async (std::launch::async,
+					&getStats<Solver>,
+					i->first, i->second, pairs, s);
+
+		for (auto& pair : vars2future)
+		{
+			const auto& coeffs = pair.second.get ();
+
+			const auto lVar = pair.first.first;
+			const auto nVar = pair.first.second;
+
+			std::vector<dlib::running_stats<double>> stats;
+			stats.resize (coeffs.size ());
+			for (size_t i = 0; i < coeffs.size (); ++i)
+				for (auto coeff : coeffs [i])
+					stats [i].add (coeff);
+			results [lVar] [nVar] = stats;
+			std::cout << (100 * ++finished / count) << "% done for (" << lVar << "; " << nVar << ")" << std::endl;
+		}
+	}
+
+	/*
 	for (auto lVar : lVars)
 	{
 		for (auto i = nVars.begin (); i != nVars.end (); )
@@ -244,5 +275,6 @@ Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector
 			}
 		}
 	}
+	*/
 	return results;
 }
