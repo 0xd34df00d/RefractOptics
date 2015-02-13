@@ -204,7 +204,7 @@ template<typename Solver>
 StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, Solver s)
 {
 	StatsKeeper<Solver> keeper (s, lVar, nVar, pairs);
-	keeper.TryMore (5000);
+	keeper.TryMore (20000);
 	return keeper.GetPoints ();
 }
 
