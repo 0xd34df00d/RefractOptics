@@ -428,16 +428,35 @@ int main (int argc, char **argv)
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
 	/*
-	std::vector<double> lVars;
+	std::vector<double> xVars;
 	for (double i = 0; i < 1e-3; i += 1e-4)
-		lVars.push_back (i);
+		xVars.push_back (i);
 
-	std::vector<double> nVars;
+	std::vector<double> yVars;
 	for (double i = 0; i < 5e-4; i += 2e-5)
-		nVars.push_back (i);
+		yVars.push_back (i);
 	*/
-	std::vector<double> lVars { 1e-3, 1e-2 };
-	std::vector<double> nVars { 2e-5, 1e-4, 3e-4 };
+	std::vector<double> xVars
+	{
+		1e-3,
+		2e-3,
+		5e-3,
+		1e-2,
+		2e-2,
+		/*
+		5e-2,
+		1e-1,
+		*/
+	};
+	std::vector<double> yVars
+	{
+		1e-3,
+		2e-3,
+		5e-3,
+		1e-2,
+		2e-2,
+		5e-2,
+	};
 
 	auto symbRegSolver = [] (const TrainingSet_t& pts)
 	{
@@ -467,19 +486,19 @@ int main (int argc, char **argv)
 	for (size_t i = 0; i < ParamsCount; ++i)
 	{
 		std::cout << "\\begin{tabular}{| l ";
-		for (size_t i = 0; i < nVars.size (); ++i)
+		for (size_t i = 0; i < yVars.size (); ++i)
 			std::cout << "| l ";
 		std::cout << "|} \\hline\n";
-		for (auto nVar : nVars)
+		for (auto nVar : yVars)
 			std::cout << " & $" << format (nVar) << "$";
 		std::cout << "\\\\ \\hline\n";
 
 		std::cout.precision (3);
 
-		for (auto lVar : lVars)
+		for (auto lVar : xVars)
 		{
 			std::cout << format (lVar);
-			for (auto nVar : nVars)
+			for (auto nVar : yVars)
 			{
 				const auto& stats = results [lVar] [nVar];
 				std::cout << " & ";
