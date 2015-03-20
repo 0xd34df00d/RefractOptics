@@ -460,6 +460,13 @@ int main (int argc, char **argv)
 
 	auto symbRegSolver = [] (const TrainingSet_t& pts, double xVar, double yVar)
 	{
+		const auto multiplier = 32;
+		if (std::min (xVar, yVar) < 1e-1)
+		{
+			xVar *= multiplier;
+			yVar *= multiplier;
+		}
+
 		return solve<ParamsCount> (pts,
 				residual, residualDer, varsDer,
 				[yVar] (const TrainingSetInstance_t& pair) { return pair.second * yVar; },
