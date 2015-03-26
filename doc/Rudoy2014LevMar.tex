@@ -300,6 +300,29 @@ $f(R_0, \boldsymbol{\omega}) = y(R_0, \gamma, \alpha_0, g_0)$,
 $\gamma, \alpha_0, g_0$. Предполагается, что указанные выше погрешности определяют
 дисперсию соответствующего распределения ошибок измерений: $\sigma_{y_i} = 0.02 y_i$, $\sigma_{x_i} = 0.01$.
 
+В таблице \ref{tabl:res_coeffs} приведены оптимальные значения параметров модели, а также
+соответствующие значения MSE, для модифицированного функционала \eqref{eq:s}. В таблице
+также приведены для сравнения соответствующие значения, получающиеся при минимизации
+классического функционала
+\begin{equation}
+  S = \sum_{i = 1}^\ell (y_i - f(x_i, \boldsymbol{\omega}))^2,
+  \label{eq:s_classic}
+\end{equation}
+а также относительная разность соответствующих величин.
+
+\begin{table}[h]
+  \caption{Оптимальные значения параметров модели.}
+  \centering
+  \begin{tabular}{| r | r | r | r | r | r | r | r |}
+	\hline
+							& $g_0$					& $\alpha_0$			& $\gamma$				& MSE		\\ \hline
+	\eqref{eq:s}			& $2.932 \cdot 10^{-3}$	& $2.219 \cdot 10^{-4}$	& $99.2$				& $0.282$	\\ \hline
+	\eqref{eq:s_classic}	& $2.917 \cdot 10^{-3}$	& $2.129 \cdot 10^{-4}$	& $101.5$				& $0.183$	\\ \hline
+	Разность				& $5.2 \cdot 10^{-3}$	& $4.2 \cdot 10^{-2}$	& $2.4 \cdot 10^{-2}$	& $0.54$	\\ \hline
+  \end{tabular}
+  \label{tabl:measurements}
+\end{table}
+
 \FloatBarrier
 
 \bibliographystyle{babunsrt-lf}
