@@ -308,6 +308,7 @@ $f(R_0, \boldsymbol{\omega}) = y(R_0, \gamma, \alpha_0, g_0)$,
 $\gamma, \alpha_0, g_0$. Предполагается, что указанные выше погрешности определяют
 дисперсию соответствующего распределения ошибок измерений: $\sigma_{y_i} = 0.02 y_i$, $\sigma_{x_i} = 0.01$.
 
+\subsection{Оптимальные параметры модели}
 В таблице \ref{tabl:res_coeffs} приведены оптимальные значения параметров модели, а также
 соответствующие значения MSE, для модифицированного функционала \eqref{eq:s}. В таблице
 также приведены для сравнения соответствующие значения, получающиеся при минимизации
@@ -330,6 +331,68 @@ $\gamma, \alpha_0, g_0$. Предполагается, что указанные
   \end{tabular}
   \label{tabl:res_coeffs}
 \end{table}
+
+\subsection{Сходимость оптимальных параметров}
+Численно исследована зависимость сходимости параметров $\boldsymbol{\omega}$ к параметрам
+$\boldsymbol{\omega}_0$, получаемым минимизацией функционала \eqref{eq:s_classic}.
+
+Разумно предположить, что при увеличении погрешности измерения величины $y$ при
+фиксированной погрешности измерения $R_0$ оптимальный вектор $\boldsymbol{\omega}$
+будет приближаться к $\boldsymbol{\omega}_0$, так как тем более незначительным
+будет вклад ошибки измерения независимой переменной.
+
+Рассматривается зависимость оптимальных коэффициентов $g_0$, $\alpha_0$ и $\gamma$ от
+погрешности измерения $y$, задаваемой как $k \sigma_y = 0.02ky$, где $k$ в одном эксперименте
+менялось от 1 до 10, а в другом~--- от 1 до $10^4$, в обоих случаях с шагом $0.1$.
+Отметим, что при $k = 50$ характерная погрешность измерения величины $y$ сопоставима с самой
+величиной $y$, а при больших значениях $k$ превышает ее.
+
+Результаты приведены на рис. \ref{fig:conv_10_g} и \ref{fig:conv_10000_g} соответственно.
+
+Видно, что для достаточно больших $k$ оптимальные значения параметров $\boldsymbol{\omega}$
+существенно отличаются от $\boldsymbol{\omega}_0$. Соответствующая зависимость имеет сложный
+характер с несколькими (как минимум, двумя) пересечениями с искомыми оптимальными значениями.
+Подробное исследование подобной зависимости является целью будущих работ.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.7\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_10.txt_g.pdf}
+    \caption{$g_0$}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{0.7\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_10.txt_alpha.pdf}
+    \caption{$\alpha_0$}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{0.7\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_10.txt_gamma.pdf}
+    \caption{$\gamma$}
+  \end{subfigure}
+  \caption{Зависимость оптимальных параметров от $\sigma_y = 0.02ky, k \in [1; 10]$.}
+  \label{fig:conv_10_g}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.7\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_10000.txt_g.pdf}
+    \caption{$g_0$}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{0.7\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_10000.txt_alpha.pdf}
+    \caption{$\alpha_0$}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{0.7\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_10000.txt_gamma.pdf}
+    \caption{$\gamma$}
+  \end{subfigure}
+  \caption{Зависимость оптимальных параметров от $\sigma_y = 0.02ky, k \in [1; 10000]$.}
+  \label{fig:conv_10000_g}
+\end{figure}
 
 \FloatBarrier
 
