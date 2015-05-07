@@ -78,7 +78,7 @@
 
 \section*{Introduction}
 
-Analysis of a physical experiment results requires finding a functional
+Analysis of a physical experiment results often requires finding a functional
 dependency between the measured data. For example, given a set of measurements
 of wavelength and the corresponding refraction index of a substance, a dependency
 between them should be derived. It is also very desirable for such dependency to
@@ -86,29 +86,28 @@ be interpretable by an expert in the corresponding field.
 
 In many cases some
 theoretical assumptions about the structure of the functional dependency are available,
-or a choice should be made between different proposed models. For instance, in the above
+or a choice should be made between various proposed models. For instance, in the above
 case of refraction index measurements the data can be described either by a sum
 of even powers of the wavelength in the common case, or by a known physical formula
-near the resonance wavelength.
+that is valid near the resonance wavelength.
 
-One of the methods allowing to find interpretable models is symbolic regression
-\citep{davidson:2000:snrea,reference/ml/X10vc,StrijovW10,Strijov08InductMethods,Rudoy13},
-which generates structurally complex non-linear models. Different models
+Different models (either suggested by experts or, for example, inductively generated\citep{davidson:2000:snrea,Rudoy13})
 are usually compared by their respective errors on the measured data,
-and the exact finding of their numeric parameters is performed, for example, using
+and their numeric parameters are found, for instance, using
 the Levenberg-Marquardt algorithm\citep{Marquardt1963Algorithm,more:78}.
 
-On the other hand, during physical experiment analysis not only the model
-parameters themselves are important for the expert, but the errors in
-determining their values resulting from the intrinsic measurement inaccuracies.
-The errors determine whether the physical experiment and the used model makes
+On the other hand, in addition to the model parameters themselves
+the errors in determining their values resulting from the intrinsic measurement
+inaccuracies are also of interest to experts.
+The errors determine whether the physical experiment and the selected model make
 sense, whether its results can be used in particular applications, and they also
-define the requirements for the used experimental devices.
+define the requirements for the experimental devices and their precision.
 
-Moreover, different superpositions are proposed to be compared according to the
-stability criteria suggested in this paper in addition to the complexity and
-error criteria. In some applications the stability can even be more important
-than the error on the sample set.
+This naturally leads to another model selection criteria, suggested in this paper,
+which we will call \emph{ model stability}, which is to be used
+in addition to mean square error and various kinds of model complexity. Model stability
+describes the dependency of the change of model parameters due to a slight variation
+of the data in the learning set.
 
 For linear regression this problem has a theoretical solution\citep{Vatunin05_en}
 in the particular case of independent variable being measured exactly and the
@@ -118,31 +117,32 @@ measured inexactly, as well as all samples having
 different error distributions (like varying standard deviations in case of gaussian
 error distribution), has not been considered as far as we know.
 
-In this paper the non-linear symbolic regression method is applied to find
-the dependency of a liquid polymer refraction index $n(\lambda) = n(\lambda, \boldsymbol{\omega})$ as a function of
-wavelength $\lambda$, where $n$ is a function in a parametric family,
-parametrized by $\boldsymbol{\omega}$, with a fixed parameter vector
-describing a concrete polymer. The frequencies where the polymer is
+In this paper a few non-linear regression models are considered, describing
+the dependency of a liquid polymer refraction index $n(\lambda) = n(\lambda, \boldsymbol{\omega})$
+where $\lambda$ is the wavelength and $n$ is parametrized by the parameter
+vector $\boldsymbol{\omega}$, describing a concrete polymer.
+The frequencies where the polymer is
 transparent, including visible and near infrared fields, are considered.
-The goal of the
-experimenters was to, first, find the dispersion for each polymer, and then
-derive the concentration of each polymer in their mixture, assuming the
+The goal of the experimenters was to, firstly, find the dispersion for each polymer,
+and then derive the concentration of each polymer in their mixture, assuming the
 refraction index of the mixture of polymers to be a weighted sum of their refraction
-indexes. In other words, for two polymers, knowing the functions
-$n_1(\lambda)$ and $n_2(\lambda)$ and the mixture dispersion dependency $n(\lambda)$ ,
-the concentration of the first polymer $\alpha$ should be derived, since
-$n(\lambda) = \alpha n_1(\lambda) + (1 - \alpha) n_2(\lambda)$.
+indexes. In other words, for two polymers characterized by model parameters
+$\boldsymbol{\omega}_1$ and $\boldsymbol{\omega}_2$ respectively, knowing the functions
+$n(\lambda, \boldsymbol{\omega}_1)$ and $n_2(\lambda, \boldsymbol{\omega}_2)$
+and the mixture dispersion dependency $n(\lambda)$,
+the concentration $\alpha$ of the first polymer should be derived, since
+$n(\lambda) = \alpha n(\lambda, \boldsymbol{\omega}_1) + (1 - \alpha) n(\lambda, \boldsymbol{\omega}_2)$.
 
 The refraction indexes for transparent polymers of a similar chemical
 composition differ only slightly. Thus, the error in determining
 parameters $\boldsymbol{\omega}$ of $n(\lambda) = n(\lambda, \boldsymbol{\omega})$
 and their dependencies on the measurement errors
 of the wavelength $\lambda$ and refraction index $n$ must be considered, since
-if the errors of parameters of the $n(\lambda)$ function
-is of the same magnitude (or even bigger) as the difference between the
-corresponding parameters, then the polymers are effectively indistinguishable.
+if the errors in determining $\boldsymbol{\omega}$ in $n(\lambda, \boldsymbol{\omega})$
+are of the same magnitude (or even bigger) as the difference between the
+corresponding parameters for different polymers, then the polymers are effectively indistinguishable.
 These dependencies are also important because they define requirements for 
-devices and, consecutively, largely affecting the cost and duration of the
+devices and, consecutively, largely affect the cost and duration of the
 experiment.
 
 Typically broad spectrum sources are used in refractometers, and the
@@ -159,7 +159,7 @@ of non-parallelism of the light beams used, the angle measurement error
 and so on. The error ranges from $(1 \div 2) \cdot 10^{-5}$ for high-class
 devices to $(1 \div 10) \cdot 10^{-4}$ for simpler devices. Thus, it is important
 for this paper that the errors can be considered to be known and perhaps
-different for each sample.
+varying for each sample.
 
 In this paper the dependency $n(\lambda)$ of the refraction index on the wavelength is used
 to illustrate the model generation algorithm proposed in \citep{Rudoy13}.
