@@ -230,13 +230,13 @@ $\boldsymbol{\omega}_f = \{ \omega_i^f \mid i \in \{ 1, \dots, l_f \} \}$
 of some superposition $f$: $f(\mathbf{x}) = f(\mathbf{x}, \boldsymbol{\omega}_f)$.
 Let $\hat{\boldsymbol{\omega}}_f(D)$ be the parameter vector minimizing the
 functional \eqref{eq:s_common} for some sample set $D = \{ \mathbf{x}_i, y_i \}$ and
-function $f$ with fixed structure:
+parametric function $f$:
 \[
   \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f} S(f, D).
 \]
 
 Let
-$\Sigma^{\mathbf{x}} = [ \sigma^{\mathbf{x}}_{ij} ], i \in \{ 1, \dots, \ell \}, j \in \{ 1, \dots, | \mathbf{x} | \}$
+$\Sigma^{\mathbf{x}} = [ \sigma^{\mathbf{x}}_{ij} ], i \in \{ 1, \dots, \ell \}, j \in \{ 1, \dots, n \}$
 be the matrix of
 standard deviations of independend variables, where $\sigma^{\mathbf{x}}_{ij}$
 is the standard deviation of the $j$-th component of the feature vector
@@ -245,7 +245,7 @@ $\boldsymbol{\sigma}^y = [ \sigma^y_1, \dots, \sigma^y_\ell ]$
 be the vector of standard deviations of the dependent variable, where $\sigma^y_i$
 is the standard deviation of the dependent variable for the $i$-th object.
 The modified sample set $\acute{D}$ is then considered, which is derived from the
-source data set $D$ by adding to its components some realizations of the
+source data set $D$ by summing its components with some realizations of the
 random variables from the Gaussian distribution with zero mean and 
 deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
 \begin{equation}
@@ -254,17 +254,15 @@ deviations corresponding to $\Sigma^{\mathbf{x}}$ and $\boldsymbol{\sigma}^y$:
 \end{equation}
 
 For this new sample set $\acute{D}$ the new parameter vector $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
-is found for the superposition $f$ minimizing the functional \eqref{eq:s}:
+is found for the superposition $f$ minimizing \eqref{eq:s}:
 \begin{equation}
   \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_{f_D}} S (f_D (\cdot, \boldsymbol{\omega}_{f_D}), \acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
   \label{eq:hat_omega}
 \end{equation}
-Thus, $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$ is
-a random vector, and, consecutively
+Let $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$ be
 \[
-  \Delta\hat{\boldsymbol{\omega}}_f(\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) ) = \hat{\boldsymbol{\omega}}_f(D) - \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))
+  \Delta\hat{\boldsymbol{\omega}}_f(\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) ) = \hat{\boldsymbol{\omega}}_f(D) - \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
 \]
-is also a random vector.
 
 Let $\acute{\mathcal{D}}_N$ be a set of $N$ such modified sample sets, where each
 set is obtained by adding a separate realization of the corresponding random variables
