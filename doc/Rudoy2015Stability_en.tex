@@ -296,15 +296,17 @@ where $r$ is a function mapping a vector of quotients to a single scalar value, 
 is the dimensionality of the feature space.
 \end{defin}
 
-The function $r$ maps to a single scalar value a set of (perhaps different) ratios of standard
-deviation of a measured variable to the value of that variable. The mapped scalar can be
-viewed as some kind of a characteristic of those ratios. The function $r$ is chosen by the
+The function $r$ maps a set of (perhaps different) ratios of standard
+deviation of a measured variable to the value of that variable to a single scalar value.
+The mapped scalar can be
+viewed as a characteristic of those ratios. The function $r$ is chosen by the
 experts based on the assumptions about the error distribution characteristics. For example,
 in the case of polymers dispersion data the relative measurement error is constant as was
-described in the introduction, thus the $r$ function may just choose any argument.
+described in the introduction, thus the $r$ function may just choose any argument, for
+instance the first one: $r(\alpha_1, \alpha_2, \dots) = \alpha_1$.
 
 $T_{ij}(f)$ describes the ratio between the standard deviation of the $\hat{\omega}_i$ parameter
-(normalized by the value of that parameter) and the some average (defined by $r$)
+(normalized by the value of that parameter) and the some characteristic (defined by $r$)
 standard deviation of the corresponding $j$-th feature vector component (again, normalized by
 the value of that component).
 For instance, if this ratio is greater than one, then the error in determining the $\hat{\omega}_i$
