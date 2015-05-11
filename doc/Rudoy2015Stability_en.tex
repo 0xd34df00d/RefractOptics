@@ -275,9 +275,13 @@ to the source data set:
 Let $\overline{\sigma}_i$ be the sample standard deviation of the $i$-th component of the
 $\Delta\hat{\boldsymbol{\omega}}_f(\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) )$
 random vector on the $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$ set.
+
+We will call the vector obtained by appending the target value $y_i$ to the end of the
+corresponding feature vector $\mathbf{x}_i$ the \emph{combined feature vector}.
+
 \begin{defin}
-\emph{Relative stability} of the parameter $\omega_i$ to $j$-th feature vector component
-given $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
+\emph{Relative stability} of the parameter $\omega_k$ to $j$-th component of the combined
+feature vector, given $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
 and source sample set $D$ is the following value:
 \begin{equation}
   T_{ij}(f) =
