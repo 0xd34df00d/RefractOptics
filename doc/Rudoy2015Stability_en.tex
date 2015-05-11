@@ -272,7 +272,7 @@ to the source data set:
 \[
   \acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) = \{ \acute{D}_1 (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y), \dots, \acute{D}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) \}.
 \]
-Let $\overline{\sigma}_i$ be the sample standard deviation of the $i$-th component of the
+Let $\overline{\sigma}_k$ be the sample standard deviation of the $k$-th component of the
 $\Delta\hat{\boldsymbol{\omega}}_f(\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) )$
 random vector on the $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$ set.
 
@@ -284,14 +284,16 @@ corresponding feature vector $\mathbf{x}_i$ the \emph{combined feature vector}.
 feature vector, given $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
 and source sample set $D$ is the following value:
 \begin{equation}
-  T_{ij}(f) =
+  \Large
+  T_{kj}(f) =
 	\begin{cases}
-	  \displaystyle \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r\big(\{ \frac{\sigma_{kj}^{\mathbf{x}}}{x_{kj}} \}_{k \in \{ 1, \dots, \ell \}}\big)} & j \leq |\mathbf{x}| \\
-	  \displaystyle \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r\big(\{ \frac{\sigma_{k}^{y}}{y_k} \}_{k \in \{ 1, \dots, \ell \}}\big)} & j = |\mathbf{x}| + 1
+	  \displaystyle \frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{r\big(\{ \frac{\sigma_{ij}^{\mathbf{x}}}{x_{ij}} \}_{i \in \{ 1, \dots, \ell \}}\big)} & j \leq n \\
+	  \displaystyle \frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{r\big(\{ \frac{\sigma_{i}^{y}}{y_i} \}_{i \in \{ 1, \dots, \ell \}}\big)} & j = n + 1
 	\end{cases}
   \label{eq:t_rel}
 \end{equation}
-where $r$ is a function mapping a vector of quotients to a single scalar value.
+where $r$ is a function mapping a vector of quotients to a single scalar value, and $n$
+is the dimensionality of the feature space.
 \end{defin}
 
 The function $r$ maps to a single scalar value a set of (perhaps different) ratios of standard
