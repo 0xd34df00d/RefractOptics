@@ -28,3 +28,5 @@ void WriteCoeffs (const Params& p, const Stats_t& results, const std::string& in
 		std::cout << "wrote " << fname.str () << std::endl;
 	}
 }
+
+void WriteTeX (size_t paramsCount, const std::vector<double>& xVars, const std::vector<double>& yVars, Stats_t stats);
