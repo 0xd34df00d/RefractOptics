@@ -343,7 +343,6 @@ generated for the chosen values according to \eqref{eq:d_acute}. The new
 parameter vector is then calculated which minimizes \eqref{eq:s} on the
 modified sample set $\acute{D}(\sigma_n, \sigma_{\lambda})$ according to
 \eqref{eq:hat_omega}.
-
 This is repeated multiple times for each given pair of $\sigma_{\lambda}$ and $\sigma_n$
 until some stop condition is reached (like the number of iterations), after which
 empirical value for $\mathbb{T}_{\hat{f}}$ is computed.
@@ -399,14 +398,14 @@ are shown in table \ref{tabl:source_data}.
   \footnotesize
   \caption{Measured refraction indexes.}
   \centering
-  \begin{tabular}{l | r | r | r | r | r | r | r | r | r}
+  \begin{tabular}{| l | r | r | r | r | r | r | r | r | r |} \hline
 	$\lambda$, nm	& 435.8		& 447.1		& 471.3		& 486.1		& 501.6		& 546.1		& 577.0		& 587.6		& 589.3		\\ \hline
 	n, Polymer 1	& 1.36852	& 1.36745	& 1.36543	& 1.35349	& 1.36347	& 1.36126	& 1.3599	& 1.3597	& 1.35952	\\ \hline
 	n, Polymer 2	& 1.35715	& 1.35625	& 1.35449	& 1.36446	& 1.35275	& 1.35083	& 1.34968	& 1.34946	& 1.34938	\\ \hline
 
-	$\lambda$, nm	& 656.3		& 667.8		& 706.5		& 750		& 800		& 850		& 900		& 950		\\ \hline
-	n, Polymer 1	& 1.35767	& 1.35743	& 1.35652	& 1.35587	& 1.35504	& 1.3544	& 1.35403	& 1.35364	\\ \hline
-	n, Polymer 2	& 1.34768	& 1.34740	& 1.34664	& 1.34607	& 1.34544	& 1.34487	& 1.34437	& 1.34407	\\ \hline
+	$\lambda$, nm	& 656.3		& 667.8		& 706.5		& 750		& 800		& 850		& 900		& 950		&			\\ \hline
+	n, Polymer 1	& 1.35767	& 1.35743	& 1.35652	& 1.35587	& 1.35504	& 1.3544	& 1.35403	& 1.35364	&			\\ \hline
+	n, Polymer 2	& 1.34768	& 1.34740	& 1.34664	& 1.34607	& 1.34544	& 1.34487	& 1.34437	& 1.34407	&			\\ \hline
   \end{tabular}
   \label{tabl:source_data}
 \end{table}
@@ -418,23 +417,22 @@ is chosen, for example, from a set of models suggested by experts, and then
 for each of the polymers optimal parameter vectors $\hat{\boldsymbol{\omega}}_{\hat{f}}$
 are found for the given model $f$, and their stability $T$ is estimated.
 
-The following model is suggested by the experts:
+The following model is suggested by the experts, as physical considerations suggest
+that refraction index $n$ depends on even powers of $\lambda$.
 \begin{equation}
-  n = f(\lambda, \boldsymbol{\omega}) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4},
+  n = f(\lambda, \boldsymbol{\omega}) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4}.
   \label{eq:model_0}
 \end{equation}
-as physical considerations show that refraction index $n$ depends on even powers
-of $\lambda$.
 
 \begin{table}[h]
   \centering
   \footnotesize
   \caption{Parameters of \eqref{eq:model_0} and their relative residual.}
-  \begin{tabular}{l | c | c | c | c}
-						& $\omega_1$			& $\omega_2$			& $\omega_3$				& MSE	\\ \hline
-    Polymer 1			& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\
-    Polymer 2			& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\
-    Relative residual	& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&	\\
+  \begin{tabular}{| l | c | c | c | c |} \hline
+						& $\omega_1$			& $\omega_2$			& $\omega_3$			& MSE						\\ \hline
+    Polymer 1			& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\ \hline
+    Polymer 2			& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\ \hline
+    Relative residual	& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&							\\ \hline
   \end{tabular}
   \label{tabl:res_even_coeffs}
 \end{table}
@@ -458,11 +456,11 @@ digits, while the rest are rounded to 2-3 significant digits.
   \centering
   \footnotesize
   \caption{Parameters of \eqref{eq:model_incorrect} and their relative residual.}
-  \begin{tabular}{l | c | c | c | c | c | c | c}
-						& $\omega_1$			& $\omega_2$			& $\omega_3$			& $\omega_4$			& $\omega_5$			& $\omega_6$			& MSE	\\ \hline
-	Polymer 1			& 1.34782				& 4.88627				& -456.289				& $0.945789 \cdot 10^6$	& $1.5735 \cdot 10^7$	& 128811				& $5.2 \cdot 10^{-8}$	\\
-	Polymer 2			& 1.33743				& 7.08022				& -1961.23				& $1.10729 \cdot 10^6$	& $1.46529 \cdot 10^7$	& 123889				& $3.9 \cdot 10^{-8}$	\\
-	Relative residual	& $7.74 \cdot 10^{-3}$	& $3.67 \cdot 10^{-1}$	& 1.25					& $1.57 \cdot 10^{-1}$	& $7.12 \cdot 10^{-2}$	& $3.9 \cdot 10^{-2}$							\\
+  \begin{tabular}{| l | c | c | c | c | c | c | c |} \hline
+						& $\omega_1$			& $\omega_2$			& $\omega_3$			& $\omega_4$			& $\omega_5$			& $\omega_6$			& MSE					\\ \hline
+	Polymer 1			& 1.34782				& 4.88627				& -456.289				& $0.945789 \cdot 10^6$	& $1.5735 \cdot 10^7$	& 128811				& $5.2 \cdot 10^{-8}$	\\ \hline
+	Polymer 2			& 1.33743				& 7.08022				& -1961.23				& $1.10729 \cdot 10^6$	& $1.46529 \cdot 10^7$	& 123889				& $3.9 \cdot 10^{-8}$	\\ \hline
+	Relative residual	& $7.74 \cdot 10^{-3}$	& $3.67 \cdot 10^{-1}$	& 1.25					& $1.57 \cdot 10^{-1}$	& $7.12 \cdot 10^{-2}$	& $3.9 \cdot 10^{-2}$	&						\\ \hline
   \end{tabular}
   \label{tabl:res_all_coeffs}
 \end{table}
@@ -490,10 +488,10 @@ table \ref{tabl:res_even}.
   \centering
   \footnotesize
   \caption{Standard deviation of parameters of \eqref{eq:model_0} for the first polymer for some $\sigma_{\lambda}$ and $\sigma_n$.}
-  \begin{tabular}{l | c | c | c}
+  \begin{tabular}{| l | c | c | c |} \hline
 	$\omega_i$	& $\frac{\sigma_{\lambda}}{\lambda} = 2 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-5}$	& $ \frac{\sigma_{\lambda}}{\lambda} = 6 \cdot 10^{-4}; \frac{\sigma_n}{n} = 6 \cdot 10^{-5} $	& $ \frac{\sigma_{\lambda}}{\lambda} = 9 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-4} $ \\ \hline
-	1		& $1.22 \cdot 10^{-5}$																			& $ 3.59 \cdot 10^{-5} $																		& $ 1.19 \cdot 10^{-4} $		\\
-	2		& $1.48 \cdot 10^{-3}$																			& $ 4.38 \cdot 10^{-3} $																		& $ 1.44 \cdot 10^{-2} $		\\
+	1		& $1.22 \cdot 10^{-5}$																			& $ 3.59 \cdot 10^{-5} $																		& $ 1.19 \cdot 10^{-4} $		\\ \hline
+	2		& $1.48 \cdot 10^{-3}$																			& $ 4.38 \cdot 10^{-3} $																		& $ 1.44 \cdot 10^{-2} $		\\ \hline
   \end{tabular}
   \label{tabl:res_even_stddev}
 \end{table}
