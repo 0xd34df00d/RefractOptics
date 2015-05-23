@@ -76,8 +76,8 @@ void calculateConvergence (const TrainingSet_t& pairs)
 	{
 		const auto& fixedP = solve<ParamsCount> (pairs,
 				residual, residualDer, varsDer,
-				[i] (const TrainingSetInstance_t& pair) { return i * pair.second * 0.02; },
-				[] (const TrainingSetInstance_t& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
+				[i] (const auto& pair) { return i * pair.second * 0.02; },
+				[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
 				{{ 0.002, 0.0002, 100 }});
 		ostr << i << " " << dlib::trans (fixedP);
 	}
@@ -133,8 +133,8 @@ int main (int argc, char **argv)
 
 	const auto& fixedP = solve<ParamsCount> (pairs,
 			residual, residualDer, varsDer,
-			[] (const TrainingSetInstance_t& pair) { return pair.second * 0.02; },
-			[] (const TrainingSetInstance_t& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
+			[] (const auto& pair) { return pair.second * 0.02; },
+			[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
 			{{ 0.002, 0.0002, 100 }});
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
