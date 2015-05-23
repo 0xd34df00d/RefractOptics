@@ -31,6 +31,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <limits>
+#include <boost/program_options.hpp>
 #include "solve.h"
 #include "util.h"
 #include "symbregmodels.h"
@@ -82,15 +83,45 @@ void calculateConvergence (const TrainingSet_t& pairs)
 	}
 }
 
-int main (int argc, char **argv)
+boost::program_options::variables_map parseOptions (int argc, char **argv)
 {
-	if (argc < 2)
+	namespace po = boost::program_options;
+
+	po::options_description desc { "Allowed options" };
+	desc.add_options ()
+		("help", "show help")
+		("input-file", po::value<std::string> (), "input data file")
+		("multiplier", po::value<int> (), "set multiplier");
+
+	po::positional_options_description p;
+	p.add ("input-file", -1);
+
+	po::variables_map vm;
+	po::store (po::command_line_parser (argc, argv).options (desc).positional (p).run (), vm);
+	po::notify (vm);
+
+	if (vm.count ("help"))
 	{
-		std::cout << "Usage: " << argv [0] << " datafile" << std::endl;
-		return 1;
+		std::cout << "Usage:\n" << desc << std::endl;
+		return {};
 	}
 
-	const std::string infile (argv [1]);
+	if (!vm.count ("input-file"))
+	{
+		std::cout << "Usage:\n" << desc << std::endl;
+		throw std::runtime_error { "no input file is set!" };
+	}
+
+	return vm;
+}
+
+int main (int argc, char **argv)
+{
+	const auto& vm = parseOptions (argc, argv);
+	if (vm.empty ())
+		return 1;
+
+	const auto& infile = vm ["input-file"].as<std::string> ();
 	const auto& pairs = LoadData (infile);
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
@@ -147,9 +178,9 @@ int main (int argc, char **argv)
 		5e-2,
 	};
 
-	auto symbRegSolver = [] (const TrainingSet_t& pts, double xVar, double yVar)
+	const auto multiplier = vm ["multiplier"].as<int> ();
+	auto symbRegSolver = [multiplier] (const TrainingSet_t& pts, double xVar, double yVar)
 	{
-		const auto multiplier = 32;
 		if (std::min (xVar, yVar) < 1e-1)
 		{
 			xVar *= multiplier;
