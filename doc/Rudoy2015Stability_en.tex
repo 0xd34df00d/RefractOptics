@@ -182,7 +182,7 @@ We first consider the general case of multivariate regression problem and define
 stability for this general case.
 
 Let $D = \{ \mathbf{x}_i, y_i \mid i \in \{ 1, \dots, \ell \} \ \}$ be the sample
-set of $\ell$ measurements, where $\mathbf{x}_i \in \mathcal{R}^n$ is the feature vector of $i$-th
+set of $\ell$ measurements, where $\mathbf{x}_i \in \mathcal{R}^m$ is the feature vector of $i$-th
 object measured during the experiment, and $y_i$ is the corresponding measured
 value of the target function to be recovered.
 
@@ -285,12 +285,14 @@ and source sample set $D$ is the following value:
   \Large
   T_{kj}(f) =
 	\begin{cases}
-	  \displaystyle \frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{r\big(\{ \frac{\sigma_{ij}^{\mathbf{x}}}{x_{ij}} \}_{i \in \{ 1, \dots, \ell \}}\big)} & j \leq n \\
-	  \displaystyle \frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{r\big(\{ \frac{\sigma_{i}^{y}}{y_i} \}_{i \in \{ 1, \dots, \ell \}}\big)} & j = n + 1
+	  \displaystyle
+		\frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{r\big(\{ \frac{\sigma_{ij}^{\mathbf{x}}}{x_{ij}} \}_{i \in \{ 1, \dots, \ell \}}\big)} & j \leq m \\
+	  \displaystyle
+		\frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{r\big(\{ \frac{\sigma_{i}^{y}}{y_i} \}_{i \in \{ 1, \dots, \ell \}}\big)} & j = m + 1
 	\end{cases}
   \label{eq:t_rel}
 \end{equation}
-where $r$ is a function mapping a vector of quotients to a single scalar value, and $n$
+where $r$ is a function mapping a vector of quotients to a single scalar value, and $m$
 is the dimensionality of the feature space.
 \end{defin}
 
