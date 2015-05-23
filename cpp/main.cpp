@@ -33,137 +33,7 @@
 #include <limits>
 #include "solve.h"
 #include "util.h"
-
-namespace Series
-{
-	const size_t ParamsCount = 3;
-
-	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		double result = 0;
-		const auto x = data.first (0);
-		for (size_t i = 0; i < ParamsCount; ++i)
-			result += p (i) / std::pow (x, 2 * i);
-		return result - data.second;
-	}
-
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		Params_t<ParamsCount> res;
-		const auto x = data.first (0);
-		for (size_t i = 0; i < ParamsCount; ++i)
-			res (i) = 1 / std::pow (x, 2 * i);
-		return res;
-	}
-
-	namespace
-	{
-		double subDerivative (double x, int64_t i, double p_i)
-		{
-			return -2 * i * p_i * std::pow (x, -2 * i - 1);
-		}
-	}
-
-	SampleType_t varsDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto x = data.first (0);
-
-		double result = 0;
-		for (size_t i = 1; i < ParamsCount; ++i)
-			result += subDerivative (x, static_cast<int64_t> (i), p (i));
-
-		SampleType_t res;
-		res (0) = result;
-		return res;
-	}
-}
-
-namespace Laser
-{
-	const auto L = 150.0;
-	const size_t ParamsCount = 3;
-
-	double alpha0MinusLn (double alpha0, double r0)
-	{
-		return alpha0 - std::log (r0) / (2 * L);
-	}
-
-	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto r0 = data.first (0);
-		const auto g0 = p (0);
-		const auto alpha0 = p (1);
-		const auto k = p (2);
-
-		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1) - data.second;
-	}
-
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto r0 = data.first (0);
-		const auto g0 = p (0);
-		const auto alpha0 = p (1);
-		const auto k = p (2);
-
-		const auto dg0 = k * (1 - r0) / (1 + r0) / alpha0MinusLn (alpha0, r0);
-		const auto dalpha0 = -g0 * k * (1 - r0) / (1 + r0) / std::pow (alpha0MinusLn (alpha0, r0), 2);
-		const auto dk = (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1);
-
-		Params_t<ParamsCount> res;
-		res (0) = dg0;
-		res (1) = dalpha0;
-		res (2) = dk;
-		return res;
-	}
-
-	SampleType_t varsDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto r0 = data.first (0);
-		const auto g0 = p (0);
-		const auto alpha0 = p (1);
-		const auto k = p (2);
-
-		auto result = -2 * (g0 / alpha0MinusLn (alpha0, r0) - 1) / (1 + r0) / (1 + r0);
-		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * std::pow (alpha0MinusLn (alpha0, r0), 2));
-
-		SampleType_t res;
-		res (0) = result * k;
-		return res;
-	}
-}
-
-namespace Resonance
-{
-	const size_t ParamsCount = 3;
-
-	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto x = data.first (0);
-		const auto x2 = x * x;
-
-		const double cminus = p (2) - 1.0 / x2;
-		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot >= 0 ? std::sqrt(underRoot) : 10;
-
-		return root - data.second;
-	}
-
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto x = data.first (0);
-		const auto x2 = x * x;
-
-		const double cminus = p (2) - 1.0 / x2;
-		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot > 0 ? std::sqrt(underRoot) : 10;
-
-		Params_t<ParamsCount> res;
-		res (0) = 1. / (2. * root);
-		res (1) = 1. / (2. * root * cminus);
-		res (2) = -(p (1) / (2 * root * cminus * cminus));
-		return res;
-	}
-}
+#include "symbregmodels.h"
 
 using namespace Laser;
 
@@ -188,7 +58,6 @@ void TryLOO (const TrainingSet_t& allPairs)
 		std::cout << "MSE: " << sum / pairs.size () << std::endl << std::endl;;
 	}
 }
-
 
 double GetMse (const TrainingSet_t& pairs, const Params_t<ParamsCount>& p)
 {
