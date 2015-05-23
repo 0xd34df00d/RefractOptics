@@ -68,6 +68,20 @@ double GetMse (const TrainingSet_t& pairs, const Params_t<ParamsCount>& p)
 			});
 }
 
+void calculateConvergence (const TrainingSet_t& pairs)
+{
+	std::ofstream ostr { "convergence.txt" };
+	for (double i = 1; i < 10; i += 0.01)
+	{
+		const auto& fixedP = solve<ParamsCount> (pairs,
+				residual, residualDer, varsDer,
+				[i] (const TrainingSetInstance_t& pair) { return i * pair.second * 0.02; },
+				[] (const TrainingSetInstance_t& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
+				{{ 0.002, 0.0002, 100 }});
+		ostr << i << " " << dlib::trans (fixedP);
+	}
+}
+
 int main (int argc, char **argv)
 {
 	if (argc < 2)
