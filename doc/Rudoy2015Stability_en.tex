@@ -312,7 +312,14 @@ the value of that component).
 For instance, if this ratio is greater than one, then the error in determining the $\hat{\omega}_i$
 parameter is bigger than the measurement error of corresponding variable.
 
-In the particular case of the dispersion regression considered in this paper, \eqref{eq:s_common}
+For simple cases of regression functions depending on a single scalar parameter (like the optical
+dispersion case illustrating this approach) it is probably more interpretable and natural to study the
+dependency of \emph{absolute stability} $\frac{\overline{\sigma}_i}{\hat{\omega}_i}$ on the
+normalized slight variations in sample set, $\frac{\sigma_n}{n}$ and $\frac{\sigma_{\lambda}}{\lambda}$.
+
+\section{Polymers dispersion models stability estimation}
+
+For the case of the dispersion regression considered in this paper, \eqref{eq:s_common}
 is
 \begin{equation}
   S(f, D) = \sum_{i = 1}^\ell (f(\lambda_i) - n_i)^2 \rightarrow \min_{f \in \mathcal{F}},
@@ -325,31 +332,19 @@ and, taking into account the constant relative measurement error:
 \[
   T_{k1}(f) = \frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{\frac{\sigma_{\lambda}}{\lambda}}.
 \]
-In case of the optical dispersion regression, it is required to study the dependency of stability
-$T_{i0}(f)$ and $T_{i1}(f)$ as function of $\sigma_n$ and $\sigma_{\lambda}$.
+In case of an optical dispersion model $f$, it is required to study the
+dependency of stability $T_{i0}(f)$ and $T_{i1}(f)$ as function of
+$\sigma_n$ and $\sigma_{\lambda}$.
 
-For simple cases of regression functions depending on a single scalar parameter (like the optical
-dispersion case illustrating this approach) it is probably more interpretable to study the
-dependency of \emph{absolute stability} $\frac{\overline{\sigma}_i}{\hat{\omega}_i}$ on the
-normalized slight variations in sample set, $\frac{\sigma_n}{n}$ and $\frac{\sigma_{\lambda}}{\lambda}$.
-
-\section{Stability estimation method}
-
-In order to estimate the stability $\mathbb{T}_{\hat{f}}$ of some model $\hat{f}$
-which a solution of \eqref{eq:s_f}, the structure of the model $\hat{f}$ is fixed
-and the standard deviation of its parameters is studied as the function of the
-standard deviation of a noise in the sample set, as proposed in section
-\ref{sect:prob_stat}.
-
-For the case of transparent polymers dispersion curve considered,
-some values for $\sigma_{\lambda}$ and $\sigma_n$ are chosen,
+The procedure for estimating model stability follows the definition of stability:
+first, some values for $\sigma_{\lambda}$ and $\sigma_n$ are chosen,
 then the modified sample set $\acute{D}(\sigma_n, \sigma_{\lambda})$ is
 generated for the chosen values according to \eqref{eq:d_acute}. The new
 parameter vector is then calculated which minimizes \eqref{eq:s} on the
 modified sample set $\acute{D}(\sigma_n, \sigma_{\lambda})$ according to
 \eqref{eq:hat_omega}.
 
-This procedure is repeated multiple times for each given pair of $\sigma_{\lambda}$ and $\sigma_n$
+This is repeated multiple times for each given pair of $\sigma_{\lambda}$ and $\sigma_n$
 until some stop condition is reached (like the number of iterations), after which
 empirical value for $\mathbb{T}_{\hat{f}}$ is computed.
 
