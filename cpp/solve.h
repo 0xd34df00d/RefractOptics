@@ -44,8 +44,8 @@ using TrainingSet_t = TrainingSetBase_t<double>;
 
 template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
 
-template<size_t ParamsCount, typename R, typename D>
-Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D paramsDer, const std::array<double, ParamsCount>& initial)
+template<size_t ParamsCount, typename R, typename D, typename TS>
+Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<double, ParamsCount>& initial)
 {
 	Params_t<ParamsCount> p;
 	for (auto i = 0u; i < ParamsCount; ++i)
@@ -56,12 +56,13 @@ Params_t<ParamsCount> solve (const TrainingSet_t& pairs, R res, D paramsDer, con
 }
 
 template<size_t ParamsCount,
+		typename TS,
 		typename ResidualT,
 		typename ParamsDerivativeT,
 		typename VariablesDerivativeT,
 		typename YSigmaGetterT,
 		typename XSigmasGetterT>
-Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
+Params_t<ParamsCount> solve (const TS& pairs,
 		ResidualT res, ParamsDerivativeT paramsDer, VariablesDerivativeT varsDer,
 		YSigmaGetterT ySigma, XSigmasGetterT xSigmas,
 		const std::array<double, ParamsCount>& initial)
