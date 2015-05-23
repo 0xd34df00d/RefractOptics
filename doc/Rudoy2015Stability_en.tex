@@ -221,7 +221,7 @@ where $\mathcal{F}$ is a superpositions set from which an optimal one must be fo
 The stability describes the variance of the parameters $\boldsymbol{\omega}$ of the model $f$
 during slight random variation of the source sample set $D$,
 
-Denote the matrix representing the data set as $X = [ x_{ij} ]$, where
+Denote the matrix representing the data set as $X = \| x_{ij} \|$, where
 rows are feature vectors of the objects in $D$. In other words, $x_{ij}$
 is the $j$-th component of the feature vector of the $i$-th object.
 
@@ -320,10 +320,10 @@ is
 \end{equation}
 and, taking into account the constant relative measurement error:
 \[
-  T_{i0}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_n}{n}},
+  T_{k0}(f) = \frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{\frac{\sigma_n}{n}},
 \]
 \[
-  T_{i1}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_{\lambda}}{\lambda}}.
+  T_{k1}(f) = \frac{\frac{\overline{\sigma}_k}{\hat{\omega}_k}}{\frac{\sigma_{\lambda}}{\lambda}}.
 \]
 In case of the optical dispersion regression, it is required to study the dependency of stability
 $T_{i0}(f)$ and $T_{i1}(f)$ as function of $\sigma_n$ and $\sigma_{\lambda}$.
