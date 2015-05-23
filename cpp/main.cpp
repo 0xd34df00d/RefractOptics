@@ -38,8 +38,9 @@
 
 using namespace Laser;
 
-void TryLOO (const TrainingSet_t& allPairs)
+void TryLOO (const TrainingSet_t& srcPairs)
 {
+	auto allPairs = preprocess (srcPairs);
 	for (size_t i = 0; i < allPairs.size (); ++i)
 	{
 		std::cout << "omitting point " << i << std::endl;
@@ -60,8 +61,9 @@ void TryLOO (const TrainingSet_t& allPairs)
 	}
 }
 
-double GetMse (const TrainingSet_t& pairs, const Params_t<ParamsCount>& p)
+double GetMse (const TrainingSet_t& srcPairs, const Params_t<ParamsCount>& p)
 {
+	const auto& pairs = preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
 			[&p] (double sum, auto pair)
 			{
@@ -74,7 +76,7 @@ void calculateConvergence (const TrainingSet_t& pairs)
 	std::ofstream ostr { "convergence.txt" };
 	for (double i = 1; i < 10; i += 0.01)
 	{
-		const auto& fixedP = solve<ParamsCount> (pairs,
+		const auto& fixedP = solve<ParamsCount> (preprocess (pairs),
 				residual, residualDer, varsDer,
 				[i] (const auto& pair) { return i * pair.second * 0.02; },
 				[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
@@ -126,12 +128,12 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
-	const auto& p = solve<ParamsCount> (pairs,
+	const auto& p = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, {{ 0.002, 0.0002, 100 }});
 	std::cout << "inferred params: " << dlib::trans (p);
 	std::cout << "MSE: " << GetMse (pairs, p) << std::endl << std::endl;
 
-	const auto& fixedP = solve<ParamsCount> (pairs,
+	const auto& fixedP = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, varsDer,
 			[] (const auto& pair) { return pair.second * 0.02; },
 			[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
@@ -139,11 +141,6 @@ int main (int argc, char **argv)
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
 	std::cout << "MSE: " << GetMse (pairs, fixedP) << std::endl << std::endl;
-
-	//TryLOO (pairs);
-	//TrySVM (pairs);
-	//TrySVMPoly (pairs);
-	//TrySVMSigmoid (pairs);
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
@@ -178,21 +175,6 @@ int main (int argc, char **argv)
 		5e-2,
 	};
 
-	const auto multiplier = vm ["multiplier"].as<int> ();
-	auto symbRegSolver = [multiplier] (const TrainingSet_t& pts, double xVar, double yVar)
-	{
-		if (std::min (xVar, yVar) < 1e-1)
-		{
-			xVar *= multiplier;
-			yVar *= multiplier;
-		}
-
-		return solve<ParamsCount> (pts,
-				residual, residualDer, varsDer,
-				[yVar] (const TrainingSetInstance_t& pair) { return pair.second * yVar; },
-				[xVar] (const TrainingSetInstance_t& pair) { return pair.first (0) * xVar; },
-				{{ 0.002, 0.0002, 100 }});
-	};
 	auto svmSolver = [] (const TrainingSet_t& pts)
 	{
 		dlib::svr_trainer<dlib::radial_basis_kernel<SampleType_t>> trainer;
@@ -211,7 +193,10 @@ int main (int argc, char **argv)
 		const auto& df = trainer.train (samples, targets);
 		return df.alpha;
 	};
-	auto results = calcStats (symbRegSolver, xVars, yVars, pairs);
+
+	const auto multiplier = vm ["multiplier"].as<int> ();
+	using namespace std::placeholders;
+	auto results = calcStats (std::bind (symbRegSolver, multiplier, _1, _2, _3), xVars, yVars, pairs);
 
 	WriteCoeffs (p, results, infile);
 }
