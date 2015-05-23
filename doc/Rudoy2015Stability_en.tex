@@ -222,7 +222,7 @@ The stability describes the variance of the parameters $\boldsymbol{\omega}$ of 
 during slight random variation of the source sample set $D$,
 
 Denote the matrix representing the data set as $X = \| x_{ij} \|$, where
-rows are feature vectors of the objects in $D$. In other words, $x_{ij}$
+rows are feature vectors of the objects in $D$, so $x_{ij}$
 is the $j$-th component of the feature vector of the $i$-th object.
 
 Consider the parameter vector
@@ -349,8 +349,8 @@ until some stop condition is reached (like the number of iterations), after whic
 empirical value for $\mathbb{T}_{\hat{f}}$ is computed.
 
 By performing the above steps for different $\sigma_{\lambda}$ and $\sigma_n$,
-it is possible to estimate the dependency of the superposition parameters
-standard deviation on the parameters $\sigma_{\lambda}$ and $\sigma_n$ of the noise.
+the dependency of the superposition parameters standard deviation on the
+parameters $\sigma_{\lambda}$ and $\sigma_n$ of the noise is estimated.
 
 It is reasonable to expect that smooth dependency of superposition coefficients
 on the noise means stable (in expert sense) model, while extremely
@@ -366,6 +366,7 @@ are considered, each of them having 17 samples corresponding to the
 refraction index at different wavelengths. The values of the measurements
 are shown in table \ref{tabl:source_data}.
 
+\begin{comment}
 \begin{table}[h]
   \footnotesize
   \caption{Measured refraction indexes at different wavelengths.}
@@ -392,6 +393,23 @@ are shown in table \ref{tabl:source_data}.
   \end{tabular}
   \label{tabl:source_data}
 \end{table}
+\end{comment}
+
+\begin{table}[h]
+  \footnotesize
+  \caption{Measured refraction indexes.}
+  \centering
+  \begin{tabular}{l | r | r | r | r | r | r | r | r | r}
+	$\lambda$, nm	& 435.8		& 447.1		& 471.3		& 486.1		& 501.6		& 546.1		& 577.0		& 587.6		& 589.3		\\ \hline
+	n, Polymer 1	& 1.36852	& 1.36745	& 1.36543	& 1.35349	& 1.36347	& 1.36126	& 1.3599	& 1.3597	& 1.35952	\\ \hline
+	n, Polymer 2	& 1.35715	& 1.35625	& 1.35449	& 1.36446	& 1.35275	& 1.35083	& 1.34968	& 1.34946	& 1.34938	\\ \hline
+
+	$\lambda$, nm	& 656.3		& 667.8		& 706.5		& 750		& 800		& 850		& 900		& 950		\\ \hline
+	n, Polymer 1	& 1.35767	& 1.35743	& 1.35652	& 1.35587	& 1.35504	& 1.3544	& 1.35403	& 1.35364	\\ \hline
+	n, Polymer 2	& 1.34768	& 1.34740	& 1.34664	& 1.34607	& 1.34544	& 1.34487	& 1.34437	& 1.34407	\\ \hline
+  \end{tabular}
+  \label{tabl:source_data}
+\end{table}
 
 The dispersion of both polymers is assumed to be described by a functional dependency
 of the same structure differing only by the exact values of the model parameters,
@@ -400,26 +418,26 @@ is chosen, for example, from a set of models suggested by experts, and then
 for each of the polymers optimal parameter vectors $\hat{\boldsymbol{\omega}}_{\hat{f}}$
 are found for the given model $f$, and their stability $T$ is estimated.
 
-The model of the form
+The following model is suggested by the experts:
 \begin{equation}
-  n = f(\lambda, \boldsymbol{\omega}) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4}
+  n = f(\lambda, \boldsymbol{\omega}) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4},
   \label{eq:model_0}
 \end{equation}
-is suggested by the experts, as physical considerations show that refraction index
-$n$ depends on even powers of the wavelength $\lambda$.
+as physical considerations show that refraction index $n$ depends on even powers
+of $\lambda$.
 
-The optimal values of parameters vector $\boldsymbol{\omega}$ for the first and
-the second polymer are shown in table \ref{tabl:res_even_coeffs}.
+The optimal values of parameters vector $\boldsymbol{\omega}$ for both polymers are
+shown in table \ref{tabl:res_even_coeffs}.
 
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Coefficients of model \eqref{eq:model_0} and their relative residual.}
+  \caption{Parameters of \eqref{eq:model_0} and their relative residual.}
   \begin{tabular}{l | c | c | c | c}
-				& $\omega_1$				& $\omega_2$				& $\omega_3$				& MSE	\\ \hline
-    Polymer 1	& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\
-    Polymer 2	& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\
-	Residual		& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&	\\
+						& $\omega_1$			& $\omega_2$				& $\omega_3$				& MSE	\\ \hline
+    Polymer 1			& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\
+    Polymer 2			& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\
+    Relative residual	& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&	\\
   \end{tabular}
   \label{tabl:res_even_coeffs}
 \end{table}
@@ -454,7 +472,7 @@ table \ref{tabl:res_even}.
 \begin{table}[h]
   \centering
   \footnotesize
-  \caption{Standard deviation of \eqref{eq:model_0} parameters for the first polymer for selected noise parameters.}
+  \caption{Standard deviation of parameters of \eqref{eq:model_0} for the first polymer for some $\sigma_{\lambda}$ and $\sigma_n$.}
   \begin{tabular}{l | c | c | c}
 	$\omega_i$	& $\frac{\sigma_{\lambda}}{\lambda} = 2 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-5}$	& $ \frac{\sigma_{\lambda}}{\lambda} = 6 \cdot 10^{-4}; \frac{\sigma_n}{n} = 6 \cdot 10^{-5} $	& $ \frac{\sigma_{\lambda}}{\lambda} = 9 \cdot 10^{-4}; \frac{\sigma_n}{n} = 2 \cdot 10^{-4} $ \\ \hline
 	1		& $1.22 \cdot 10^{-5}$																			& $ 3.59 \cdot 10^{-5} $																		& $ 1.19 \cdot 10^{-4} $		\\
@@ -467,10 +485,10 @@ The graphs show that the wavelength measurement error does not significantly aff
 first and second parameters in the region of interest. At the same time, their standard deviation
 depends on the standard deviation of the refraction index almost linearly.
 
-These results can be interpreted in the following way: during experiment planning most attention
+These results can be interpreted as follows: during experiment planning most attention
 should be paid to maximizing the certainity in measuring the refraction index, while the wavelength
 can be measured quite inaccurately with errors up to few nanometers. Moreover, the suggested method
-directly shows how the parameters error depends on the measurement errors of different variables.
+directly shows how the error in determining model parameters depends on the measurement errors of different variables.
 
 It is fundamentally important that the standard deviation of the parameters of the model \eqref{eq:model_0}
 are considerably smaller than the difference between the parameters for two polymers (as shown
