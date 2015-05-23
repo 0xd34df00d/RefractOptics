@@ -100,9 +100,10 @@ namespace Laser
 		const auto alpha0 = p (1);
 		const auto k = p (2);
 
-		const auto dg0 = k * (1 - r0) / (1 + r0) / alpha0MinusLn (alpha0, r0);
-		const auto dalpha0 = -g0 * k * (1 - r0) / (1 + r0) / std::pow (alpha0MinusLn (alpha0, r0), 2);
-		const auto dk = (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1);
+		const auto a0ml = alpha0MinusLn (alpha0, r0);
+		const auto dg0 = k * (1 - r0) / (1 + r0) / a0ml;
+		const auto dalpha0 = -g0 * k * (1 - r0) / (1 + r0) / (a0ml * a0ml);
+		const auto dk = (1 - r0) / (1 + r0) * (g0 / a0ml - 1);
 
 		Params_t<ParamsCount> res;
 		res (0) = dg0;
@@ -118,8 +119,9 @@ namespace Laser
 		const auto alpha0 = p (1);
 		const auto k = p (2);
 
-		auto result = -2 * (g0 / alpha0MinusLn (alpha0, r0) - 1) / (1 + r0) / (1 + r0);
-		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * std::pow (alpha0MinusLn (alpha0, r0), 2));
+		const auto a0ml = alpha0MinusLn (alpha0, r0);
+		auto result = -2 * (g0 / a0ml - 1) / (1 + r0) / (1 + r0);
+		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * a0ml * a0ml);
 
 		SampleType_t res;
 		res (0) = result * k;
