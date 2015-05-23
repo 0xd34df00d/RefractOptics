@@ -393,84 +393,34 @@ are shown in table \ref{tabl:source_data}.
   \label{tabl:source_data}
 \end{table}
 
-The dispersion of both polymers is assumed to be described by the functional dependency
-of the same structure, as it obeys the same physical laws. Because of this, firstly the
-model $\hat{f}$ is chosen which minimizes \eqref{eq:s_f} for the first polymer, and then
+The dispersion of both polymers is assumed to be described by a functional dependency
+of the same structure differing only by the exact values of the model parameters,
+as it obeys the same physical laws. Because of this, firstly the model $f$
+is chosen, for example, from a set of models suggested by experts, and then
 for each of the polymers optimal parameter vectors $\hat{\boldsymbol{\omega}}_{\hat{f}}$
-are found for the given model $\hat{f}$, and their stability $T$ is estimated.
+are found for the given model $f$, and their stability $T$ is estimated.
 
-The data set was not splitted to learning set and control set, as overfitting was
-mitigated by the complexity penalty.
-
-Physical considerations show \citep{Serova11_en} that dispersion should be a sum of even
-powers of the wavelength, so the elementary function set consists of the function
-\[
-  g_3(\lambda, p) = \frac{1}{\lambda^{2p}},
-\]
-and standard addition and multiplication operations:
-\[
-  g_1(x_1, x_2) = x_1 + x_2,
-\]
-\[
-  g_2(x_1, x_2) = x_1 x_2.
-\]
-
-During computational experiment constants with absolute value less than $10^{-7}$
-were zeroed.
-
-The algorithm described above generated the following superposition at $\alpha = 0.05$, $\tau = 10$:
+The model of the form
 \begin{equation}
-  f(\lambda) = 1.3495 + \frac{3.5465 \cdot 10^3}{\lambda^2} + \frac{2.023 \cdot 10^3}{\lambda^4}.
-  \label{eq:res_0}
+  n = f(\lambda, \boldsymbol{\omega}) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4}
+  \label{eq:model_0}
 \end{equation}
-The complexity of this model is $13$, MSE is $2.4 \cdot 10^{-8}$ and $Q_f \approx 0.095$.
-Wavelengths are assumed to be in nanometers.
+is suggested by the experts, as physical considerations show that refraction index
+$n$ depends on even powers of the wavelength $\lambda$.
 
-It is worth noting that only two first terms are considered in practical applications, while
-higher powers are neglected. The value of the last term in \eqref{eq:res_0}
-agrees with this practice.
-
-\paragraph{Complexity penalty.}
-
-The effect of adding odd powers to the elementary function set is studied here by replacing
-$g_3$ with 
-\[
-  g_3(\lambda, p) = \frac{1}{\lambda^p}.
-\]
-
-With the same parameters $\alpha = 0.05$ and $\tau = 10$ the resulting function is still
-\eqref{eq:res_0}.
-
-Increasing $\tau$ up to 30 results in the following model:
+In addition to \eqref{eq:model_0} the model
 \begin{equation}
-  n(\lambda) = 1.34 + \frac{11.6}{\lambda} + \frac{17.37}{\lambda^2} + \frac{0.0866}{\lambda^3} + \frac{2.95 \cdot 10^{-4}}{\lambda^4} + \frac{8.54 \cdot 10^{-7}}{\lambda^5}.
-  \label{eq:res_incorrect}
+  n = f(\lambda, \boldsymbol{\omega}) = \sum_{i = 1}^6 \frac{\omega_i}{\lambda^{i - 1}}.
+  \label{eq:model_incorrect}
 \end{equation}
-Its complexity is $31$, MSE is $\approx 3.9 \cdot 10^{-9}$ and $Q_f \approx 0.31$.
-
-In other words, bigger target complexity (expressed by $\tau$) leads to selecting
-more complex (and, in this case, physically incorrect) model with smaller mean square error.
-
-Thus, excessive values of $\tau$ lead to overfitting.
-
-\paragraph{Support vector machine.}
-
-SVM with RBF kernel \citep{Vapnik79_en} was used as baseline algorithm. The $\gamma$ kernel
-parameter was selected by crossvalidation. The best result was a combination of 15
-support vectors with $\gamma \approx 2 \cdot 10^{-6}$. MSE during 2-fold crossvalidation
-was $8.96 \cdot 10^{-8}$. The resulting model, though, is uninterpretable.
+was also considered. It also consists of odd powers of $\lambda$ and is an example
+of an overfitted model.
 
 \paragraph{Model stability.}
+The stability of \eqref{eq:model_0} was estimated using the proposed method.
+The size $N$ of the modified samples set $\acute{\mathcal{D}}_N$ was equal to $10^4$.
 
-In order to estimate the stability, the structure of \eqref{eq:res_0} had been fixed as
-\[
-  f(\lambda) = \omega_1 + \frac{\omega_2}{\lambda^2} + \frac{\omega_3}{\lambda^4},
-\]
-and the dependency of standard deviation of $\omega_1$, $\omega_2$ and $\omega_3$
-of standard deviation of a gaussian noise was studied by proposed method.
-The stop criteria was reaching $10^4$ iterations for each pair of $(\sigma_{\lambda}, \sigma_n)$.
-
-The standard deviation surfaces for parameters $\omega_i$ for both polymers are shown in
+The standard deviation graphs for parameters $\omega_i$ for both polymers are shown in
 table \ref{tabl:res_even}.
 
 \begin{table}[h]
