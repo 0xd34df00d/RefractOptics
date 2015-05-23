@@ -426,15 +426,12 @@ The following model is suggested by the experts:
 as physical considerations show that refraction index $n$ depends on even powers
 of $\lambda$.
 
-The optimal values of parameters vector $\boldsymbol{\omega}$ for both polymers are
-shown in table \ref{tabl:res_even_coeffs}.
-
 \begin{table}[h]
   \centering
   \footnotesize
   \caption{Parameters of \eqref{eq:model_0} and their relative residual.}
   \begin{tabular}{l | c | c | c | c}
-						& $\omega_1$			& $\omega_2$				& $\omega_3$				& MSE	\\ \hline
+						& $\omega_1$			& $\omega_2$			& $\omega_3$				& MSE	\\ \hline
     Polymer 1			& 1.34946				& 3558.95				& 1924.33				& $2.2 \cdot 10^{-8}$		\\
     Polymer 2			& 1.34047				& 3118.84				& 1578.59				& $1.4 \cdot 10^{-8}$		\\
     Relative residual	& $6.71 \cdot 10^{-3}$	& $1.41 \cdot 10^{-1}$	& $2.2 \cdot 10^{-1}$	&	\\
@@ -442,13 +439,20 @@ shown in table \ref{tabl:res_even_coeffs}.
   \label{tabl:res_even_coeffs}
 \end{table}
 
-In addition to \eqref{eq:model_0} the model
+In addition to \eqref{eq:model_0} the following model was considered, also containing
+odd powers of $\lambda$ and being an example of an overfitted model (optimal parameter
+vectors are shown in table \ref{tabl:res_all_coeffs}):
 \begin{equation}
   n = f(\lambda, \boldsymbol{\omega}) = \sum_{i = 1}^6 \frac{\omega_i}{\lambda^{i - 1}}.
   \label{eq:model_incorrect}
 \end{equation}
-was considered. It also consists of odd powers of $\lambda$ and is an example
-of an overfitted model.
+
+The optimal values of $\boldsymbol{\omega}$ for both polymers are presented in
+tables \ref{tabl:res_even_coeffs} and \ref{tabl:res_all_coeffs} for models
+\eqref{eq:model_0} and \eqref{eq:model_incorrect} respectively, along with mean
+mean square error and relative difference between the corresponding parameters.
+The values of $\boldsymbol{\omega}$ are presented with up to 6 significant
+digits, while the rest are rounded to 2-3 significant digits.
 
 \begin{table}[h]
   \centering
@@ -507,8 +511,6 @@ It is fundamentally important that the standard deviation of the parameters of t
 are considerably smaller than the difference between the parameters for two polymers (as shown
 by tables \ref{tabl:res_even_coeffs} and \ref{tabl:res_even_stddev}), which means that the polymers
 can be separated by such measurements even with an imprecise refractometer.
-
-\paragraph{Stability of the overfitted model.}
 
 The stability of model \eqref{eq:model_incorrect} is studied analogously. Standard deviation
 graphs for the first three parameters are shown in table \ref{tabl:res_incorrect}.
