@@ -450,6 +450,19 @@ In addition to \eqref{eq:model_0} the model
 was considered. It also consists of odd powers of $\lambda$ and is an example
 of an overfitted model.
 
+\begin{table}[h]
+  \centering
+  \footnotesize
+  \caption{Parameters of \eqref{eq:model_incorrect} and their relative residual.}
+  \begin{tabular}{l | c | c | c | c | c | c | c}
+						& $\omega_1$			& $\omega_2$			& $\omega_3$			& $\omega_4$			& $\omega_5$			& $\omega_6$			& MSE	\\ \hline
+	Polymer 1			& 1.34782				& 4.88627				& -456.289				& $0.945789 \cdot 10^6$	& $1.5735 \cdot 10^7$	& 128811				& $5.2 \cdot 10^{-8}$	\\
+	Polymer 2			& 1.33743				& 7.08022				& -1961.23				& $1.10729 \cdot 10^6$	& $1.46529 \cdot 10^7$	& 123889				& $3.9 \cdot 10^{-8}$	\\
+	Relative residual	& $7.74 \cdot 10^{-3}$	& $3.67 \cdot 10^{-1}$	& 1.25					& $1.57 \cdot 10^{-1}$	& $7.12 \cdot 10^{-2}$	& $3.9 \cdot 10^{-2}$							\\
+  \end{tabular}
+  \label{tabl:res_all_coeffs}
+\end{table}
+
 \paragraph{Model stability.}
 The stability of \eqref{eq:model_0} was estimated using the proposed method.
 The size $N$ of the modified samples set $\acute{\mathcal{D}}_N$ was equal to $10^4$.
