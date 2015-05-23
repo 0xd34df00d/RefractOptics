@@ -216,7 +216,7 @@ int main (int argc, char **argv)
 	PrintCoeffs (std::cout, VecToDouble (srcInterp.GetResult ())) << std::endl;
 	std::cout << "MSE: " << srcInterp.MSE (pairs) << std::endl;
 
-	auto results = calcStats ([] (const TrainingSet_t& pts)
+	auto results = calcStats ([] (const TrainingSet_t<>& pts)
 				{ return Interpolator<Type> { pts }.GetResultMat (); },
 			lVars, nVars, pairs, threadCount);
 

@@ -2,7 +2,7 @@
 
 #include "solve.h"
 
-TrainingSet_t LoadData (const std::string& file);
+TrainingSet_t<> LoadData (const std::string& file);
 
 template<typename Params>
 void WriteCoeffs (const Params& p, const Stats_t& results, const std::string& infile)

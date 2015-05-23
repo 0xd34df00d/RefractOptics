@@ -1,8 +1,8 @@
 #include "util.h"
 
-TrainingSet_t LoadData (const std::string& file)
+TrainingSet_t<> LoadData (const std::string& file)
 {
-	TrainingSet_t pairs;
+	TrainingSet_t<> pairs;
 
 	std::ifstream istr (file);
 	while (istr)
@@ -13,7 +13,7 @@ TrainingSet_t LoadData (const std::string& file)
 		if (!istr)
 			break;
 
-		SampleType_t sample;
+		SampleType_t<> sample;
 		sample (0) = lambda;
 
 		pairs.push_back ({ sample, n });

@@ -38,7 +38,7 @@
 
 using namespace Laser;
 
-void TryLOO (const TrainingSet_t& srcPairs)
+void TryLOO (const TrainingSet_t<>& srcPairs)
 {
 	auto allPairs = preprocess (srcPairs);
 	for (size_t i = 0; i < allPairs.size (); ++i)
@@ -61,7 +61,7 @@ void TryLOO (const TrainingSet_t& srcPairs)
 	}
 }
 
-double GetMse (const TrainingSet_t& srcPairs, const Params_t<ParamsCount>& p)
+double GetMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p)
 {
 	const auto& pairs = preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
@@ -71,7 +71,7 @@ double GetMse (const TrainingSet_t& srcPairs, const Params_t<ParamsCount>& p)
 			});
 }
 
-void calculateConvergence (const TrainingSet_t& pairs)
+void calculateConvergence (const TrainingSet_t<>& pairs)
 {
 	std::ofstream ostr { "convergence.txt" };
 	for (double i = 1; i < 10; i += 0.01)
@@ -175,14 +175,14 @@ int main (int argc, char **argv)
 		5e-2,
 	};
 
-	auto svmSolver = [] (const TrainingSet_t& pts)
+	auto svmSolver = [] (const TrainingSet_t<>& pts)
 	{
-		dlib::svr_trainer<dlib::radial_basis_kernel<SampleType_t>> trainer;
+		dlib::svr_trainer<dlib::radial_basis_kernel<SampleType_t<>>> trainer;
 		trainer.set_kernel ({ 4e-07 });
 		trainer.set_c (0.1);
 		trainer.set_epsilon_insensitivity (1e-30);
 
-		std::vector<SampleType_t> samples;
+		std::vector<SampleType_t<>> samples;
 		std::vector<double> targets;
 		for (const auto& pair : pts)
 		{

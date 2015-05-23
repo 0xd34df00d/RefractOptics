@@ -88,17 +88,17 @@ int main (int argc, char **argv)
 
 	const auto diffs = std::accumulate (srcXs.begin (), srcXs.end (), 0.0, [xAvg] (double res, double x) { return res + std::pow (x - xAvg, 2); });
 
-	std::vector<std::pair<SampleType_t, double>> pairs;
+	std::vector<std::pair<SampleType_t<>, double>> pairs;
 	for (auto ix = xs.cbegin (), iy = ys.begin (); ix != xs.cend (); ++ix, ++iy)
 	{
-		SampleType_t sample;
+		SampleType_t<> sample;
 		sample (0) = *ix;
 		pairs.push_back ({ sample, *iy });
 	}
 
-	auto res = [] (const std::pair<SampleType_t, double>& data, const Params_t<2>& p)
+	auto res = [] (const std::pair<SampleType_t<>, double>& data, const Params_t<2>& p)
 		{ return p (0) + p (1) * data.first (0) - data.second; };
-	auto der = [] (const std::pair<SampleType_t, double>& data, const Params_t<2>& p) -> Params_t<2>
+	auto der = [] (const std::pair<SampleType_t<>, double>& data, const Params_t<2>& p) -> Params_t<2>
 	{
 		Params_t<2> res;
 		res (0) = 1;
@@ -121,7 +121,7 @@ int main (int argc, char **argv)
 	std::cout << "book stuff: " << da0 << "; " << da1 << std::endl;
 
 	std::cout << "real stuff diff: " << std::endl;
-	auto solver = [res, der] (const TrainingSet_t& set) { return solve<2> (set, res, der, {{ 1, 1 }}); };
+	auto solver = [res, der] (const TrainingSet_t<>& set) { return solve<2> (set, res, der, {{ 1, 1 }}); };
 	StatsKeeper<decltype (solver)> keeper (solver, 0, variance, pairs, false);
 
 	std::ofstream ostr (std::string ("linear_log_") + argv [1] + "x_" + argv [2] + "_samples_" + argv [5] + "_variance_" + argv [6] + ".log");

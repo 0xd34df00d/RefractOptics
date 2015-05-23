@@ -38,9 +38,12 @@ template<typename T, size_t Dim = 1> using SampleTypeBase_t = dlib::matrix<T, Di
 template<typename T, size_t Dim = 1> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T, Dim>, T>;
 template<typename T, size_t Dim = 1> using TrainingSetBase_t = std::vector<TrainingSetInstanceBase_t<T, Dim>>;
 
-using SampleType_t = SampleTypeBase_t<double>;
-using TrainingSetInstance_t = TrainingSetInstanceBase_t<double>;
-using TrainingSet_t = TrainingSetBase_t<double>;
+template<size_t Dim = 1>
+using SampleType_t = SampleTypeBase_t<double, Dim>;
+template<size_t Dim = 1>
+using TrainingSetInstance_t = TrainingSetInstanceBase_t<double, Dim>;
+template<size_t Dim = 1>
+using TrainingSet_t = TrainingSetBase_t<double, Dim>;
 
 template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
 
@@ -101,7 +104,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 }
 
 typedef std::vector<std::vector<double>> StatsVec_t;
-typedef std::vector<std::pair<SampleType_t, double>> PairsList_t;
+typedef std::vector<std::pair<SampleType_t<>, double>> PairsList_t;
 typedef std::vector<dlib::running_stats<double>> RunningStatsList_t;
 typedef std::map<double, std::map<double, RunningStatsList_t>> Stats_t;
 

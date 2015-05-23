@@ -33,7 +33,7 @@ namespace Series
 {
 	const size_t ParamsCount = 3;
 
-	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		double result = 0;
 		const auto x = data.first (0);
@@ -42,7 +42,7 @@ namespace Series
 		return result - data.second;
 	}
 
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		Params_t<ParamsCount> res;
 		const auto x = data.first (0);
@@ -59,7 +59,7 @@ namespace Series
 		}
 	}
 
-	SampleType_t varsDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	SampleType_t<> varsDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto x = data.first (0);
 
@@ -67,7 +67,7 @@ namespace Series
 		for (size_t i = 1; i < ParamsCount; ++i)
 			result += subDerivative (x, static_cast<int64_t> (i), p (i));
 
-		SampleType_t res;
+		SampleType_t<> res;
 		res (0) = result;
 		return res;
 	}
@@ -114,7 +114,7 @@ namespace Laser
 		return res;
 	}
 
-	SampleType_t varsDer (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
+	SampleType_t<> varsDer (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -126,12 +126,12 @@ namespace Laser
 		auto result = -2 * (g0 / a0ml - 1) / (1 + r0) / (1 + r0);
 		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * a0ml * a0ml);
 
-		SampleType_t res;
+		SampleType_t<> res;
 		res (0) = result * k;
 		return res;
 	}
 
-	TrainingSetBase_t<double, 2> preprocess (const TrainingSet_t& srcPts)
+	TrainingSetBase_t<double, 2> preprocess (const TrainingSet_t<>& srcPts)
 	{
 		TrainingSetBase_t<double, 2> res;
 		for (const auto& srcPt : srcPts)
@@ -144,7 +144,7 @@ namespace Laser
 		return res;
 	}
 
-	Params_t<ParamsCount> symbRegSolver (double multiplier, const TrainingSet_t& srcPts, double xVar, double yVar)
+	Params_t<ParamsCount> symbRegSolver (double multiplier, const TrainingSet_t<>& srcPts, double xVar, double yVar)
 	{
 		xVar *= multiplier;
 		yVar *= multiplier;
@@ -161,7 +161,7 @@ namespace Resonance
 {
 	const size_t ParamsCount = 3;
 
-	double residual (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto x = data.first (0);
 		const auto x2 = x * x;
@@ -173,7 +173,7 @@ namespace Resonance
 		return root - data.second;
 	}
 
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t, double>& data, const Params_t<ParamsCount>& p)
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto x = data.first (0);
 		const auto x2 = x * x;
