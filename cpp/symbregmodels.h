@@ -78,29 +78,31 @@ namespace Laser
 	const auto L = 150.0;
 	const size_t ParamsCount = 3;
 
-	double alpha0MinusLn (double alpha0, double r0)
+	double alpha0MinusLn (double alpha0, double logr0)
 	{
-		return alpha0 - std::log (r0) / (2 * L);
+		return alpha0 - logr0 / (2 * L);
 	}
 
 	double residual (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
+		const auto logr0 = data.first (1);
 		const auto g0 = p (0);
 		const auto alpha0 = p (1);
 		const auto k = p (2);
 
-		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, r0) - 1) - data.second;
+		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0) - 1) - data.second;
 	}
 
 	Params_t<ParamsCount> residualDer (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
+		const auto logr0 = data.first (1);
 		const auto g0 = p (0);
 		const auto alpha0 = p (1);
 		const auto k = p (2);
 
-		const auto a0ml = alpha0MinusLn (alpha0, r0);
+		const auto a0ml = alpha0MinusLn (alpha0, logr0);
 		const auto dg0 = k * (1 - r0) / (1 + r0) / a0ml;
 		const auto dalpha0 = -g0 * k * (1 - r0) / (1 + r0) / (a0ml * a0ml);
 		const auto dk = (1 - r0) / (1 + r0) * (g0 / a0ml - 1);
@@ -115,11 +117,12 @@ namespace Laser
 	SampleType_t varsDer (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
+		const auto logr0 = data.first (1);
 		const auto g0 = p (0);
 		const auto alpha0 = p (1);
 		const auto k = p (2);
 
-		const auto a0ml = alpha0MinusLn (alpha0, r0);
+		const auto a0ml = alpha0MinusLn (alpha0, logr0);
 		auto result = -2 * (g0 / a0ml - 1) / (1 + r0) / (1 + r0);
 		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * a0ml * a0ml);
 
