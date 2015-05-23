@@ -72,7 +72,7 @@ Params_t<ParamsCount> solve (const TrainingSet_t& pairs,
 
 	const auto diff = 1e-12;
 
-	for (int i = 0; i < 200; ++i)
+	for (int i = 0; i < 500; ++i)
 	{
 		const auto prevP = p;
 
