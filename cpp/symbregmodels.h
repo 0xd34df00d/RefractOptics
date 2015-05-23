@@ -83,7 +83,7 @@ namespace Laser
 		return alpha0 - logr0 / (2 * L);
 	}
 
-	double residual (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
+	double residual (const std::pair<SampleType_t<2>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -94,7 +94,7 @@ namespace Laser
 		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0) - 1) - data.second;
 	}
 
-	Params_t<ParamsCount> residualDer (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -114,7 +114,7 @@ namespace Laser
 		return res;
 	}
 
-	SampleType_t<> varsDer (const std::pair<SampleTypeBase_t<double, 2>, double>& data, const Params_t<ParamsCount>& p)
+	SampleType_t<> varsDer (const std::pair<SampleType_t<2>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -131,13 +131,13 @@ namespace Laser
 		return res;
 	}
 
-	TrainingSetBase_t<double, 2> preprocess (const TrainingSet_t<>& srcPts)
+	TrainingSet_t<2> preprocess (const TrainingSet_t<>& srcPts)
 	{
-		TrainingSetBase_t<double, 2> res;
+		TrainingSet_t<2> res;
 		for (const auto& srcPt : srcPts)
 		{
 			double val = srcPt.first (0);
-			SampleTypeBase_t<double, 2> pt;
+			SampleType_t<2> pt;
 			pt = val, std::log (val);
 			res.emplace_back (pt, srcPt.second);
 		}
