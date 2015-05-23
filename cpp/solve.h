@@ -34,9 +34,9 @@
 #include <future>
 #include <dlib/svm.h>
 
-template<typename T> using SampleTypeBase_t = dlib::matrix<T, 1, 1>;
-template<typename T> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T>, T>;
-template<typename T> using TrainingSetBase_t = std::vector<TrainingSetInstanceBase_t<T>>;
+template<typename T, size_t Dim = 1> using SampleTypeBase_t = dlib::matrix<T, Dim, 1>;
+template<typename T, size_t Dim = 1> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T, Dim>, T>;
+template<typename T, size_t Dim = 1> using TrainingSetBase_t = std::vector<TrainingSetInstanceBase_t<T, Dim>>;
 
 using SampleType_t = SampleTypeBase_t<double>;
 using TrainingSetInstance_t = TrainingSetInstanceBase_t<double>;
