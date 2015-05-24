@@ -72,6 +72,11 @@ namespace Series
 		return res;
 	}
 
+	TrainingSet_t<> preprocess (const TrainingSet_t<>& srcPts)
+	{
+		return srcPts;
+	}
+
 	constexpr const std::array<DType_t, ParamsCount> Initial {{ 1, 1, 1, 1, 1, 1 }};
 }
 
