@@ -71,6 +71,8 @@ namespace Series
 		res (0) = result;
 		return res;
 	}
+
+	constexpr const std::array<DType_t, ParamsCount> Initial {{ 1, 1, 1, 1, 1, 1 }};
 }
 
 namespace Laser
@@ -146,6 +148,7 @@ namespace Laser
 		return res;
 	}
 
+	constexpr const std::array<DType_t, ParamsCount> Initial {{ 0.002, 0.0002, 100 }};
 }
 
 namespace Resonance
