@@ -502,8 +502,7 @@ depends on the standard deviation of the refraction index almost linearly.
 
 These results can be interpreted as follows: during experiment planning most attention
 should be paid to maximizing the certainity in measuring the refraction index, while the wavelength
-can be measured quite inaccurately with errors up to few nanometers. Moreover, the suggested method
-directly shows how the error in determining model parameters depends on the measurement errors of different variables.
+can be measured quite inaccurately with errors up to few nanometers.
 
 It is fundamentally important that the standard deviation of the parameters
 $\omega_i$ of \eqref{eq:model_0} is considerably smaller than the difference
@@ -654,24 +653,17 @@ not equal to it, probably to rounding errors and other similar computational eff
 
 \section{Conclusion}
 
-The algorithm proposed in \citep{Rudoy13} allows generating interpretable analytic
-model describing the dependency of refraction index on the wavelength. The complexity
-penalty introduced in the algorithm mitigates overfitting without resorting to methods
-like crossvalidation.
+The concept of model stability proposed in this paper allows studying the
+relation between measurement errors and errors in determining the model
+parameters. The suggested method directly shows the dependency of the
+uncertainty in determining model parameters on the measurement errors of
+different components of the data, which may be an important feature of
+a model when planning an experiment or processing already obtained
+experimental data.
 
-Though other algorithms like SVM regression can learn models with lower mean square error,
-such models are uninterpretable and prone to overfitting. Moreover, their
-structural parameters need to be estimated according to, for example,
-cross-validation, while the proposed method's hyperparameters can be chosen directly
-according to expert considerations.
-
-The stability criteria proposed in this paper allows studying the contribution of each
-term of the resulting superposition in the overall error
-and the relation between measurement errors
-and errors in determining the superposition parameters. Particularly, the offered method
-also allows detecting which components of feature vectors are the least susceptible to
-noise in the learning data. Moreover, expertly correct models tend to be more stable
-than incorrect ones.
+Model stability may also serve as a model selection criterion
+in addition to such common criteria as error on learning data or various
+kinds of model complexity.
 
 \FloatBarrier
 
