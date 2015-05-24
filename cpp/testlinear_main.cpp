@@ -86,9 +86,9 @@ int main (int argc, char **argv)
 
 	const auto& ys = generateYs (xs, a, b, variance);
 
-	const auto diffs = std::accumulate (srcXs.begin (), srcXs.end (), 0.0, [xAvg] (double res, double x) { return res + std::pow (x - xAvg, 2); });
+	const auto diffs = std::accumulate (srcXs.begin (), srcXs.end (), 0.0, [xAvg] (DType_t res, DType_t x) { return res + std::pow (x - xAvg, 2); });
 
-	std::vector<std::pair<SampleType_t<>, double>> pairs;
+	std::vector<std::pair<SampleType_t<>, DType_t>> pairs;
 	for (auto ix = xs.cbegin (), iy = ys.begin (); ix != xs.cend (); ++ix, ++iy)
 	{
 		SampleType_t<> sample;
@@ -96,9 +96,9 @@ int main (int argc, char **argv)
 		pairs.push_back ({ sample, *iy });
 	}
 
-	auto res = [] (const std::pair<SampleType_t<>, double>& data, const Params_t<2>& p)
+	auto res = [] (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<2>& p)
 		{ return p (0) + p (1) * data.first (0) - data.second; };
-	auto der = [] (const std::pair<SampleType_t<>, double>& data, const Params_t<2>& p) -> Params_t<2>
+	auto der = [] (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<2>& p) -> Params_t<2>
 	{
 		Params_t<2> res;
 		res (0) = 1;

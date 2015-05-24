@@ -38,17 +38,19 @@ template<typename T, size_t Dim = 1> using SampleTypeBase_t = dlib::matrix<T, Di
 template<typename T, size_t Dim = 1> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T, Dim>, T>;
 template<typename T, size_t Dim = 1> using TrainingSetBase_t = std::vector<TrainingSetInstanceBase_t<T, Dim>>;
 
-template<size_t Dim = 1>
-using SampleType_t = SampleTypeBase_t<double, Dim>;
-template<size_t Dim = 1>
-using TrainingSetInstance_t = TrainingSetInstanceBase_t<double, Dim>;
-template<size_t Dim = 1>
-using TrainingSet_t = TrainingSetBase_t<double, Dim>;
+using DType_t = double;
 
-template<size_t ParamsCount> using Params_t = dlib::matrix<double, ParamsCount, 1>;
+template<size_t Dim = 1>
+using SampleType_t = SampleTypeBase_t<DType_t, Dim>;
+template<size_t Dim = 1>
+using TrainingSetInstance_t = TrainingSetInstanceBase_t<DType_t, Dim>;
+template<size_t Dim = 1>
+using TrainingSet_t = TrainingSetBase_t<DType_t, Dim>;
+
+template<size_t ParamsCount> using Params_t = dlib::matrix<DType_t, ParamsCount, 1>;
 
 template<size_t ParamsCount, typename R, typename D, typename TS>
-Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<double, ParamsCount>& initial)
+Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<DType_t, ParamsCount>& initial)
 {
 	Params_t<ParamsCount> p;
 	for (auto i = 0u; i < ParamsCount; ++i)
@@ -68,7 +70,7 @@ template<size_t ParamsCount,
 Params_t<ParamsCount> solve (const TS& pairs,
 		ResidualT res, ParamsDerivativeT paramsDer, VariablesDerivativeT varsDer,
 		YSigmaGetterT ySigma, XSigmasGetterT xSigmas,
-		const std::array<double, ParamsCount>& initial)
+		const std::array<DType_t, ParamsCount>& initial)
 {
 	Params_t<ParamsCount> p;
 	for (auto i = 0u; i < ParamsCount; ++i)
@@ -86,7 +88,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 			const auto srcVal = res (data, p);
 
 			const auto& derivatives = varsDer (data, p);
-			const double denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
+			const DType_t denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
 
 			return srcVal / std::sqrt (denom);
 		};
@@ -103,15 +105,15 @@ Params_t<ParamsCount> solve (const TS& pairs,
 	return p;
 }
 
-typedef std::vector<std::vector<double>> StatsVec_t;
-typedef std::vector<std::pair<SampleType_t<>, double>> PairsList_t;
-typedef std::vector<dlib::running_stats<double>> RunningStatsList_t;
-typedef std::map<double, std::map<double, RunningStatsList_t>> Stats_t;
+typedef std::vector<std::vector<DType_t>> StatsVec_t;
+typedef std::vector<std::pair<SampleType_t<>, DType_t>> PairsList_t;
+typedef std::vector<dlib::running_stats<DType_t>> RunningStatsList_t;
+typedef std::map<DType_t, std::map<DType_t, RunningStatsList_t>> Stats_t;
 
 namespace detail
 {
 	template<typename Solver>
-	auto MakeSolverWrapper (Solver s, std::result_of_t<Solver (PairsList_t, double, double)>* = nullptr)
+	auto MakeSolverWrapper (Solver s, std::result_of_t<Solver (PairsList_t, DType_t, DType_t)>* = nullptr)
 	{
 		return s;
 	}
@@ -128,8 +130,8 @@ class StatsKeeper
 {
 	decltype(detail::MakeSolverWrapper (std::declval<Solver> ()))  Solver_;
 
-	double LVar_;
-	double NVar_;
+	DType_t LVar_;
+	DType_t NVar_;
 
 	PairsList_t Pairs_;
 
@@ -138,7 +140,7 @@ class StatsKeeper
 
 	const bool Relative_ = true;
 public:
-	StatsKeeper (Solver s, double lVar, double nVar, const PairsList_t& pairs, bool relative = true)
+	StatsKeeper (Solver s, DType_t lVar, DType_t nVar, const PairsList_t& pairs, bool relative = true)
 	: Solver_ (detail::MakeSolverWrapper (s))
 	, LVar_ (lVar)
 	, NVar_ (nVar)
@@ -205,7 +207,7 @@ public:
 };
 
 template<typename Solver>
-StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, Solver s)
+StatsVec_t getStats (DType_t lVar, DType_t nVar, const PairsList_t& pairs, Solver s)
 {
 	StatsKeeper<Solver> keeper (s, lVar, nVar, pairs);
 	keeper.TryMore (20000);
@@ -213,10 +215,10 @@ StatsVec_t getStats (double lVar, double nVar, const PairsList_t& pairs, Solver 
 }
 
 template<typename Solver>
-Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector<double>& nVars,
+Stats_t calcStats (Solver s, const std::vector<DType_t>& lVars, const std::vector<DType_t>& nVars,
 			const PairsList_t& pairs, size_t threadCount = 0)
 {
-	std::map<double, std::map<double, std::vector<dlib::running_stats<double>>>> results;
+	std::map<DType_t, std::map<DType_t, std::vector<dlib::running_stats<DType_t>>>> results;
 
 	const double count = lVars.size () * nVars.size ();
 	size_t finished = 0;
@@ -224,14 +226,14 @@ Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector
 	if (!threadCount)
 		threadCount = std::thread::hardware_concurrency () - 1;
 
-	std::vector<std::pair<double, double>> combs;
+	std::vector<std::pair<DType_t, DType_t>> combs;
 	for (auto lVar : lVars)
 		for (auto nVar : nVars)
 			combs.emplace_back (lVar, nVar);
 
 	for (auto i = combs.begin (); i != combs.end (); )
 	{
-		std::map<std::pair<double, double>, std::future<StatsVec_t>> vars2future;
+		std::map<std::pair<DType_t, DType_t>, std::future<StatsVec_t>> vars2future;
 		for (size_t t = 0; i != combs.end () && t < threadCount; ++i, ++t)
 			vars2future [*i] = std::async (std::launch::async,
 					&getStats<Solver>,
@@ -244,7 +246,7 @@ Stats_t calcStats (Solver s, const std::vector<double>& lVars, const std::vector
 			const auto lVar = pair.first.first;
 			const auto nVar = pair.first.second;
 
-			std::vector<dlib::running_stats<double>> stats;
+			std::vector<dlib::running_stats<DType_t>> stats;
 			stats.resize (coeffs.size ());
 			for (size_t i = 0; i < coeffs.size (); ++i)
 				for (auto coeff : coeffs [i])

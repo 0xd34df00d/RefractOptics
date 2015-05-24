@@ -199,13 +199,13 @@ int main (int argc, char **argv)
 	const std::string infile (argv [1]);
 	auto pairs = LoadData (infile);
 
-	std::vector<double> lVars;
+	std::vector<DType_t> lVars;
 	for (double i = 0; i < 1e-3; i += 1e-4)
 		lVars.push_back (i);
 	for (double i = 1e-3; i < 1e-2; i += 1e-3)
 		lVars.push_back (i);
 
-	std::vector<double> nVars;
+	std::vector<DType_t> nVars;
 	for (double i = 0; i < 1e-4; i += 1e-5)
 		nVars.push_back (i);
 	for (double i = 1e-4; i < 1e-3; i += 1e-4)

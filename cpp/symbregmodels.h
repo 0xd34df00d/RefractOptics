@@ -78,12 +78,12 @@ namespace Laser
 	const auto L = 150.0;
 	const size_t ParamsCount = 3;
 
-	double alpha0MinusLn (double alpha0, double logr0)
+	DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0)
 	{
 		return alpha0 - logr0 / (2 * L);
 	}
 
-	double residual (const std::pair<SampleType_t<2>, double>& data, const Params_t<ParamsCount>& p)
+	DType_t residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -94,7 +94,7 @@ namespace Laser
 		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0) - 1) - data.second;
 	}
 
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, double>& data, const Params_t<ParamsCount>& p)
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -102,10 +102,12 @@ namespace Laser
 		const auto alpha0 = p (1);
 		const auto k = p (2);
 
+		const auto frac = (1 - r0) / (1 + r0);
+
 		const auto a0ml = alpha0MinusLn (alpha0, logr0);
-		const auto dg0 = k * (1 - r0) / (1 + r0) / a0ml;
-		const auto dalpha0 = -g0 * k * (1 - r0) / (1 + r0) / (a0ml * a0ml);
-		const auto dk = (1 - r0) / (1 + r0) * (g0 / a0ml - 1);
+		const auto dg0 = k * frac / a0ml;
+		const auto dalpha0 = -g0 * k * frac / (a0ml * a0ml);
+		const auto dk = frac * (g0 / a0ml - 1);
 
 		Params_t<ParamsCount> res;
 		res (0) = dg0;
@@ -114,7 +116,7 @@ namespace Laser
 		return res;
 	}
 
-	SampleType_t<> varsDer (const std::pair<SampleType_t<2>, double>& data, const Params_t<ParamsCount>& p)
+	SampleType_t<> varsDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -136,7 +138,7 @@ namespace Laser
 		TrainingSet_t<2> res;
 		for (const auto& srcPt : srcPts)
 		{
-			double val = srcPt.first (0);
+			const auto val = srcPt.first (0);
 			SampleType_t<2> pt;
 			pt = val, std::log (val);
 			res.emplace_back (pt, srcPt.second);
@@ -144,7 +146,7 @@ namespace Laser
 		return res;
 	}
 
-	Params_t<ParamsCount> symbRegSolver (double multiplier, const TrainingSet_t<>& srcPts, double xVar, double yVar)
+	Params_t<ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
 	{
 		xVar *= multiplier;
 		yVar *= multiplier;

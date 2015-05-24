@@ -153,7 +153,7 @@ int main (int argc, char **argv)
 	for (double i = 0; i < 5e-4; i += 2e-5)
 		yVars.push_back (i);
 	*/
-	std::vector<double> xVars
+	std::vector<DType_t> xVars
 	{
 		1e-3,
 		2e-3,
@@ -165,7 +165,7 @@ int main (int argc, char **argv)
 		1e-1,
 		*/
 	};
-	std::vector<double> yVars
+	std::vector<DType_t> yVars
 	{
 		1e-3,
 		2e-3,
@@ -183,7 +183,7 @@ int main (int argc, char **argv)
 		trainer.set_epsilon_insensitivity (1e-30);
 
 		std::vector<SampleType_t<>> samples;
-		std::vector<double> targets;
+		std::vector<DType_t> targets;
 		for (const auto& pair : pts)
 		{
 			samples.push_back (pair.first);
