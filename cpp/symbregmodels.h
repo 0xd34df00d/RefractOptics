@@ -146,17 +146,6 @@ namespace Laser
 		return res;
 	}
 
-	Params_t<ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
-	{
-		xVar *= multiplier;
-		yVar *= multiplier;
-
-		return solve<ParamsCount> (preprocess (srcPts),
-				residual, residualDer, varsDer,
-				[yVar] (const auto& pair) { return pair.second * yVar; },
-				[xVar] (const auto& pair) { return pair.first (0) * xVar; },
-				{{ 0.002, 0.0002, 100 }});
-	}
 }
 
 namespace Resonance

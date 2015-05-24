@@ -85,6 +85,18 @@ void calculateConvergence (const TrainingSet_t<>& pairs)
 	}
 }
 
+Params_t<ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
+{
+	xVar *= multiplier;
+	yVar *= multiplier;
+
+	return solve<ParamsCount> (preprocess (srcPts),
+			residual, residualDer, varsDer,
+			[yVar] (const auto& pair) { return pair.second * yVar; },
+			[xVar] (const auto& pair) { return pair.first (0) * xVar; },
+			Initial);
+}
+
 boost::program_options::variables_map parseOptions (int argc, char **argv)
 {
 	namespace po = boost::program_options;
