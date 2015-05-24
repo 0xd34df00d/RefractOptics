@@ -80,7 +80,7 @@ void calculateConvergence (const TrainingSet_t<>& pairs)
 				residual, residualDer, varsDer,
 				[i] (const auto& pair) { return i * pair.second * 0.02; },
 				[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
-				{{ 0.002, 0.0002, 100 }});
+				Initial);
 		ostr << i << " " << dlib::trans (fixedP);
 	}
 }
@@ -141,7 +141,7 @@ int main (int argc, char **argv)
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
 	const auto& p = solve<ParamsCount> (preprocess (pairs),
-			residual, residualDer, {{ 0.002, 0.0002, 100 }});
+			residual, residualDer, Initial);
 	std::cout << "inferred params: " << dlib::trans (p);
 	std::cout << "MSE: " << GetMse (pairs, p) << std::endl << std::endl;
 
@@ -149,7 +149,7 @@ int main (int argc, char **argv)
 			residual, residualDer, varsDer,
 			[] (const auto& pair) { return pair.second * 0.02; },
 			[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
-			{{ 0.002, 0.0002, 100 }});
+			Initial);
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
 	std::cout << "MSE: " << GetMse (pairs, fixedP) << std::endl << std::endl;
