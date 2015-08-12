@@ -88,7 +88,6 @@
   Приводятся результаты численного моделирования на данных, полученных в ходе
   эксперимента по определению состава смеси по суммарной дисперсии.
 
-  \bigskip
   \textbf{Ключевые слова}: \emph{символьная регрессия, нелинейные модели, индуктивное порождение,
 	устойчивость решений, дисперсия прозрачной среды.}
 \end{abstract}
@@ -234,6 +233,7 @@ $f$ вектор параметров $\hat{\boldsymbol{\omega}}_f(D)$ мини�
 функционал \eqref{eq:s_common} с суперпозицией $f$, имеющей фиксированную
 структуру:
 \[
+  \Large
   \hat{\boldsymbol{\omega}}_f(D) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_f} S(f, D).
 \]
 
@@ -249,6 +249,7 @@ $i$-му объекту.
 случайных величин с нулевым матожиданием и соответствующей
 $\Sigma^{\mathbf{x}}$ и $\boldsymbol{\sigma}^y$ дисперсией:
 \begin{equation}
+  \Large
   \acute{D}(\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}^y) = \{ \mathbf{x}_i + \boldsymbol{\xi}^{\mathbf{x}}_i, y_i + \xi^y_i \mid i \in 1, \dots, \ell; \boldsymbol{\xi}^{\mathbf{x}}_i \sim \mathcal{N}(0; \boldsymbol{\sigma}^{\mathbf{x}}_{i \cdot}); \xi^y_i \sim \mathcal{N}(0; \sigma^y_i) \}.
   \label{eq:d_acute}
 \end{equation}
@@ -256,12 +257,14 @@ $\Sigma^{\mathbf{x}}$ и $\boldsymbol{\sigma}^y$ дисперсией:
 Для этой выборки $\acute{D}$ найдем оптимальный вектор $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$
 параметров суперпозиции $f$, минимизирующий функционал \eqref{eq:s}:
 \begin{equation}
+  \Large
   \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)) = \mathop{\arg \min}\limits_{\boldsymbol{\omega}_{f_D}} S (f_D (\cdot, \boldsymbol{\omega}_{f_D}), \acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)).
   \label{eq:hat_omega}
 \end{equation}
 Понятно, что $\hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))$~---
 векторная случайная величина, и, следовательно,
 \[
+  \Large
   \Delta\hat{\boldsymbol{\omega}}_f(\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) ) = \hat{\boldsymbol{\omega}}_f(D) - \hat{\boldsymbol{\omega}}_f (\acute{D} (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y))
 \]
 также векторная случайная величина.
@@ -269,6 +272,7 @@ $\Sigma^{\mathbf{x}}$ и $\boldsymbol{\sigma}^y$ дисперсией:
 Пусть дано множество $\acute{\mathcal{D}}_N$ из $N$ таких выборок, где каждая выборка
 соответствует отдельным реализациям случайных величин из \eqref{eq:d_acute}:
 \[
+  \Large
   \acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) = \{ \acute{D}_1 (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y), \dots, \acute{D}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y) \},
 \]
 и пусть $\overline{\sigma}_i$~--- эмпирическое стандартное отклонение $i$-ой компоненты
@@ -281,6 +285,7 @@ $\omega_i$ относительно $j$-ой компоненты векторн
 обучающей выборке $D$ и параметрах $\acute{\mathcal{D}}_N (\Sigma^{\mathbf{x}}, \boldsymbol{\sigma}_y)$
 будем называть следующую величину:
 \begin{equation}
+  \Large
   T_{ij}(f) =
 	\begin{cases}
 	  \displaystyle \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{r\big(\{ \frac{\sigma_{kj}^{\mathbf{x}}}{x_{kj}} \}_{k \in \{ 1, \dots, \ell \}}\big)} & j \leq |\mathbf{x}| \\
@@ -311,10 +316,12 @@ $\hat{\omega}_i$ растут быстрее погрешностей измер
 В частности, в искомой задаче восстановления дисперсионной зависимости с учетом неизменной
 относительной ошибки эксперимента:
 \[
-  T_{i0}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_n}{n}},
+  \Large
+  T_{i0}(f) = \frac{\sfrac{\overline{\sigma}_i}{\hat{\omega}_i}}{\sfrac{\sigma_n}{n}},
 \]
 \[
-  T_{i1}(f) = \frac{\frac{\overline{\sigma}_i}{\hat{\omega}_i}}{\frac{\sigma_{\lambda}}{\lambda}}.
+  \Large
+  T_{i1}(f) = \frac{\sfrac{\overline{\sigma}_i}{\hat{\omega}_i}}{\sfrac{\sigma_{\lambda}}{\lambda}}.
 \]
 
 Требуется исследовать зависимость устойчивости $\mathbb{T}_{\hat{f}}$ относительно
@@ -344,6 +351,7 @@ $\mathcal{F}$ содержат как свободные переменные, �
 Качество $Q_f$ суперпозиции $f$ вычисляется по совокупности точности приближения
 экспериментальных данных и структурной сложности суперпозиции по следующей формуле:
 \begin{equation}
+  \large
   Q_f = \frac{1}{1 + S(f)} \left(\alpha + \frac{1 - \alpha}{1 + \text{exp} (C_f - \tau)}\right),
   \label{eq:s_f}
 \end{equation}
