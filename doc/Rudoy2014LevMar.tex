@@ -258,7 +258,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
 $\tilde{\mathbf{x}}_i$~--- вектор $\mathbf{x}_i$ с дополнительно приписанным к нему
 значением $y_i$. Примем
 \[
-  \tilde{f}(\tilde{\mathbf{x}}_i, \bomega) = \frac{f(\mathbf{x}_i, \bomega) - y_i}{\sigma_{y_i}^2 + \sum_{j = 1}^m (\frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega))^2 \sigma^2_{x_{ij}}}.
+  \tilde{f}(\tilde{\mathbf{x}}_i, \bomega) = \frac{f(\mathbf{x}_i, \bomega) - y_i}{\sqrt{\sigma_{y_i}^2 + \sum_{j = 1}^m (\frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega))^2 \sigma^2_{x_{ij}}}}.
 \]
 Тогда минимизация функционала \eqref{eq:s} возможна средствами классического АЛМ, так
 как легко видеть, что \eqref{eq:s} в этом случае эквивалентен
