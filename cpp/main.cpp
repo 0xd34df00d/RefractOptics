@@ -97,6 +97,25 @@ Params_t<ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& 
 			Initial);
 }
 
+double svmSolver (const TrainingSet_t<>& pts)
+{
+	dlib::svr_trainer<dlib::radial_basis_kernel<SampleType_t<>>> trainer;
+	trainer.set_kernel ({ 4e-07 });
+	trainer.set_c (0.1);
+	trainer.set_epsilon_insensitivity (1e-30);
+
+	std::vector<SampleType_t<>> samples;
+	std::vector<DType_t> targets;
+	for (const auto& pair : pts)
+	{
+		samples.push_back (pair.first);
+		targets.push_back (pair.second);
+	}
+
+	const auto& df = trainer.train (samples, targets);
+	return df.alpha;
+}
+
 boost::program_options::variables_map parseOptions (int argc, char **argv)
 {
 	namespace po = boost::program_options;
@@ -185,25 +204,6 @@ int main (int argc, char **argv)
 		1e-2,
 		2e-2,
 		5e-2,
-	};
-
-	auto svmSolver = [] (const TrainingSet_t<>& pts)
-	{
-		dlib::svr_trainer<dlib::radial_basis_kernel<SampleType_t<>>> trainer;
-		trainer.set_kernel ({ 4e-07 });
-		trainer.set_c (0.1);
-		trainer.set_epsilon_insensitivity (1e-30);
-
-		std::vector<SampleType_t<>> samples;
-		std::vector<DType_t> targets;
-		for (const auto& pair : pts)
-		{
-			samples.push_back (pair.first);
-			targets.push_back (pair.second);
-		}
-
-		const auto& df = trainer.train (samples, targets);
-		return df.alpha;
 	};
 
 	const auto multiplier = vm ["multiplier"].as<int> ();
