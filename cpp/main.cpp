@@ -101,7 +101,11 @@ void calculateConvergence (const TrainingSet_t<>& pairs)
 				[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
 				Initial);
 
-		ostr << i << " " << dlib::trans (classicP) << " " << dlib::trans (fixedP);
+		ostr << i << " ";
+		printVec (ostr, classicP);
+		ostr << " ";
+		printVec (ostr, fixedP);
+		ostr << "\n";
 	}
 }
 
