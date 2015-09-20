@@ -38,7 +38,7 @@
 
 using namespace Laser;
 
-void TryLOO (const TrainingSet_t<>& srcPairs)
+void tryLOO (const TrainingSet_t<>& srcPairs)
 {
 	auto allPairs = preprocess (srcPairs);
 	for (size_t i = 0; i < allPairs.size (); ++i)
@@ -61,7 +61,7 @@ void TryLOO (const TrainingSet_t<>& srcPairs)
 	}
 }
 
-double GetMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p)
+double getMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p)
 {
 	const auto& pairs = preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
@@ -143,7 +143,7 @@ int main (int argc, char **argv)
 	const auto& p = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, Initial);
 	std::cout << "inferred params: " << dlib::trans (p);
-	std::cout << "MSE: " << GetMse (pairs, p) << std::endl << std::endl;
+	std::cout << "MSE: " << getMse (pairs, p) << std::endl << std::endl;
 
 	const auto& fixedP = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, varsDer,
@@ -152,7 +152,7 @@ int main (int argc, char **argv)
 			Initial);
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
-	std::cout << "MSE: " << GetMse (pairs, fixedP) << std::endl << std::endl;
+	std::cout << "MSE: " << getMse (pairs, fixedP) << std::endl << std::endl;
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 

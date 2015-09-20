@@ -128,7 +128,7 @@ namespace detail
 template<typename Solver>
 class StatsKeeper
 {
-	decltype(detail::MakeSolverWrapper (std::declval<Solver> ()))  Solver_;
+	decltype (detail::MakeSolverWrapper (std::declval<Solver> ())) Solver_;
 
 	DType_t LVar_;
 	DType_t NVar_;
