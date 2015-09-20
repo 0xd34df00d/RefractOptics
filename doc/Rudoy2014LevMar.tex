@@ -125,8 +125,8 @@ $\sigma_{x_{ij}}$:
 \]
 
 Требуется построить функционал ошибки $S(\bomega)$ вектора параметров
-$\bomega$ модели $f$, учитывающий ошибки измерений $\sigma_{y_i}$ и
-$\sigma_{x_{ij}}$:
+$\bomega$ модели $f$, учитывающий ошибки измерений $\boldsymbol{\sigma}_y$ и
+$\Sigma_x$:
 \begin{equation}
   S(\bomega) = S(\bomega, \boldsymbol{\sigma}_y, \Sigma_x),
   \label{eq:s_modified}
@@ -134,7 +134,7 @@ $\sigma_{x_{ij}}$:
 и, кроме того, найти вектор параметров $\omega$, минимизирующий функционал
 \eqref{eq:s_modified}:
 \begin{equation}
-  \hat{\bomega} = \mathop{\arg \min}\limits_{\bomega} S(\bomega)
+  \hat{\bomega} = \mathop{\arg \min}\limits_{\bomega} S(\bomega).
 \end{equation}
 
 \section{Модифицированный функционал качества}
