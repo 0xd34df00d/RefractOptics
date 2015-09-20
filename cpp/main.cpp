@@ -73,15 +73,21 @@ double getMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p)
 
 void calculateConvergence (const TrainingSet_t<>& pairs)
 {
+	const auto& preprocessed = preprocess (pairs);
+
+	const auto& classicP = solve<ParamsCount> (preprocessed,
+			residual, residualDer, Initial);
+
 	std::ofstream ostr { "convergence.txt" };
 	for (double i = 1; i < 10; i += 0.01)
 	{
-		const auto& fixedP = solve<ParamsCount> (preprocess (pairs),
+		const auto& fixedP = solve<ParamsCount> (preprocessed,
 				residual, residualDer, varsDer,
-				[i] (const auto& pair) { return i * pair.second * 0.02; },
+				[i] (const auto& pair) { return 0.02 * i * pair.second; },
 				[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
 				Initial);
-		ostr << i << " " << dlib::trans (fixedP);
+
+		ostr << i << " " << dlib::trans (classicP) << " " << dlib::trans (fixedP);
 	}
 }
 
