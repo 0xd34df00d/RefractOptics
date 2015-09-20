@@ -71,6 +71,20 @@ double getMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p)
 			});
 }
 
+template<long rc>
+std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& vec)
+{
+	for (long i = 0; i < rc; ++i)
+	{
+		if (i)
+			ostr << " ";
+
+		ostr << vec (i);
+	}
+
+	return ostr;
+}
+
 void calculateConvergence (const TrainingSet_t<>& pairs)
 {
 	const auto& preprocessed = preprocess (pairs);
