@@ -77,7 +77,7 @@ namespace Series
 		return srcPts;
 	}
 
-	constexpr const std::array<DType_t, ParamsCount> Initial {{ 1, 1, 1, 1, 1, 1 }};
+	constexpr const std::array<DType_t, ParamsCount> Initial {{ 1, 1, 1 }};
 }
 
 namespace Laser
