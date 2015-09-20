@@ -124,6 +124,7 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 	desc.add_options ()
 		("help", "show help")
 		("input-file", po::value<std::string> (), "input data file")
+		("convergence", po::value<bool> (), "calculate convergence")
 		("multiplier", po::value<int> (), "set multiplier");
 
 	po::positional_options_description p;
@@ -173,8 +174,6 @@ int main (int argc, char **argv)
 
 	std::cout << "MSE: " << getMse (pairs, fixedP) << std::endl << std::endl;
 
-	std::cout << "calculating mean/dispersion..." << std::endl;
-
 	/*
 	std::vector<double> xVars;
 	for (double i = 0; i < 1e-3; i += 1e-4)
@@ -205,6 +204,15 @@ int main (int argc, char **argv)
 		2e-2,
 		5e-2,
 	};
+
+	if (vm ["convergence"].as<bool> ())
+	{
+		std::cout << "calculating convergence..." << std::endl;
+		calculateConvergence (pairs);
+		return 0;
+	}
+
+	std::cout << "calculating mean/dispersion..." << std::endl;
 
 	const auto multiplier = vm ["multiplier"].as<int> ();
 	using namespace std::placeholders;
