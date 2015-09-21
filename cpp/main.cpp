@@ -85,7 +85,8 @@ std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& 
 	return ostr;
 }
 
-void calculateConvergence (const TrainingSet_t<>& pairs)
+void calculateConvergence (const TrainingSet_t<>& pairs,
+		const boost::program_options::variables_map& vm)
 {
 	const auto& preprocessed = preprocess (pairs);
 
@@ -232,7 +233,7 @@ int main (int argc, char **argv)
 	if (vm ["convergence"].as<bool> ())
 	{
 		std::cout << "calculating convergence..." << std::endl;
-		calculateConvergence (pairs);
+		calculateConvergence (pairs, vm);
 		return 0;
 	}
 
