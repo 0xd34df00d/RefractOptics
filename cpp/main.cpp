@@ -93,10 +93,11 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 	const auto& classicP = solve<ParamsCount> (preprocessed,
 			residual, residualDer, Initial);
 
-	std::ofstream ostr { "convergence.txt" };
 	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 1;
 	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 10;
 	const auto step = vm.count ("conv-step") ? vm ["conv-step"].as<double> () : 0.01;
+
+	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "convergence.txt" };
 	for (double i = start; i < end; i += step)
 	{
 		const auto& fixedP = solve<ParamsCount> (preprocessed,
@@ -152,6 +153,7 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 	desc.add_options ()
 		("help", "show help")
 		("input-file", po::value<std::string> (), "input data file")
+		("output-file", po::value<std::string> (), "output data file")
 		("convergence", po::value<bool> (), "calculate convergence")
 		("conv-start", po::value<double> (), "convergence start")
 		("conv-end", po::value<double> (), "convergence end")
