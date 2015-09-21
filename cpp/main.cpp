@@ -94,7 +94,10 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 			residual, residualDer, Initial);
 
 	std::ofstream ostr { "convergence.txt" };
-	for (double i = 1; i < 10; i += 0.01)
+	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 1;
+	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 10;
+	const auto step = vm.count ("conv-step") ? vm ["conv-step"].as<double> () : 0.01;
+	for (double i = start; i < end; i += step)
 	{
 		const auto& fixedP = solve<ParamsCount> (preprocessed,
 				residual, residualDer, varsDer,
@@ -150,6 +153,9 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("help", "show help")
 		("input-file", po::value<std::string> (), "input data file")
 		("convergence", po::value<bool> (), "calculate convergence")
+		("conv-start", po::value<double> (), "convergence start")
+		("conv-end", po::value<double> (), "convergence end")
+		("conv-step", po::value<double> (), "convergence step")
 		("multiplier", po::value<int> (), "set multiplier");
 
 	po::positional_options_description p;
