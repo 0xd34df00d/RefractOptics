@@ -420,17 +420,33 @@ $\boldsymbol{\omega}_0$, получаемым минимизацией функ�
 \begin{figure}[h]
   \centering
   \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_100.txt.eps}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/varY/convergence_100.txt.pdf}
 	\caption{$k \in [1; 100]$}
-	\label{fig:conv_100}
+	\label{fig:conv_varY_100}
   \end{subfigure}%
   \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_10000.txt.eps}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/varY/convergence_10000.txt.pdf}
 	\caption{$k \in [10; 10000]$}
-	\label{fig:conv_10000}
+	\label{fig:conv_varY_10000}
   \end{subfigure}
-  \caption{Зависимость оптимальных параметров от $\sigma_y = 0.02ky$.}
-  \label{fig:conv}
+  \caption{Зависимость оптимальных параметров от $k$ при $\sigma_{y_i} = 0.02ky_i$.}
+  \label{fig:conv_varY}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/fixedXY_0.1/convergence_100.txt.pdf}
+	\caption{$k \in [1; 100]$}
+	\label{fig:conv_fixedY_100}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/fixedXY_0.1/convergence_10000.txt.pdf}
+	\caption{$k \in [10; 10000]$}
+	\label{fig:conv_fixedY_10000}
+  \end{subfigure}
+  \caption{Зависимость оптимальных параметров от $k$ при $\sigma_{y_i} = 0.02ky_{\max}$.}
+  \label{fig:conv_fixedY}
 \end{figure}
 
 \FloatBarrier
