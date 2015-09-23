@@ -171,12 +171,11 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
   f(x, \bomega) = f(x_i, \bomega) + (x - x_i) \frac{\partial f}{\partial x}(x_i, \bomega).
   \label{eq:f_linear}
 \end{equation}
-Введем для удобства обозначение $k = \frac{\partial f}{\partial x}(x_i, \bomega)$.
 
 Тогда расстояние \eqref{eq:dist0} можно выразить через линеаризованную функцию
 \eqref{eq:f_linear} следующим образом:
 \begin{equation}
-  \rho^2(x, i) = \frac{(x_i - x)^2}{\sigma_{x_i}^2} + \frac{(y_i - f(x_i, \bomega) - k (x - x_i))^2}{\sigma_{y_i}^2}.
+  \rho^2(x, i) = \frac{(x_i - x)^2}{\sigma_{x_i}^2} + \frac{(y_i - f(x_i, \bomega) - \frac{\partial f}{\partial x}(x_i, \bomega) (x - x_i))^2}{\sigma_{y_i}^2}.
   \label{eq:dist_linear}
 \end{equation}
 
@@ -184,7 +183,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
 точки $(x_i, y_i)$ из обучающей выборки до линеаризованной в ее
 окрестности экспериментальной зависимости:
 \begin{equation}
-  \rho^2(x, i) = \frac{(y_i - f(x_i, \bomega))^2}{\sigma^2_{y_i} + k^2 \sigma^2_{x_i}}.
+  \rho^2(x, i) = \frac{(y_i - f(x_i, \bomega))^2}{\sigma^2_{y_i} + \frac{\partial f}{\partial x}(x_i, \bomega)^2 \sigma^2_{x_i}}.
   \label{eq:rho_univar}
 \end{equation}
 
