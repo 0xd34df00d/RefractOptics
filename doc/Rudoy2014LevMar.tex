@@ -188,7 +188,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
       spoint/.style = { point, scale = 0.1 },
       classical/.style = { magenta },
       linearized/.style = { blue },
-      ideal/.style = { green },
+      ideal/.style = { orange },
       tangent/.style = {
         decoration = {
         markings,
@@ -223,7 +223,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
       (0, 1.5) node[point, label = { [black]right:$(x_i, y_i)$ }] (datapt) {}
           node[pos = 0.6, label = { [black]below:$\tilde{\rho}$ }] {};
 
-    \path[name path = vert_ideal_cp] (ideal_cp) -- ++ (270:4);
+    \path[name path = vert_ideal_cp] (ideal_cp) -- ++ (270:5);
     \path[name path = hor_ideal_cp] (ideal_cp) -- ++ (180:5);
     \draw[ideal, dotted, name intersections = {of=vert_ideal_cp and Ox}]
       (ideal_cp) -- (intersection-1) node[point, label = { below left:$\tilde{x}$}] {};
@@ -273,7 +273,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
 сложной вычислительной задачей, однако, в подавляющем большинстве
 практических приложений регрессионные зависимости достаточно
 гладкие, а погрешности измерения достаточно малы. Пользуясь этим,
-линеаризуем $f(x, \bomega)$ в окрестности точки $x_i$:
+линеаризуем $f(x, \bomega)$ в окрестности точки $(x_i, f(x_i, \bomega))$:
 \begin{equation}
   f(x, \bomega) \approx \mathbb{L}_{i}[f](x, \bomega) = f(x_i, \bomega) + (x - x_i) \frac{\partial f}{\partial x}(x_i, \bomega),
   \label{eq:f_linear}
