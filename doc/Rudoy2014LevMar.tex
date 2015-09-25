@@ -26,7 +26,7 @@
 \usepackage{slashbox}
 \usepackage{caption}
 \usepackage{subcaption}
-\usetikzlibrary{arrows,shapes,intersections,decorations.markings}
+\usetikzlibrary{arrows,shapes,intersections,decorations.markings,calc}
 
 \makeatletter
 \def\@settitle{\begin{center}%
@@ -187,6 +187,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
       point/.style = { draw, black, circle, fill, scale = 0.2 },
       spoint/.style = { point, scale = 0.1 },
       classical/.style = { magenta },
+      linearized/.style = { blue },
       ideal/.style = { green },
       tangent/.style = {
         decoration = {
@@ -220,14 +221,14 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
     \draw[ideal, use tangent = 1]
       (0, 0) node[point] (ideal_cp) {} --
       (0, 1.5) node[point, label = { [black]right:$(x_i, y_i)$ }] (datapt) {}
-          node[pos = 0.3, label = { [black]above:$\rho$ }] {};
+          node[pos = 0.6, label = { [black]below:$\tilde{\rho}$ }] {};
 
     \path[name path = vert_ideal_cp] (ideal_cp) -- ++ (270:4);
     \path[name path = hor_ideal_cp] (ideal_cp) -- ++ (180:5);
     \draw[ideal, dotted, name intersections = {of=vert_ideal_cp and Ox}]
-      (ideal_cp) -- (intersection-1) node[point, label = { [black]below:$x'$}] {};
+      (ideal_cp) -- (intersection-1) node[point, label = { [black]below:$\tilde{x}$}] {};
     \draw[ideal, dotted, name intersections = {of=hor_ideal_cp and Oy}]
-      (ideal_cp) -- (intersection-1) node[point, label = { [black]left:$f(x', \boldsymbol{\omega})$}] {};
+      (ideal_cp) -- (intersection-1) node[point, label = { [black]left:$f(\tilde{x}, \boldsymbol{\omega})$}] {};
 
     \path[name path = vertical_dp] (datapt) -- ++ (270:5);
     \draw[classical, name intersections = {of=f_x and vertical_dp, by={intersect}}]
@@ -241,6 +242,17 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
       (classical_cp) -- (intersection-1) node[point, label = { [black]below:$x_i$ }] {};
     \draw[classical, dotted, name intersections = {of=hor_classical_cp and Oy}]
       (classical_cp) -- (intersection-1) node[point, label = { [black]left:$f(x_i, \boldsymbol{\omega})$ }] {};
+
+    \path[name path = almost_vertical_dp] (datapt) -- ++ (271.5:5);
+    \path[name intersections = {of=f_x and almost_vertical_dp}]
+      (datapt) --
+      (intersection-1) node[point, transparent] (almost_classical_cp) {};
+
+    \draw[linearized, dashed, shorten >= -3cm, shorten <= -3cm] (classical_cp) -- (almost_classical_cp);
+
+    \node[linearized, point] (linearized_orto) at ($(classical_cp)!(datapt)!(almost_classical_cp)$) {};
+    \draw[linearized] (linearized_orto) -- (datapt)
+          node[pos = 0.4, label = { [black]above:$\rho$ }] {};
   \end{tikzpicture}
   \caption{Различные способы введения расстояния от точки до прямой.}
   \label{fig:distances}
