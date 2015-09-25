@@ -215,7 +215,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
     \draw[->, name path = Oy] (0,-0.3) -- (0,6) coordinate[label = { right:$y$ }] (ymax);
 
     \draw[thick, red, tangent = 0.57, name path = f_x] plot[smooth] coordinates {(1, 4.875) (2, 4.75) (3, 4.5) (4, 4) (5, 3) (6, 1) };
-    \node at (2, 5) {$f(x, \boldsymbol{\omega})$};
+    \node at (2, 5) {$f(x, \bomega)$};
 
     \draw[ideal, dashed, use tangent = 1] (-2, 0) -- (2, 0);
     \draw[ideal, use tangent = 1]
@@ -228,20 +228,20 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
     \draw[ideal, dotted, name intersections = {of=vert_ideal_cp and Ox}]
       (ideal_cp) -- (intersection-1) node[point, label = { [black]below:$\tilde{x}$}] {};
     \draw[ideal, dotted, name intersections = {of=hor_ideal_cp and Oy}]
-      (ideal_cp) -- (intersection-1) node[point, label = { [black]left:$f(\tilde{x}, \boldsymbol{\omega})$}] {};
+      (ideal_cp) -- (intersection-1) node[point, label = { [black]left:$f(\tilde{x}, \bomega)$}] {};
 
     \path[name path = vertical_dp] (datapt) -- ++ (270:5);
     \draw[classical, name intersections = {of=f_x and vertical_dp, by={intersect}}]
       (datapt) --
       (intersect) node[point] (classical_cp) {}
-          node[pos = 0.5, label = { [black]right:$y_i - f(x_i, \boldsymbol{\omega})$ }] {};
+          node[pos = 0.5, label = { [black]right:$y_i - f(x_i, \bomega)$ }] {};
 
     \path[name path = vert_classical_cp] (classical_cp) -- ++ (270:3);
     \path[name path = hor_classical_cp] (classical_cp) -- ++ (180:6);
     \draw[classical, dotted, name intersections = {of=vert_classical_cp and Ox}]
       (classical_cp) -- (intersection-1) node[point, label = { [black]below:$x_i$ }] {};
     \draw[classical, dotted, name intersections = {of=hor_classical_cp and Oy}]
-      (classical_cp) -- (intersection-1) node[point, label = { [black]left:$f(x_i, \boldsymbol{\omega})$ }] {};
+      (classical_cp) -- (intersection-1) node[point, label = { [black]left:$f(x_i, \bomega)$ }] {};
 
     \path[name path = almost_vertical_dp] (datapt) -- ++ (271.5:5);
     \path[name intersections = {of=f_x and almost_vertical_dp}]
