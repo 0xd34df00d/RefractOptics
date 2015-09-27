@@ -214,7 +214,7 @@ int main (int argc, char **argv)
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
 	const auto ySigma = [] (const auto& pair) { return pair.second * 0.02; };
-	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; };
+	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
 
 	const auto& p = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, Initial);
