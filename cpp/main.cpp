@@ -71,6 +71,26 @@ double getMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p)
 			});
 }
 
+template<
+		typename VariablesDerivativeT,
+		typename YSigmaGetterT,
+		typename XSigmasGetterT
+	>
+double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p,
+		const VariablesDerivativeT& varsDer,
+		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas)
+{
+	const auto& pairs = preprocess (srcPairs);
+	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
+			[&] (double sum, auto pair)
+			{
+				const auto res = std::pow (residual (pair, p), 2);
+				const auto& derivatives = varsDer (pair, p);
+				const DType_t denom = std::pow (ySigma (pair), 2) + std::pow (xSigmas (pair) * derivatives, 2);
+				return sum + res / denom;
+			});
+}
+
 template<long rc>
 std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& vec)
 {
