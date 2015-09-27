@@ -247,7 +247,7 @@ int main (int argc, char **argv)
 
 	std::cout << "calculating mean/dispersion..." << std::endl;
 
-	const auto multiplier = vm ["multiplier"].as<int> ();
+	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<int> () : 1;
 	using namespace std::placeholders;
 	auto results = calcStats (std::bind (symbRegSolver, multiplier, _1, _2, _3), xVars, yVars, pairs);
 
