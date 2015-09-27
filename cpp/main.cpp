@@ -238,7 +238,7 @@ int main (int argc, char **argv)
 		5e-2,
 	};
 
-	if (vm ["convergence"].as<bool> ())
+	if (vm.count ("convergence") && vm ["convergence"].as<bool> ())
 	{
 		std::cout << "calculating convergence..." << std::endl;
 		calculateConvergence (pairs, vm);
