@@ -220,6 +220,7 @@ int main (int argc, char **argv)
 			residual, residualDer, Initial);
 	std::cout << "inferred params: " << dlib::trans (p);
 	std::cout << "MSE: " << getMse (pairs, p) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse (pairs, p, varsDer, ySigma, xSigma) << std::endl << std::endl;
 
 	const auto& fixedP = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, varsDer,
@@ -228,6 +229,7 @@ int main (int argc, char **argv)
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
 	std::cout << "MSE: " << getMse (pairs, fixedP) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse (pairs, fixedP, varsDer, ySigma, xSigma) << std::endl << std::endl;
 
 	/*
 	std::vector<double> xVars;
