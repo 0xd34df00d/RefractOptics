@@ -213,6 +213,9 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
+	const auto ySigma = [] (const auto& pair) { return pair.second * 0.02; };
+	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; };
+
 	const auto& p = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, Initial);
 	std::cout << "inferred params: " << dlib::trans (p);
@@ -220,8 +223,7 @@ int main (int argc, char **argv)
 
 	const auto& fixedP = solve<ParamsCount> (preprocess (pairs),
 			residual, residualDer, varsDer,
-			[] (const auto& pair) { return pair.second * 0.02; },
-			[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
+			ySigma, xSigma,
 			Initial);
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
