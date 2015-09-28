@@ -224,7 +224,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
     \path[name path = vert_ideal_cp] (ideal_cp) -- ++ (270:5);
     \path[name path = hor_ideal_cp] (ideal_cp) -- ++ (180:5);
     \draw[ideal, dotted, name intersections = {of=vert_ideal_cp and Ox}]
-      (ideal_cp) -- (intersection-1) node[point, label = { below left:$\tilde{x}$}] {};
+      (ideal_cp) -- (intersection-1) node[point, label = { 275:$\tilde{x}$}] {};
     \draw[ideal, dotted, name intersections = {of=hor_ideal_cp and Oy}]
       (ideal_cp) -- (intersection-1) node[point, label = { left:$f(\tilde{x}, \bomega)$}] {};
 
@@ -255,7 +255,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
     \path[name path = vert_linearized] (linearized_orto) -- ++ (270:5);
     \path[name path = hor_linearized] (linearized_orto) -- ++ (180:5);
     \draw[linearized, dotted, name intersections = {of=vert_linearized and Ox}]
-      (linearized_orto) -- (intersection-1) node[point, label = { below right:$\hat{x}$ }] {};
+      (linearized_orto) -- (intersection-1) node[point, label = { 265:$\hat{x}$ }] {};
     \draw[linearized, dotted, name intersections = {of=hor_linearized and Oy}]
       (linearized_orto) -- (intersection-1) node[point, label = { left:$\mathbb{L}_i[f](\hat{x}, \bomega)$ }] {};
   \end{tikzpicture}
