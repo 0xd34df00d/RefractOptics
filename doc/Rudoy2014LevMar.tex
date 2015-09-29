@@ -300,14 +300,14 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
 линеаризованной в ее окрестности регрессионной зависимости $f$ при
 данном векторе параметров $\bomega$:
 \begin{equation}
-  \rho^2(x, i) = \frac{(y_i - f(x_i, \bomega))^2}{\sigma^2_{y_i} + \frac{\partial f}{\partial x}(x_i, \bomega)^2 \sigma^2_{x_i}}.
+  \rho^2(f, \bomega, i) = \rho^2(\hat{x}, i) = \frac{(y_i - f(x_i, \bomega))^2}{\sigma^2_{y_i} + \frac{\partial f}{\partial x}(x_i, \bomega)^2 \sigma^2_{x_i}}.
   \label{eq:rho_univar}
 \end{equation}
 
 Аналогично можно получить выражение для случая, когда объекты в обучающей выборке
 представлены $m$ независимыми переменными ($\mathbf{x} \in \mathbb{R}^m$):
 \[
-  \rho^2(\mathbf{x}, i) = \frac{(y_i - f(\mathbf{x}_i, \bomega))^2}{\sigma_{y_i}^2 + \sum_{j = 1}^m (\frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega))^2 \sigma^2_{x_{ij}}}.
+  \rho^2(f, \bomega, i) = \frac{(y_i - f(\mathbf{x}_i, \bomega))^2}{\sigma_{y_i}^2 + \sum_{j = 1}^m (\frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega))^2 \sigma^2_{x_{ij}}}.
 \]
 
 Таким образом, предлагаемый нами функционал, минимизирующий сумму введеных согласно \eqref{eq:dist0}
