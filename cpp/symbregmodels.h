@@ -29,11 +29,19 @@
 
 #include "solve.h"
 
-namespace Series
+namespace Models
 {
-	const size_t ParamsCount = 3;
+class Series
+{
+public:
+	static constexpr size_t ParamsCount = 3;
 
-	double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+	static std::array<DType_t, ParamsCount> initial ()
+	{
+		return {{ 1, 1, 1 }};
+	}
+
+	static double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		double result = 0;
 		const auto x = data.first (0);
@@ -42,7 +50,7 @@ namespace Series
 		return result - data.second;
 	}
 
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		Params_t<ParamsCount> res;
 		const auto x = data.first (0);
@@ -51,17 +59,14 @@ namespace Series
 		return res;
 	}
 
-	namespace
-	{
-		double subDerivative (double x, int64_t i, double p_i)
-		{
-			return -2 * i * p_i * std::pow (x, -2 * i - 1);
-		}
-	}
-
-	SampleType_t<> varsDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+	static SampleType_t<> varsDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto x = data.first (0);
+
+		auto subDerivative = [] (double x, int64_t i, double p_i)
+		{
+			return -2 * i * p_i * std::pow (x, -2 * i - 1);
+		};
 
 		double result = 0;
 		for (size_t i = 1; i < ParamsCount; ++i)
@@ -72,25 +77,29 @@ namespace Series
 		return res;
 	}
 
-	TrainingSet_t<> preprocess (const TrainingSet_t<>& srcPts)
+	static TrainingSet_t<> preprocess (const TrainingSet_t<>& srcPts)
 	{
 		return srcPts;
 	}
+};
 
-	constexpr const std::array<DType_t, ParamsCount> Initial {{ 1, 1, 1 }};
-}
-
-namespace Laser
+class Laser
 {
-	const auto L = 150.0;
-	const size_t ParamsCount = 3;
+	static constexpr auto L = 150.0;
+public:
+	static constexpr size_t ParamsCount = 3;
 
-	DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0)
+	static std::array<DType_t, ParamsCount> initial ()
+	{
+		return {{ 0.002, 0.0002, 100 }};
+	}
+
+	static DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0)
 	{
 		return alpha0 - logr0 / (2 * L);
 	}
 
-	DType_t residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
+	static DType_t residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -101,7 +110,7 @@ namespace Laser
 		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0) - 1) - data.second;
 	}
 
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
+	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -123,7 +132,7 @@ namespace Laser
 		return res;
 	}
 
-	SampleType_t<> varsDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
+	static SampleType_t<> varsDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
 	{
 		const auto r0 = data.first (0);
 		const auto logr0 = data.first (1);
@@ -140,7 +149,7 @@ namespace Laser
 		return res;
 	}
 
-	TrainingSet_t<2> preprocess (const TrainingSet_t<>& srcPts)
+	static TrainingSet_t<2> preprocess (const TrainingSet_t<>& srcPts)
 	{
 		TrainingSet_t<2> res;
 		for (const auto& srcPt : srcPts)
@@ -152,13 +161,12 @@ namespace Laser
 		}
 		return res;
 	}
+};
 
-	constexpr const std::array<DType_t, ParamsCount> Initial {{ 0.002, 0.0002, 100 }};
-}
-
-namespace Resonance
+class Resonance
 {
-	const size_t ParamsCount = 3;
+public:
+	static constexpr size_t ParamsCount = 3;
 
 	double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
 	{
@@ -187,4 +195,5 @@ namespace Resonance
 		res (2) = -(p (1) / (2 * root * cminus * cminus));
 		return res;
 	}
+};
 }

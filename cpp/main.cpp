@@ -36,11 +36,10 @@
 #include "util.h"
 #include "symbregmodels.h"
 
-using namespace Laser;
-
+template<typename Model>
 void tryLOO (const TrainingSet_t<>& srcPairs)
 {
-	auto allPairs = preprocess (srcPairs);
+	auto allPairs = Model::preprocess (srcPairs);
 	for (size_t i = 0; i < allPairs.size (); ++i)
 	{
 		std::cout << "omitting point " << i << std::endl;
@@ -48,44 +47,44 @@ void tryLOO (const TrainingSet_t<>& srcPairs)
 		auto pairs = allPairs;
 		pairs.erase (pairs.begin () + i);
 
-		const auto& p = solve<ParamsCount> (pairs, residual, residualDer, {{ 0, 0, 0 }});
+		const auto& p = solve<Model::ParamsCount> (pairs, Model::residual, Model::residualDer, {{ 0, 0, 0 }});
 		std::cout << "inferred params: " << dlib::trans (p);
 
 		double sum = 0;
 		for (const auto& pair : pairs)
 		{
-			auto r = residual (pair, p);
+			auto r = Model::residual (pair, p);
 			sum += r * r;
 		}
 		std::cout << "MSE: " << sum / pairs.size () << std::endl << std::endl;;
 	}
 }
 
-double getMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p)
+template<typename Model>
+double getMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p)
 {
-	const auto& pairs = preprocess (srcPairs);
+	const auto& pairs = Model::preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
 			[&p] (double sum, auto pair)
 			{
-				return sum + std::pow (residual (pair, p), 2);
+				return sum + std::pow (Model::residual (pair, p), 2);
 			});
 }
 
 template<
-		typename VariablesDerivativeT,
+		typename Model,
 		typename YSigmaGetterT,
 		typename XSigmasGetterT
 	>
-double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<ParamsCount>& p,
-		const VariablesDerivativeT& varsDer,
+double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p,
 		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas)
 {
-	const auto& pairs = preprocess (srcPairs);
+	const auto& pairs = Model::preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
 			[&] (double sum, auto pair)
 			{
-				const auto res = std::pow (residual (pair, p), 2);
-				const auto& derivatives = varsDer (pair, p);
+				const auto res = std::pow (Model::residual (pair, p), 2);
+				const auto& derivatives = Model::varsDer (pair, p);
 				const DType_t denom = std::pow (ySigma (pair), 2) + std::pow (xSigmas (pair) * derivatives, 2);
 				return sum + res / denom;
 			});
@@ -105,26 +104,30 @@ std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& 
 	return ostr;
 }
 
+template<typename Model>
 void calculateConvergence (const TrainingSet_t<>& pairs,
 		const boost::program_options::variables_map& vm)
 {
-	const auto& preprocessed = preprocess (pairs);
+	const auto& preprocessed = Model::preprocess (pairs);
 
-	const auto& classicP = solve<ParamsCount> (preprocessed,
-			residual, residualDer, Initial);
+	const auto& classicP = solve<Model::ParamsCount> (preprocessed,
+			Model::residual, Model::residualDer, Model::initial ());
 
 	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 1;
 	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 10;
 	const auto step = vm.count ("conv-step") ? vm ["conv-step"].as<double> () : 0.01;
 
+	const auto fixedY = std::max_element (pairs.begin (), pairs.end (),
+			[] (const auto& p1, const auto& p2) { return p1.second < p2.second; })->second;
+
 	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "convergence.txt" };
 	for (double i = start; i < end; i += step)
 	{
-		const auto& fixedP = solve<ParamsCount> (preprocessed,
-				residual, residualDer, varsDer,
-				[i] (const auto& pair) { return 0.02 * i * pair.second; },
-				[] (const auto& pair) { return pair.first (0) < 0.6 ? 0.1 : 0.01; },
-				Initial);
+		const auto& fixedP = solve<Model::ParamsCount> (preprocessed,
+				Model::residual, Model::residualDer, Model::varsDer,
+				[i, fixedY] (const auto& pair) { return 0.02 * i * fixedY; },
+				[] (const auto& pair) { return 0.1; },
+				Model::initial ());
 
 		ostr << i << " ";
 		printVec (ostr, classicP);
@@ -134,16 +137,17 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 	}
 }
 
-Params_t<ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
+template<typename Model>
+Params_t<Model::ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
 {
 	xVar *= multiplier;
 	yVar *= multiplier;
 
-	return solve<ParamsCount> (preprocess (srcPts),
-			residual, residualDer, varsDer,
+	return solve<Model::ParamsCount> (Model::preprocess (srcPts),
+			Model::residual, Model::residualDer, Model::varsDer,
 			[yVar] (const auto& pair) { return pair.second * yVar; },
 			[xVar] (const auto& pair) { return pair.first (0) * xVar; },
-			Initial);
+			Model::initial ());
 }
 
 double svmSolver (const TrainingSet_t<>& pts)
@@ -216,20 +220,22 @@ int main (int argc, char **argv)
 	const auto ySigma = [] (const auto& pair) { return pair.second * 0.02; };
 	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
 
-	const auto& p = solve<ParamsCount> (preprocess (pairs),
-			residual, residualDer, Initial);
-	std::cout << "inferred params: " << dlib::trans (p);
-	std::cout << "MSE: " << getMse (pairs, p) << std::endl << std::endl;
-	std::cout << "mMSE: " << getModifiedMse (pairs, p, varsDer, ySigma, xSigma) << std::endl << std::endl;
+	using Model = Models::Laser;
 
-	const auto& fixedP = solve<ParamsCount> (preprocess (pairs),
-			residual, residualDer, varsDer,
+	const auto& p = solve<Model::ParamsCount> (Model::preprocess (pairs),
+			Model::residual, Model::residualDer, Model::initial ());
+	std::cout << "inferred params: " << dlib::trans (p);
+	std::cout << "MSE: " << getMse<Model> (pairs, p) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, p, ySigma, xSigma) << std::endl << std::endl;
+
+	const auto& fixedP = solve<Model::ParamsCount> (Model::preprocess (pairs),
+			Model::residual, Model::residualDer, Model::varsDer,
 			ySigma, xSigma,
-			Initial);
+			Model::initial ());
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
-	std::cout << "MSE: " << getMse (pairs, fixedP) << std::endl << std::endl;
-	std::cout << "mMSE: " << getModifiedMse (pairs, fixedP, varsDer, ySigma, xSigma) << std::endl << std::endl;
+	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, fixedP, ySigma, xSigma) << std::endl << std::endl;
 
 	/*
 	std::vector<double> xVars;
@@ -265,7 +271,7 @@ int main (int argc, char **argv)
 	if (vm.count ("convergence") && vm ["convergence"].as<bool> ())
 	{
 		std::cout << "calculating convergence..." << std::endl;
-		calculateConvergence (pairs, vm);
+		calculateConvergence<Model> (pairs, vm);
 		return 0;
 	}
 
@@ -273,7 +279,7 @@ int main (int argc, char **argv)
 
 	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<int> () : 1;
 	using namespace std::placeholders;
-	auto results = calcStats (std::bind (symbRegSolver, multiplier, _1, _2, _3), xVars, yVars, pairs);
+	auto results = calcStats (std::bind (symbRegSolver<Model>, multiplier, _1, _2, _3), xVars, yVars, pairs);
 
 	WriteCoeffs (p, results, infile);
 }
