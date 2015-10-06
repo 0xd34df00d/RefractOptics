@@ -32,7 +32,8 @@
 #include <vector>
 #include <thread>
 #include <future>
-#include <dlib/svm.h>
+#include <dlib/optimization.h>
+#include <dlib/statistics.h>
 #include "defs.h"
 
 template<size_t ParamsCount, typename R, typename D, typename TS>

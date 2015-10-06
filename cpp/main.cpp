@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <limits>
 #include <boost/program_options.hpp>
+#include <dlib/svm.h>
 #include "solve.h"
 #include "util.h"
 #include "symbregmodels.h"
