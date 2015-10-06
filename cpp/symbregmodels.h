@@ -27,7 +27,9 @@
  * DEALINGS IN THE SOFTWARE.
  **********************************************************************/
 
-#include "solve.h"
+#pragma once
+
+#include "defs.h"
 
 namespace Models
 {
