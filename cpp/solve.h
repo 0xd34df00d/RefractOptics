@@ -33,21 +33,7 @@
 #include <thread>
 #include <future>
 #include <dlib/svm.h>
-
-template<typename T, size_t Dim = 1> using SampleTypeBase_t = dlib::matrix<T, Dim, 1>;
-template<typename T, size_t Dim = 1> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T, Dim>, T>;
-template<typename T, size_t Dim = 1> using TrainingSetBase_t = std::vector<TrainingSetInstanceBase_t<T, Dim>>;
-
-using DType_t = double;
-
-template<size_t Dim = 1>
-using SampleType_t = SampleTypeBase_t<DType_t, Dim>;
-template<size_t Dim = 1>
-using TrainingSetInstance_t = TrainingSetInstanceBase_t<DType_t, Dim>;
-template<size_t Dim = 1>
-using TrainingSet_t = TrainingSetBase_t<DType_t, Dim>;
-
-template<size_t ParamsCount> using Params_t = dlib::matrix<DType_t, ParamsCount, 1>;
+#include "defs.h"
 
 template<size_t ParamsCount, typename R, typename D, typename TS>
 Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<DType_t, ParamsCount>& initial)
