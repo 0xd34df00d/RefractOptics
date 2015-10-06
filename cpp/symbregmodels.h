@@ -36,51 +36,15 @@ class Series
 public:
 	static constexpr size_t ParamsCount = 3;
 
-	static std::array<DType_t, ParamsCount> initial ()
-	{
-		return {{ 1, 1, 1 }};
-	}
+	static std::array<DType_t, ParamsCount> initial ();
 
-	static double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
-	{
-		double result = 0;
-		const auto x = data.first (0);
-		for (size_t i = 0; i < ParamsCount; ++i)
-			result += p (i) / std::pow (x, 2 * i);
-		return result - data.second;
-	}
+	static double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
 
-	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
-	{
-		Params_t<ParamsCount> res;
-		const auto x = data.first (0);
-		for (size_t i = 0; i < ParamsCount; ++i)
-			res (i) = 1 / std::pow (x, 2 * i);
-		return res;
-	}
+	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
 
-	static SampleType_t<> varsDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto x = data.first (0);
+	static SampleType_t<> varsDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
 
-		auto subDerivative = [] (double x, int64_t i, double p_i)
-		{
-			return -2 * i * p_i * std::pow (x, -2 * i - 1);
-		};
-
-		double result = 0;
-		for (size_t i = 1; i < ParamsCount; ++i)
-			result += subDerivative (x, static_cast<int64_t> (i), p (i));
-
-		SampleType_t<> res;
-		res (0) = result;
-		return res;
-	}
-
-	static TrainingSet_t<> preprocess (const TrainingSet_t<>& srcPts)
-	{
-		return srcPts;
-	}
+	static TrainingSet_t<> preprocess (const TrainingSet_t<>& srcPts);
 };
 
 class Laser
@@ -89,78 +53,17 @@ class Laser
 public:
 	static constexpr size_t ParamsCount = 3;
 
-	static std::array<DType_t, ParamsCount> initial ()
-	{
-		return {{ 0.002, 0.0002, 100 }};
-	}
+	static std::array<DType_t, ParamsCount> initial ();
 
-	static DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0)
-	{
-		return alpha0 - logr0 / (2 * L);
-	}
+	static DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0);
 
-	static DType_t residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto r0 = data.first (0);
-		const auto logr0 = data.first (1);
-		const auto g0 = p (0);
-		const auto alpha0 = p (1);
-		const auto k = p (2);
+	static DType_t residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-		return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0) - 1) - data.second;
-	}
+	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto r0 = data.first (0);
-		const auto logr0 = data.first (1);
-		const auto g0 = p (0);
-		const auto alpha0 = p (1);
-		const auto k = p (2);
+	static SampleType_t<> varsDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-		const auto frac = (1 - r0) / (1 + r0);
-
-		const auto a0ml = alpha0MinusLn (alpha0, logr0);
-		const auto dg0 = k * frac / a0ml;
-		const auto dalpha0 = -g0 * k * frac / (a0ml * a0ml);
-		const auto dk = frac * (g0 / a0ml - 1);
-
-		Params_t<ParamsCount> res;
-		res (0) = dg0;
-		res (1) = dalpha0;
-		res (2) = dk;
-		return res;
-	}
-
-	static SampleType_t<> varsDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto r0 = data.first (0);
-		const auto logr0 = data.first (1);
-		const auto g0 = p (0);
-		const auto alpha0 = p (1);
-		const auto k = p (2);
-
-		const auto a0ml = alpha0MinusLn (alpha0, logr0);
-		auto result = -2 * (g0 / a0ml - 1) / (1 + r0) / (1 + r0);
-		result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * a0ml * a0ml);
-
-		SampleType_t<> res;
-		res (0) = result * k;
-		return res;
-	}
-
-	static TrainingSet_t<2> preprocess (const TrainingSet_t<>& srcPts)
-	{
-		TrainingSet_t<2> res;
-		for (const auto& srcPt : srcPts)
-		{
-			const auto val = srcPt.first (0);
-			SampleType_t<2> pt;
-			pt = val, std::log (val);
-			res.emplace_back (pt, srcPt.second);
-		}
-		return res;
-	}
+	static TrainingSet_t<2> preprocess (const TrainingSet_t<>& srcPts);
 };
 
 class Resonance
@@ -168,32 +71,8 @@ class Resonance
 public:
 	static constexpr size_t ParamsCount = 3;
 
-	double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto x = data.first (0);
-		const auto x2 = x * x;
+	double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
 
-		const double cminus = p (2) - 1.0 / x2;
-		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot >= 0 ? std::sqrt(underRoot) : 10;
-
-		return root - data.second;
-	}
-
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
-	{
-		const auto x = data.first (0);
-		const auto x2 = x * x;
-
-		const double cminus = p (2) - 1.0 / x2;
-		const double underRoot = p (0) + p (1) / cminus;
-		const double root = underRoot > 0 ? std::sqrt(underRoot) : 10;
-
-		Params_t<ParamsCount> res;
-		res (0) = 1. / (2. * root);
-		res (1) = 1. / (2. * root * cminus);
-		res (2) = -(p (1) / (2 * root * cminus * cminus));
-		return res;
-	}
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
 };
 }

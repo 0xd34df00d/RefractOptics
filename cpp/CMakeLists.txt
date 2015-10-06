@@ -7,6 +7,7 @@ find_package (Boost REQUIRED COMPONENTS program_options)
 
 add_library (util STATIC
 	util.cpp
+	symbregmodels.cpp
 	)
 
 add_executable (optics WIN32
