@@ -88,9 +88,12 @@ std::array<DType_t, Laser::ParamsCount> Laser::initial ()
 	return {{ 0.002, 0.0002, 100 }};
 }
 
-DType_t Laser::alpha0MinusLn (DType_t alpha0, DType_t logr0)
+namespace
 {
-	return alpha0 - logr0 / (2 * L);
+	DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0, double L)
+	{
+		return alpha0 - logr0 / (2 * L);
+	}
 }
 
 DType_t Laser::residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
@@ -101,7 +104,7 @@ DType_t Laser::residual (const std::pair<SampleType_t<2>, DType_t>& data, const 
 	const auto alpha0 = p (1);
 	const auto k = p (2);
 
-	return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0) - 1) - data.second;
+	return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0, L) - 1) - data.second;
 }
 
 Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
@@ -114,7 +117,7 @@ Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<2>
 
 	const auto frac = (1 - r0) / (1 + r0);
 
-	const auto a0ml = alpha0MinusLn (alpha0, logr0);
+	const auto a0ml = alpha0MinusLn (alpha0, logr0, L);
 	const auto dg0 = k * frac / a0ml;
 	const auto dalpha0 = -g0 * k * frac / (a0ml * a0ml);
 	const auto dk = frac * (g0 / a0ml - 1);
@@ -134,7 +137,7 @@ SampleType_t<> Laser::varsDer (const std::pair<SampleType_t<2>, DType_t>& data, 
 	const auto alpha0 = p (1);
 	const auto k = p (2);
 
-	const auto a0ml = alpha0MinusLn (alpha0, logr0);
+	const auto a0ml = alpha0MinusLn (alpha0, logr0, L);
 	auto result = -2 * (g0 / a0ml - 1) / (1 + r0) / (1 + r0);
 	result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * a0ml * a0ml);
 

@@ -57,8 +57,6 @@ public:
 
 	static std::array<DType_t, ParamsCount> initial ();
 
-	static DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0);
-
 	static DType_t residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p);
 
 	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p);
