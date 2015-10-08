@@ -139,6 +139,24 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 	}
 }
 
+template<
+		typename Model,
+		typename YSigmaGetterT,
+		typename XSigmasGetterT
+	>
+void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
+		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigma,
+		const boost::program_options::variables_map& vm)
+{
+	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 10;
+	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 100;
+
+	const auto valStart = vm.count ("values-start") ? vm ["values-start"].as<double> () : 0.5;
+	const auto valEnd = vm.count ("values-end") ? vm ["values-end"].as<double> () : 1;
+
+	compareFunctionals<Model> (start, end, valStart, valEnd, ySigma, xSigma, params);
+}
+
 template<typename Model>
 Params_t<Model::ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
 {
@@ -283,14 +301,7 @@ int main (int argc, char **argv)
 	else if (mode == "conv_modified_vs_classical")
 	{
 		std::cout << "comparing modified MSE vs classical MSE..." << std::endl;
-
-		const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 10;
-		const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 100;
-
-		const auto valStart = vm.count ("values-start") ? vm ["values-start"].as<double> () : 0.5;
-		const auto valEnd = vm.count ("values-end") ? vm ["values-end"].as<double> () : 1;
-
-		compareFunctionals<Model> (start, end, valStart, valEnd, ySigma, xSigma, fixedP);
+		calculateModifiedVsClassical<Model> (fixedP, ySigma, xSigma, vm);
 	}
 	else if (mode == "stability")
 	{
