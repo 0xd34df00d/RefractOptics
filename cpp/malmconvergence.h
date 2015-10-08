@@ -102,3 +102,29 @@ SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t
 
 	return { classicP, fixedP };
 }
+
+template<
+		typename Model,
+		typename YSigmaGetterT,
+		typename XSigmasGetterT
+	>
+std::vector<SingleCompareResult<Model::ParamsCount>> compareFunctionals (size_t size, size_t sizeTo,
+		DType_t pointFrom, DType_t pointTo,
+		const YSigmaGetterT& ySigma,
+		const XSigmasGetterT& xSigma,
+		const Params_t<Model::ParamsCount>& params)
+{
+	std::vector<SingleCompareResult<Model::ParamsCount>> result;
+
+	for (; size < sizeTo; ++size)
+	{
+		auto subres = compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params);
+
+		subres.m_classicalParams -= params;
+		subres.m_modifiedParams -= params;
+
+		result.push_back (subres);
+	}
+
+	return result;
+}
