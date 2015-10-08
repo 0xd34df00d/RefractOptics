@@ -70,3 +70,35 @@ TrainingSet_t<> genSample (size_t size, DType_t from, DType_t to,
 
 	return result;
 }
+
+template<size_t ParamsCount>
+struct SingleCompareResult
+{
+	Params_t<ParamsCount> m_classicalParams;
+	Params_t<ParamsCount> m_modifiedParams;
+};
+
+template<
+		typename Model,
+		typename YSigmaGetterT,
+		typename XSigmasGetterT
+	>
+SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t from, DType_t to,
+		const YSigmaGetterT& ySigma,
+		const XSigmasGetterT& xSigma,
+		const Params_t<Model::ParamsCount>& params)
+{
+	const auto& trainingSet = genSample<Model> (size, from, to, ySigma, xSigma, params);
+
+	const auto& preprocessed = Model::preprocess (trainingSet);
+
+	const auto& classicP = solve<Model::ParamsCount> (preprocessed,
+			Model::residual, Model::residualDer, Model::initial ());
+	const auto& fixedP = solve<Model::ParamsCount> (preprocessed,
+			Model::residual, Model::residualDer, Model::varsDer,
+			ySigma,
+			xSigma,
+			Model::initial ());
+
+	return { classicP, fixedP };
+}
