@@ -299,7 +299,6 @@ int main (int argc, char **argv)
 	{
 		std::cout << "calculating convergence..." << std::endl;
 		calculateConvergence<Model> (pairs, vm);
-		return 0;
 	}
 	else if (mode == "conv_modified_vs_classical")
 	{
