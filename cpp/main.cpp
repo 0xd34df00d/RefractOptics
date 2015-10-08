@@ -154,7 +154,9 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 	const auto valStart = vm.count ("values-start") ? vm ["values-start"].as<double> () : 0.5;
 	const auto valEnd = vm.count ("values-end") ? vm ["values-end"].as<double> () : 1;
 
-	compareFunctionals<Model> (start, end, valStart, valEnd, ySigma, xSigma, params);
+	const auto repsCount = vm.count ("repetitions") ? vm ["repetitions"].as<int> () : 100;
+
+	compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params);
 }
 
 template<typename Model>
