@@ -77,6 +77,13 @@ struct SingleCompareResult
 {
 	Params_t<ParamsCount> m_classicalParams;
 	Params_t<ParamsCount> m_modifiedParams;
+
+	SingleCompareResult& operator+= (const SingleCompareResult& other)
+	{
+		m_classicalParams += other.m_classicalParams;
+		m_modifiedParams += other.m_modifiedParams;
+		return *this;
+	}
 };
 
 template<
