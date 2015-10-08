@@ -39,21 +39,34 @@ template<
 	>
 TrainingSet_t<> genSample (size_t size, DType_t from, DType_t to,
 		const YSigmaGetterT& ySigma,
-		const XSigmasGetterT& xSigmas,
+		const XSigmasGetterT& xSigma,
 		const Params_t<Model::ParamsCount>& params)
 {
 	std::mt19937_64 generator { std::random_device {} () };
 
 	std::uniform_real_distribution<DType_t> rawXDistr { from, to };
 
+	TrainingSet_t<> result;
+
 	for (size_t i = 0; i < size; ++i)
 	{
-		const double xArr [] = { rawXDistr (generator) };
-		const SampleType_t<> pseudoSample { xArr };
+		const auto rawX = rawXDistr (generator);
 
+		const double xArr [] = { rawX };
+		const SampleType_t<> pseudoSample { xArr };
 		const auto& preprocessed = Model::preprocess ({ { pseudoSample, 0 } });
 		const auto rawY = Model::residual (preprocessed, params);
+
+		const auto& pair = preprocessed [0];
+
+		const auto yDev = std::normal_distribution<DType_t> { 0, ySigma (pair) } (generator);
+		const auto xDev = std::normal_distribution<DType_t> { 0, xSigma (pair) } (generator);
+
+		SampleType_t<> sample;
+		sample (0) = rawX + xDev;
+
+		result.push_back ({ sample, yDev });
 	}
 
-	return {};
+	return result;
 }
