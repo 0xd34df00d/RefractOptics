@@ -180,7 +180,7 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("help", "show help")
 		("input-file", po::value<std::string> (), "input data file")
 		("output-file", po::value<std::string> (), "output data file")
-		("convergence", po::value<bool> (), "calculate convergence")
+		("mode", po::value<std::string> (), "computational experiment mode: conv_modified2classical | conv_modified_vs_classical | stability")
 		("conv-start", po::value<double> (), "convergence start")
 		("conv-end", po::value<double> (), "convergence end")
 		("conv-step", po::value<double> (), "convergence step")
@@ -270,18 +270,24 @@ int main (int argc, char **argv)
 		5e-2,
 	};
 
-	if (vm.count ("convergence") && vm ["convergence"].as<bool> ())
+	const auto& mode = vm.count ("mode") ? vm ["mode"].as<std::string> () : std::string {};
+
+	if (mode == "conv_modified2classical")
 	{
 		std::cout << "calculating convergence..." << std::endl;
 		calculateConvergence<Model> (pairs, vm);
 		return 0;
 	}
+	else if (mode == "stability")
+	{
+		std::cout << "calculating mean/dispersion..." << std::endl;
 
-	std::cout << "calculating mean/dispersion..." << std::endl;
+		const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<int> () : 1;
+		using namespace std::placeholders;
+		auto results = calcStats (std::bind (symbRegSolver<Model>, multiplier, _1, _2, _3), xVars, yVars, pairs);
 
-	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<int> () : 1;
-	using namespace std::placeholders;
-	auto results = calcStats (std::bind (symbRegSolver<Model>, multiplier, _1, _2, _3), xVars, yVars, pairs);
-
-	WriteCoeffs (p, results, infile);
+		WriteCoeffs (p, results, infile);
+	}
+	else
+		std::cerr << "Unknown mode: " << mode << std::endl;
 }
