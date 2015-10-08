@@ -156,7 +156,17 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 
 	const auto repsCount = vm.count ("repetitions") ? vm ["repetitions"].as<int> () : 100;
 
-	compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params);
+	const auto& result = compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params);
+
+	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "comparison.txt" };
+	for (auto i = start; i < end; ++i)
+	{
+		ostr << i << " ";
+		printVec (ostr, result [i].m_classicalParams);
+		ostr << " ";
+		printVec (ostr, result [i].m_modifiedParams);
+		ostr << "\n";
+	}
 }
 
 template<typename Model>
