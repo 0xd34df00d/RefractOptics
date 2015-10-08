@@ -36,6 +36,7 @@
 #include "solve.h"
 #include "util.h"
 #include "symbregmodels.h"
+#include "malmconvergence.h"
 
 template<typename Model>
 void tryLOO (const TrainingSet_t<>& srcPairs)
