@@ -117,6 +117,7 @@ template<
 		typename XSigmasGetterT
 	>
 std::vector<SingleCompareResult<Model::ParamsCount>> compareFunctionals (size_t size, size_t sizeTo,
+		int repetitions,
 		DType_t pointFrom, DType_t pointTo,
 		const YSigmaGetterT& ySigma,
 		const XSigmasGetterT& xSigma,
@@ -126,10 +127,12 @@ std::vector<SingleCompareResult<Model::ParamsCount>> compareFunctionals (size_t 
 
 	for (; size < sizeTo; ++size)
 	{
-		auto subres = compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params);
+		SingleCompareResult<Model::ParamsCount> subres;
+		for (size_t i = 0; i < repetitions; ++i)
+			subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params);
 
-		subres.m_classicalParams -= params;
-		subres.m_modifiedParams -= params;
+		subres.m_classicalParams -= repetitions * params;
+		subres.m_modifiedParams -= repetitions * params;
 
 		result.push_back (subres);
 	}
