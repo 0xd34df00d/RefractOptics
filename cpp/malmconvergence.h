@@ -44,7 +44,7 @@ TrainingSet_t<> genSample (size_t size, DType_t from, DType_t to,
 {
 	std::mt19937_64 generator { std::random_device {} () };
 
-	std::uniform_distribution<DType_t> rawXDistr { from, to };
+	std::uniform_real_distribution<DType_t> rawXDistr { from, to };
 
 	for (size_t i = 0; i < size; ++i)
 	{
