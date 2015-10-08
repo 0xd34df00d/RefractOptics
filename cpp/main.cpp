@@ -280,6 +280,18 @@ int main (int argc, char **argv)
 		calculateConvergence<Model> (pairs, vm);
 		return 0;
 	}
+	else if (mode == "conv_modified_vs_classical")
+	{
+		std::cout << "comparing modified MSE vs classical MSE..." << std::endl;
+
+		const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 10;
+		const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 100;
+
+		const auto valStart = vm.count ("values-start") ? vm ["values-start"].as<double> () : 0.5;
+		const auto valEnd = vm.count ("values-end") ? vm ["values-end"].as<double> () : 1;
+
+		compareFunctionals<Model> (start, end, valStart, valEnd, ySigma, xSigma, fixedP);
+	}
 	else if (mode == "stability")
 	{
 		std::cout << "calculating mean/dispersion..." << std::endl;
