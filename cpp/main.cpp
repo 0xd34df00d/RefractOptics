@@ -184,6 +184,8 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("conv-start", po::value<double> (), "convergence start")
 		("conv-end", po::value<double> (), "convergence end")
 		("conv-step", po::value<double> (), "convergence step")
+		("values-start", po::value<double> (), "values start")
+		("values-end", po::value<double> (), "values end")
 		("multiplier", po::value<int> (), "set multiplier");
 
 	po::positional_options_description p;
