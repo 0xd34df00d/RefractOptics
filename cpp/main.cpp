@@ -79,7 +79,7 @@ template<
 		typename XSigmasGetterT
 	>
 double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p,
-		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas)
+		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas, double multiplier = 1)
 {
 	const auto& pairs = Model::preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
@@ -87,7 +87,7 @@ double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::Pa
 			{
 				const auto res = std::pow (Model::residual (pair, p), 2);
 				const auto& derivatives = Model::varsDer (pair, p);
-				const DType_t denom = std::pow (ySigma (pair), 2) + std::pow (xSigmas (pair) * derivatives, 2);
+				const DType_t denom = multiplier * (std::pow (ySigma (pair), 2) + std::pow (xSigmas (pair) * derivatives, 2));
 				return sum + res / denom;
 			});
 }
