@@ -172,14 +172,12 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 template<typename Model>
 Params_t<Model::ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
 {
-	xVar *= multiplier;
-	yVar *= multiplier;
-
 	return solve<Model::ParamsCount> (Model::preprocess (srcPts),
 			Model::residual, Model::residualDer, Model::varsDer,
 			[yVar] (const auto& pair) { return pair.second * yVar; },
 			[xVar] (const auto& pair) { return pair.first (0) * xVar; },
-			Model::initial ());
+			Model::initial (),
+			multiplier);
 }
 
 double svmSolver (const TrainingSet_t<>& pts)
