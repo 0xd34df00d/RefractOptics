@@ -217,7 +217,7 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("values-start", po::value<double> (), "values start")
 		("values-end", po::value<double> (), "values end")
 		("repetitions", po::value<int> (), "repetitions count")
-		("multiplier", po::value<int> (), "set multiplier");
+		("multiplier", po::value<int> (), "sigma multiplier (for modified functional denominator)");
 
 	po::positional_options_description p;
 	p.add ("input-file", -1);
