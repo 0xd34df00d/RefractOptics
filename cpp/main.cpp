@@ -146,7 +146,8 @@ template<
 	>
 void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigma,
-		const boost::program_options::variables_map& vm)
+		const boost::program_options::variables_map& vm,
+		double multiplier = 1)
 {
 	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 10;
 	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 100;
@@ -156,7 +157,7 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 
 	const auto repsCount = vm.count ("repetitions") ? vm ["repetitions"].as<int> () : 100;
 
-	const auto& result = compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params);
+	const auto& result = compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params, multiplier);
 
 	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "comparison.txt" };
 	for (auto i = start; i < end; ++i)

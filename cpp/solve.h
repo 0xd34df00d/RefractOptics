@@ -57,7 +57,8 @@ template<size_t ParamsCount,
 Params_t<ParamsCount> solve (const TS& pairs,
 		ResidualT res, ParamsDerivativeT paramsDer, VariablesDerivativeT varsDer,
 		YSigmaGetterT ySigma, XSigmasGetterT xSigmas,
-		const std::array<DType_t, ParamsCount>& initial)
+		const std::array<DType_t, ParamsCount>& initial,
+		double multiplier = 1)
 {
 	Params_t<ParamsCount> p;
 	for (auto i = 0u; i < ParamsCount; ++i)
@@ -77,7 +78,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 			const auto& derivatives = varsDer (data, p);
 			const DType_t denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
 
-			return srcVal / std::sqrt (denom);
+			return srcVal / std::sqrt (multiplier * multiplier * denom);
 		};
 #else
 		const auto& wrappedRes = res;
