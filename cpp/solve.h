@@ -70,7 +70,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 		const auto prevP = p;
 
 #if 1
-		auto wrappedRes = [res, ySigma, xSigmas, varsDer] (const auto& data, const auto& p) -> double
+		auto wrappedRes = [&] (const auto& data, const auto& p) -> double
 		{
 			const auto srcVal = res (data, p);
 
