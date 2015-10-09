@@ -55,10 +55,10 @@ TrainingSet_t<> genSample (size_t size, DType_t from, DType_t to,
 		const double xArr [] = { rawX };
 		const SampleType_t<> pseudoSample { xArr };
 
-		const auto& preprocessed = Model::preprocess ({ { pseudoSample, 0 } });
-		const auto& pair = preprocessed [0];
+		auto preprocessed = Model::preprocess ({ { pseudoSample, 0 } });
+		const auto rawY = Model::residual (preprocessed [0], params);
 
-		const auto rawY = Model::residual (pair, params);
+		const TrainingSetInstance_t<> pair { pseudoSample, rawY };
 
 		const auto yDev = std::normal_distribution<DType_t> { 0, ySigma (pair) } (generator);
 		const auto xDev = std::normal_distribution<DType_t> { 0, xSigma (pair) } (generator);
