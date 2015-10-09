@@ -94,7 +94,8 @@ template<
 SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t from, DType_t to,
 		const YSigmaGetterT& ySigma,
 		const XSigmasGetterT& xSigma,
-		const Params_t<Model::ParamsCount>& params)
+		const Params_t<Model::ParamsCount>& params,
+		double multiplier)
 {
 	const auto& trainingSet = genSample<Model> (size, from, to, ySigma, xSigma, params);
 
@@ -106,7 +107,8 @@ SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t
 			Model::residual, Model::residualDer, Model::varsDer,
 			ySigma,
 			xSigma,
-			Model::initial ());
+			Model::initial (),
+			multiplier);
 
 	return { classicP, fixedP };
 }
@@ -121,7 +123,8 @@ std::vector<SingleCompareResult<Model::ParamsCount>> compareFunctionals (size_t 
 		DType_t pointFrom, DType_t pointTo,
 		const YSigmaGetterT& ySigma,
 		const XSigmasGetterT& xSigma,
-		const Params_t<Model::ParamsCount>& params)
+		const Params_t<Model::ParamsCount>& params,
+		double multiplier = 1)
 {
 	std::vector<SingleCompareResult<Model::ParamsCount>> result;
 
@@ -129,7 +132,7 @@ std::vector<SingleCompareResult<Model::ParamsCount>> compareFunctionals (size_t 
 	{
 		SingleCompareResult<Model::ParamsCount> subres;
 		for (size_t i = 0; i < repetitions; ++i)
-			subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params);
+			subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier);
 
 		subres.m_classicalParams -= repetitions * params;
 		subres.m_modifiedParams -= repetitions * params;
