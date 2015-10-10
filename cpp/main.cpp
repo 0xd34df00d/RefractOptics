@@ -251,6 +251,8 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
+	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<int> () : 1;
+
 	const auto ySigma = [] (const auto& pair) { return pair.second * 0.02; };
 	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
 
@@ -317,8 +319,6 @@ int main (int argc, char **argv)
 	else if (mode == "stability")
 	{
 		std::cout << "calculating mean/dispersion..." << std::endl;
-
-		const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<int> () : 1;
 		using namespace std::placeholders;
 		auto results = calcStats (std::bind (symbRegSolver<Model>, multiplier, _1, _2, _3), xVars, yVars, pairs);
 
