@@ -93,11 +93,6 @@ Params_t<ParamsCount> solve (const TS& pairs,
 	return p;
 }
 
-typedef std::vector<std::vector<DType_t>> StatsVec_t;
-typedef std::vector<std::pair<SampleType_t<>, DType_t>> PairsList_t;
-typedef std::vector<dlib::running_stats<DType_t>> RunningStatsList_t;
-typedef std::map<DType_t, std::map<DType_t, RunningStatsList_t>> Stats_t;
-
 namespace detail
 {
 	template<typename Solver>

@@ -30,6 +30,7 @@
 #pragma once
 
 #include <dlib/matrix.h>
+#include <dlib/statistics.h>
 
 template<typename T, size_t Dim = 1> using SampleTypeBase_t = dlib::matrix<T, Dim, 1>;
 template<typename T, size_t Dim = 1> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T, Dim>, T>;
@@ -45,3 +46,8 @@ template<size_t Dim = 1>
 using TrainingSet_t = TrainingSetBase_t<DType_t, Dim>;
 
 template<size_t ParamsCount> using Params_t = dlib::matrix<DType_t, ParamsCount, 1>;
+
+typedef std::vector<std::vector<DType_t>> StatsVec_t;
+typedef std::vector<std::pair<SampleType_t<>, DType_t>> PairsList_t;
+typedef std::vector<dlib::running_stats<DType_t>> RunningStatsList_t;
+typedef std::map<DType_t, std::map<DType_t, RunningStatsList_t>> Stats_t;
