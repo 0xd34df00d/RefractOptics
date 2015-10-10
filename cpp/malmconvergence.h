@@ -85,6 +85,11 @@ struct SingleCompareResult
 		m_modifiedParams += other.m_modifiedParams;
 		return *this;
 	}
+
+	SingleCompareResult operator- () const
+	{
+		return { -m_classicalParams, -m_modifiedParams };
+	}
 };
 
 template<
