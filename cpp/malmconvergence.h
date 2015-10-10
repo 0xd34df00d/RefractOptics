@@ -117,7 +117,6 @@ SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t
 class ThreadPool
 {
 	boost::asio::io_service IO_;
-	boost::asio::io_service::work Work_ { IO_ };
 
 	const size_t Count_;
 public:
