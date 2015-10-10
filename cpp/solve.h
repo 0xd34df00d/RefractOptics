@@ -64,7 +64,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 	for (auto i = 0u; i < ParamsCount; ++i)
 		p (i) = initial [i];
 
-	const auto diff = 1e-12;
+	const auto diff = 1e-18;
 
 	for (int i = 0; i < 500; ++i)
 	{
@@ -85,7 +85,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 #endif
 
 		dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { diff, 2 },
-				wrappedRes, paramsDer, pairs, p, 1e4);
+				wrappedRes, paramsDer, pairs, p, 1e6);
 
 		if (dlib::length (prevP - p) < diff)
 			break;
