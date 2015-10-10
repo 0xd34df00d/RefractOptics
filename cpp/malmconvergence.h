@@ -152,6 +152,8 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 	std::vector<SingleCompareResult<Model::ParamsCount>> result;
 	result.resize (sizeTo - sizeFrom + 1);
 
+	const SingleCompareResult<Model::ParamsCount> reference { params, params };
+
 	{
 		ThreadPool pool;
 		std::mutex outMutex;
@@ -164,10 +166,7 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 					}
 					SingleCompareResult<Model::ParamsCount> subres;
 					for (size_t i = 0; i < repetitions; ++i)
-						subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier);
-
-					subres.m_classicalParams -= repetitions * params;
-					subres.m_modifiedParams -= repetitions * params;
+						subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier) - reference;
 
 					subres.m_classicalParams /= repetitions;
 					subres.m_modifiedParams /= repetitions;
