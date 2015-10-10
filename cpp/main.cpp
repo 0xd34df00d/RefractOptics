@@ -108,7 +108,7 @@ std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& 
 
 template<typename Model>
 void calculateConvergence (const TrainingSet_t<>& pairs,
-		const boost::program_options::variables_map& vm)
+		const boost::program_options::variables_map& vm, double multiplier)
 {
 	const auto& preprocessed = Model::preprocess (pairs);
 
@@ -129,7 +129,8 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 				Model::residual, Model::residualDer, Model::varsDer,
 				[i, fixedY] (const auto& pair) { return 0.02 * i * fixedY; },
 				[] (const auto& pair) { return 0.1; },
-				Model::initial ());
+				Model::initial (),
+				multiplier);
 
 		ostr << i << " ";
 		printVec (ostr, classicP);
@@ -310,7 +311,7 @@ int main (int argc, char **argv)
 	if (mode == "conv_modified2classical")
 	{
 		std::cout << "calculating convergence..." << std::endl;
-		calculateConvergence<Model> (pairs, vm);
+		calculateConvergence<Model> (pairs, vm, multiplier);
 	}
 	else if (mode == "conv_modified_vs_classical")
 	{
