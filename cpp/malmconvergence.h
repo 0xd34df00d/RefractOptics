@@ -119,20 +119,20 @@ class ThreadPool
 	boost::asio::io_service IO_;
 	boost::asio::io_service::work Work_ { IO_ };
 
-	std::vector<std::thread> Threads_;
+	const size_t Count_;
 public:
 	ThreadPool (size_t count = 0)
+	: Count_ { count ? count : std::thread::hardware_concurrency () }
 	{
-		if (!count)
-			count = std::thread::hardware_concurrency ();
-
-		for (size_t i = 0; i < count; ++i)
-			Threads_.emplace_back ([this] { IO_.run (); });
 	}
 
 	~ThreadPool ()
 	{
-		for (auto& thread : Threads_)
+		std::vector<std::thread> threads;
+		for (size_t i = 0; i < Count_; ++i)
+			threads.emplace_back ([this] { IO_.run (); });
+
+		for (auto& thread : threads)
 			thread.join ();
 	}
 
