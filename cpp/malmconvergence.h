@@ -67,7 +67,7 @@ TrainingSet_t<> genSample (size_t size, DType_t from, DType_t to,
 		SampleType_t<> sample;
 		sample (0) = rawX + xDev;
 
-		result.push_back ({ sample, yDev });
+		result.push_back ({ sample, rawY + yDev });
 	}
 
 	return result;
