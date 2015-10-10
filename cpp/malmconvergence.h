@@ -118,7 +118,7 @@ template<
 		typename YSigmaGetterT,
 		typename XSigmasGetterT
 	>
-std::vector<SingleCompareResult<Model::ParamsCount>> compareFunctionals (size_t size, size_t sizeTo,
+auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 		int repetitions,
 		DType_t pointFrom, DType_t pointTo,
 		const YSigmaGetterT& ySigma,
