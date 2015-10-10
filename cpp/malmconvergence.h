@@ -30,6 +30,7 @@
 #pragma once
 
 #include <random>
+#include <boost/asio/io_service.hpp>
 #include "defs.h"
 
 template<
@@ -112,6 +113,36 @@ SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t
 
 	return { classicP, fixedP };
 }
+
+class ThreadPool
+{
+	boost::asio::io_service IO_;
+	boost::asio::io_service::work Work_ { IO_ };
+
+	std::vector<std::thread> Threads_;
+public:
+	ThreadPool (size_t count = 0)
+	{
+		if (!count)
+			count = std::thread::hardware_concurrency ();
+
+		for (size_t i = 0; i < count; ++i)
+			Threads_.emplace_back ([this] { IO_.run (); });
+	}
+
+	~ThreadPool ()
+	{
+		for (auto& thread : Threads_)
+			thread.join ();
+	}
+
+	template<typename F>
+	ThreadPool& operator<< (const F& f)
+	{
+		IO_.post (f);
+		return *this;
+	}
+};
 
 template<
 		typename Model,
