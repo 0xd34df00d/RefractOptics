@@ -158,17 +158,30 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 		double multiplier)
 {
 	std::vector<SingleCompareResult<Model::ParamsCount>> result;
+	result.resize (sizeTo - sizeFrom + 1);
 
-	for (; size < sizeTo; ++size)
 	{
-		SingleCompareResult<Model::ParamsCount> subres;
-		for (size_t i = 0; i < repetitions; ++i)
-			subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier);
+		ThreadPool pool;
+		std::mutex outMutex;
+		for (auto size = sizeFrom; size < sizeTo; ++size)
+			pool << [&, size]
+				{
+					{
+						std::lock_guard<std::mutex> lock { outMutex };
+						std::cout << "\tdoing " << size << std::endl;
+					}
+					SingleCompareResult<Model::ParamsCount> subres;
+					for (size_t i = 0; i < repetitions; ++i)
+						subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier);
 
-		subres.m_classicalParams -= repetitions * params;
-		subres.m_modifiedParams -= repetitions * params;
+					subres.m_classicalParams -= repetitions * params;
+					subres.m_modifiedParams -= repetitions * params;
 
-		result.push_back (subres);
+					subres.m_classicalParams /= repetitions;
+					subres.m_modifiedParams /= repetitions;
+
+					result [size - sizeFrom] = subres;
+				};
 	}
 
 	return result;
