@@ -90,6 +90,11 @@ struct SingleCompareResult
 	{
 		return { -m_classicalParams, -m_modifiedParams };
 	}
+
+	SingleCompareResult& operator-= (const SingleCompareResult& other)
+	{
+		return (*this) += (-other);
+	}
 };
 
 template<
