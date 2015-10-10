@@ -28,5 +28,6 @@ target_link_libraries (optics
 	util
 	${CMAKE_THREAD_LIBS_INIT}
 	${Boost_PROGRAM_OPTIONS_LIBRARY}
+	${Boost_SYSTEM_LIBRARY}
 	)
 target_link_libraries (interpolator gmp util ${CMAKE_THREAD_LIBS_INIT})
