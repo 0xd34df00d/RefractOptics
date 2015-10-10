@@ -95,6 +95,18 @@ struct SingleCompareResult
 	{
 		return (*this) += (-other);
 	}
+
+	friend SingleCompareResult operator+ (SingleCompareResult left, const SingleCompareResult& right)
+	{
+		left += right;
+		return left;
+	}
+
+	friend SingleCompareResult operator- (SingleCompareResult left, const SingleCompareResult& right)
+	{
+		left -= right;
+		return left;
+	}
 };
 
 template<
