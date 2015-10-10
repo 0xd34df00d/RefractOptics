@@ -1,6 +1,6 @@
 #pragma once
 
-#include "solve.h"
+#include "defs.h"
 
 TrainingSet_t<> LoadData (const std::string& file);
 

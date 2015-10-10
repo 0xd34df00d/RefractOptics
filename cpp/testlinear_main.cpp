@@ -32,6 +32,7 @@
 #include <vector>
 #include <boost/lexical_cast.hpp>
 #include "solve.h"
+#include "stability.h"
 
 std::vector<double> generateXs (double from, double to, size_t samples)
 {

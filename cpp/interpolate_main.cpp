@@ -35,6 +35,7 @@
 #include <gmpxx.h>
 #include <gmp.h>
 #include "util.h"
+#include "stability.h"
 
 template<>
 struct DoubleTraits<mpf_class>
