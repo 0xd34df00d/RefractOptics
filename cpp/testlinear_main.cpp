@@ -113,7 +113,8 @@ int main (int argc, char **argv)
 			[] (auto, const Params_t<2>& p) { return p (1); },
 			[] (auto) { return 0.01; },
 			[] (auto) { return 0.01; },
-			{{ 1, 1 }});
+			{{ 1, 1 }},
+			1);
 	std::cout << "inferred 'fixed' L-M params: " << dlib::trans (pca) << std::endl;
 
 	const auto da0 = variance * variance / samples;
