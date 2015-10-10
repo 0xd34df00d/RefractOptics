@@ -149,10 +149,11 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 		const Params_t<Model::ParamsCount>& params,
 		double multiplier)
 {
-	std::vector<SingleCompareResult<Model::ParamsCount>> result;
+	using SingleResult_t = SingleCompareResult<Model::ParamsCount>;
+	std::vector<SingleResult_t> result;
 	result.resize (sizeTo - sizeFrom + 1);
 
-	const SingleCompareResult<Model::ParamsCount> reference { params, params };
+	const SingleResult_t reference { params, params };
 
 	{
 		ThreadPool pool;
@@ -164,7 +165,7 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 						std::lock_guard<std::mutex> lock { outMutex };
 						std::cout << "\tdoing " << size << std::endl;
 					}
-					SingleCompareResult<Model::ParamsCount> subres;
+					SingleResult_t subres;
 					for (size_t i = 0; i < repetitions; ++i)
 						subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier) - reference;
 
