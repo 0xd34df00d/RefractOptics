@@ -79,6 +79,21 @@ struct SingleCompareResult
 	Params_t<ParamsCount> m_classicalParams;
 	Params_t<ParamsCount> m_modifiedParams;
 
+	SingleCompareResult ()
+	{
+		for (size_t i = 0; i < ParamsCount; ++i)
+		{
+			m_classicalParams (i) = 0;
+			m_modifiedParams (i) = 0;
+		}
+	}
+
+	SingleCompareResult (const Params_t<ParamsCount>& c, const Params_t<ParamsCount>& m)
+	: m_classicalParams { c }
+	, m_modifiedParams { m }
+	{
+	}
+
 	SingleCompareResult& operator+= (const SingleCompareResult& other)
 	{
 		m_classicalParams += other.m_classicalParams;
