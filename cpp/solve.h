@@ -58,7 +58,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 		ResidualT res, ParamsDerivativeT paramsDer, VariablesDerivativeT varsDer,
 		YSigmaGetterT ySigma, XSigmasGetterT xSigmas,
 		const std::array<DType_t, ParamsCount>& initial,
-		double multiplier = 1)
+		double multiplier)
 {
 	Params_t<ParamsCount> p;
 	for (auto i = 0u; i < ParamsCount; ++i)

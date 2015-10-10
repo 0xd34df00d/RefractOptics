@@ -79,7 +79,7 @@ template<
 		typename XSigmasGetterT
 	>
 double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p,
-		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas, double multiplier = 1)
+		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas, double multiplier)
 {
 	const auto& pairs = Model::preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
@@ -148,7 +148,7 @@ template<
 void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigma,
 		const boost::program_options::variables_map& vm,
-		double multiplier = 1)
+		double multiplier)
 {
 	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 10;
 	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 100;

@@ -124,7 +124,7 @@ std::vector<SingleCompareResult<Model::ParamsCount>> compareFunctionals (size_t 
 		const YSigmaGetterT& ySigma,
 		const XSigmasGetterT& xSigma,
 		const Params_t<Model::ParamsCount>& params,
-		double multiplier = 1)
+		double multiplier)
 {
 	std::vector<SingleCompareResult<Model::ParamsCount>> result;
 
