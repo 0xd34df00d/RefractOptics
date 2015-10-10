@@ -262,16 +262,17 @@ int main (int argc, char **argv)
 			Model::residual, Model::residualDer, Model::initial ());
 	std::cout << "inferred params: " << dlib::trans (p);
 	std::cout << "MSE: " << getMse<Model> (pairs, p) << std::endl << std::endl;
-	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, p, ySigma, xSigma) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, p, ySigma, xSigma, multiplier) << std::endl << std::endl;
 
 	const auto& fixedP = solve<Model::ParamsCount> (Model::preprocess (pairs),
 			Model::residual, Model::residualDer, Model::varsDer,
 			ySigma, xSigma,
-			Model::initial ());
+			Model::initial (),
+			multiplier);
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
 	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl << std::endl;
-	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, fixedP, ySigma, xSigma) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, fixedP, ySigma, xSigma, multiplier) << std::endl << std::endl;
 
 	/*
 	std::vector<double> xVars;
@@ -314,7 +315,7 @@ int main (int argc, char **argv)
 	else if (mode == "conv_modified_vs_classical")
 	{
 		std::cout << "comparing modified MSE vs classical MSE..." << std::endl;
-		calculateModifiedVsClassical<Model> (fixedP, ySigma, xSigma, vm);
+		calculateModifiedVsClassical<Model> (fixedP, ySigma, xSigma, vm, multiplier);
 	}
 	else if (mode == "stability")
 	{
