@@ -3,7 +3,7 @@ project (optics)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -std=c++1y")
 
 find_package (Threads REQUIRED)
-find_package (Boost REQUIRED COMPONENTS program_options)
+find_package (Boost REQUIRED COMPONENTS program_options system)
 
 add_library (util STATIC
 	util.cpp
