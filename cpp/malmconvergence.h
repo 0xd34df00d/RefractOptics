@@ -86,7 +86,7 @@ TrainingSet_t<> genSample (size_t size, DType_t from, DType_t to,
 		const auto xDev = std::normal_distribution<DType_t> { 0, xSigma (pair) } (generator);
 
 		SampleType_t<> sample;
-		sample (0) = rawX + xDev;
+		sample (0) = clamp (from, to, rawX, xDev);
 
 		result.push_back ({ sample, rawY + yDev });
 	}
