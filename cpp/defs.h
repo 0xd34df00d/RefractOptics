@@ -45,9 +45,10 @@ using TrainingSetInstance_t = TrainingSetInstanceBase_t<DType_t, Dim>;
 template<size_t Dim = 1>
 using TrainingSet_t = TrainingSetBase_t<DType_t, Dim>;
 
-template<size_t ParamsCount> using Params_t = dlib::matrix<DType_t, ParamsCount, 1>;
+template<size_t ParamsCount>
+using Params_t = dlib::matrix<DType_t, ParamsCount, 1>;
 
-typedef std::vector<std::vector<DType_t>> StatsVec_t;
-typedef std::vector<std::pair<SampleType_t<>, DType_t>> PairsList_t;
-typedef std::vector<dlib::running_stats<DType_t>> RunningStatsList_t;
-typedef std::map<DType_t, std::map<DType_t, RunningStatsList_t>> Stats_t;
+using StatsVec_t = std::vector<std::vector<DType_t>>;
+using PairsList_t = std::vector<std::pair<SampleType_t<>, DType_t>>;
+using RunningStatsList_t = std::vector<dlib::running_stats<DType_t>>;
+using Stats_t = std::map<DType_t, std::map<DType_t, RunningStatsList_t>>;
