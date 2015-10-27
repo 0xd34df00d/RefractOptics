@@ -194,7 +194,7 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 	{
 		ThreadPool pool;
 		std::mutex outMutex;
-		for (auto size = sizeFrom; size < sizeTo; ++size)
+		for (auto size = sizeFrom; size <= sizeTo; ++size)
 			pool << [&, size]
 				{
 					{
