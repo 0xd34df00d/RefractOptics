@@ -214,7 +214,7 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 					}
 					SingleResult_t subres;
 					for (size_t i = 0; i < repetitions; ++i)
-						subres += compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier) - reference;
+						subres += (compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier) - reference).abs ();
 
 					subres.m_classicalParams /= repetitions;
 					subres.m_modifiedParams /= repetitions;
