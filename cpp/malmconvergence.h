@@ -143,6 +143,17 @@ struct SingleCompareResult
 		left -= right;
 		return left;
 	}
+
+	SingleCompareResult& abs ()
+	{
+		for (size_t i = 0; i < ParamsCount; ++i)
+		{
+			m_classicalParams (i) = std::abs (m_classicalParams (i));
+			m_modifiedParams (i) = std::abs (m_modifiedParams (i));
+		}
+
+		return *this;
+	}
 };
 
 template<
