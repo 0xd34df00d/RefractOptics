@@ -165,9 +165,9 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 	for (auto i = start; i <= end; ++i)
 	{
 		ostr << i << " ";
-		printVec (ostr, result [i].m_classicalParams);
+		printVec (ostr, result [i - start].m_classicalParams);
 		ostr << " ";
-		printVec (ostr, result [i].m_modifiedParams);
+		printVec (ostr, result [i - start].m_modifiedParams);
 		ostr << "\n";
 	}
 }
