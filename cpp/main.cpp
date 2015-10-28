@@ -83,13 +83,14 @@ double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::Pa
 		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas, double multiplier)
 {
 	const auto& pairs = Model::preprocess (srcPairs);
-	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
+	const auto multSquared = multiplier * multiplier;
+	return multSquared * std::accumulate (pairs.begin (), pairs.end (), 0.0,
 			[&] (double sum, auto pair)
 			{
 				const auto res = std::pow (Model::residual (pair, p), 2);
 				const auto& derivatives = Model::varsDer (pair, p);
 				const DType_t denom = std::pow (ySigma (pair), 2) + std::pow (xSigmas (pair) * derivatives, 2);
-				return sum + res / (multiplier * multiplier * denom);
+				return sum + res / (multSquared * denom);
 			});
 }
 
