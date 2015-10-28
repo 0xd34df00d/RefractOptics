@@ -64,7 +64,9 @@ Params_t<ParamsCount> solve (const TS& pairs,
 	for (auto i = 0u; i < ParamsCount; ++i)
 		p (i) = initial [i];
 
-	const auto diff = 1e-18;
+	const auto mltSquared = multiplier * multiplier;
+
+	const auto diff = 1e-18 / mltSquared;
 
 	for (int i = 0; i < 500; ++i)
 	{
@@ -78,7 +80,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 			const auto& derivatives = varsDer (data, p);
 			const DType_t denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
 
-			return srcVal / std::sqrt (multiplier * multiplier * denom);
+			return srcVal / std::sqrt (mltSquared * denom);
 		};
 #else
 		const auto& wrappedRes = res;
