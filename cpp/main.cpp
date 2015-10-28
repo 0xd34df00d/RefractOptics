@@ -218,7 +218,7 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("values-start", po::value<double> (), "values start")
 		("values-end", po::value<double> (), "values end")
 		("repetitions", po::value<int> (), "repetitions count")
-		("multiplier", po::value<int> (), "sigma multiplier (for modified functional denominator)");
+		("multiplier", po::value<double> (), "sigma multiplier (for modified functional denominator)");
 
 	po::positional_options_description p;
 	p.add ("input-file", -1);
@@ -253,7 +253,7 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
-	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<int> () : 1;
+	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<double> () : 1;
 
 	const auto ySigma = [] (const auto& pair) { return pair.second * 0.02; };
 	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
