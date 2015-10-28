@@ -263,7 +263,7 @@ int main (int argc, char **argv)
 	const auto& p = solve<Model::ParamsCount> (Model::preprocess (pairs),
 			Model::residual, Model::residualDer, Model::initial ());
 	std::cout << "inferred params: " << dlib::trans (p);
-	std::cout << "MSE: " << getMse<Model> (pairs, p) << std::endl << std::endl;
+	std::cout << "MSE: " << getMse<Model> (pairs, p) << std::endl;
 	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, p, ySigma, xSigma, multiplier) << std::endl << std::endl;
 
 	const auto& fixedP = solve<Model::ParamsCount> (Model::preprocess (pairs),
@@ -273,7 +273,7 @@ int main (int argc, char **argv)
 			multiplier);
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
-	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl << std::endl;
+	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl;
 	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, fixedP, ySigma, xSigma, multiplier) << std::endl << std::endl;
 
 	/*
