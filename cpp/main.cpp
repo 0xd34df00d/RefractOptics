@@ -309,6 +309,8 @@ int main (int argc, char **argv)
 
 	const auto& mode = vm.count ("mode") ? vm ["mode"].as<std::string> () : std::string {};
 
+	if (mode == "justfit")
+		return 0;
 	if (mode == "conv_modified2classical")
 	{
 		std::cout << "calculating convergence..." << std::endl;
