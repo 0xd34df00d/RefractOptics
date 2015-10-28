@@ -68,7 +68,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 
 	const auto diff = 1e-18 / mltSquared;
 
-	for (int i = 0; i < 500; ++i)
+	for (int i = 0; i < 50000; ++i)
 	{
 		const auto prevP = p;
 
