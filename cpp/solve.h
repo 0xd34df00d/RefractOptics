@@ -36,7 +36,7 @@
 #include <dlib/statistics.h>
 #include "defs.h"
 
-const auto TrustRadius = 1e4;
+const auto TrustRadius = 0.5;
 
 template<size_t ParamsCount, typename R, typename D, typename TS>
 Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<DType_t, ParamsCount>& initial)
