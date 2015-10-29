@@ -80,7 +80,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 			const auto& derivatives = varsDer (data, p);
 			const DType_t denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
 
-			return srcVal / std::sqrt (multiplier * multiplier * denom);
+			return srcVal / (multiplier * std::sqrt (denom));
 		};
 #else
 		const auto& wrappedRes = res;
