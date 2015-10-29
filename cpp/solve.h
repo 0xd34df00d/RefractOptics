@@ -36,6 +36,8 @@
 #include <dlib/statistics.h>
 #include "defs.h"
 
+const auto TrustRadius = 1e4;
+
 template<size_t ParamsCount, typename R, typename D, typename TS>
 Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<DType_t, ParamsCount>& initial)
 {
@@ -43,7 +45,7 @@ Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::arr
 	for (auto i = 0u; i < ParamsCount; ++i)
 		p (i) = initial [i];
 	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-18, 500 },
-			res, paramsDer, pairs, p, 1e4);
+			res, paramsDer, pairs, p, TrustRadius);
 	return p;
 }
 
@@ -85,7 +87,7 @@ Params_t<ParamsCount> solve (const TS& pairs,
 #endif
 
 		dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { diff, 2 },
-				wrappedRes, paramsDer, pairs, p, 1e6);
+				wrappedRes, paramsDer, pairs, p, TrustRadius);
 
 		if (dlib::length (prevP - p) < diff)
 			break;
