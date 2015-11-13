@@ -53,7 +53,7 @@ void tryLOO (const TrainingSet_t<>& srcPairs)
 		const auto& p = solve<Model::ParamsCount> (pairs, Model::residual, Model::residualDer, {{ 0, 0, 0 }});
 		std::cout << "inferred params: " << dlib::trans (p);
 
-		double sum = 0;
+		DType_t sum = 0;
 		for (const auto& pair : pairs)
 		{
 			auto r = Model::residual (pair, p);
@@ -64,11 +64,11 @@ void tryLOO (const TrainingSet_t<>& srcPairs)
 }
 
 template<typename Model>
-double getMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p)
+DType_t getMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p)
 {
 	const auto& pairs = Model::preprocess (srcPairs);
 	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
-			[&p] (double sum, auto pair)
+			[&p] (DType_t sum, auto pair)
 			{
 				return sum + std::pow (Model::residual (pair, p), 2);
 			});
@@ -79,13 +79,13 @@ template<
 		typename YSigmaGetterT,
 		typename XSigmasGetterT
 	>
-double getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p,
-		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas, double multiplier)
+DType_t getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p,
+		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas, DType_t multiplier)
 {
 	const auto& pairs = Model::preprocess (srcPairs);
 	const auto multSquared = multiplier * multiplier;
 	return multSquared * std::accumulate (pairs.begin (), pairs.end (), 0.0,
-			[&] (double sum, auto pair)
+			[&] (DType_t sum, auto pair)
 			{
 				const auto res = std::pow (Model::residual (pair, p), 2);
 				const auto& derivatives = Model::varsDer (pair, p);
@@ -110,22 +110,22 @@ std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& 
 
 template<typename Model>
 void calculateConvergence (const TrainingSet_t<>& pairs,
-		const boost::program_options::variables_map& vm, double multiplier)
+		const boost::program_options::variables_map& vm, DType_t multiplier)
 {
 	const auto& preprocessed = Model::preprocess (pairs);
 
 	const auto& classicP = solve<Model::ParamsCount> (preprocessed,
 			Model::residual, Model::residualDer, Model::initial ());
 
-	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 1;
-	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 10;
-	const auto step = vm.count ("conv-step") ? vm ["conv-step"].as<double> () : 0.01;
+	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<DType_t> () : 1;
+	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<DType_t> () : 10;
+	const auto step = vm.count ("conv-step") ? vm ["conv-step"].as<DType_t> () : 0.01;
 
 	const auto fixedY = std::max_element (pairs.begin (), pairs.end (),
 			[] (const auto& p1, const auto& p2) { return p1.second < p2.second; })->second;
 
 	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "convergence.txt" };
-	for (double i = start; i < end; i += step)
+	for (DType_t i = start; i < end; i += step)
 	{
 		const auto& fixedP = solve<Model::ParamsCount> (preprocessed,
 				Model::residual, Model::residualDer, Model::varsDer,
@@ -150,13 +150,13 @@ template<
 void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigma,
 		const boost::program_options::variables_map& vm,
-		double multiplier)
+		DType_t multiplier)
 {
-	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<double> () : 10;
-	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<double> () : 100;
+	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<DType_t> () : 10;
+	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<DType_t> () : 100;
 
-	const auto valStart = vm.count ("values-start") ? vm ["values-start"].as<double> () : 0.5;
-	const auto valEnd = vm.count ("values-end") ? vm ["values-end"].as<double> () : 1;
+	const auto valStart = vm.count ("values-start") ? vm ["values-start"].as<DType_t> () : 0.5;
+	const auto valEnd = vm.count ("values-end") ? vm ["values-end"].as<DType_t> () : 1;
 
 	const auto repsCount = vm.count ("repetitions") ? vm ["repetitions"].as<int> () : 100;
 
@@ -184,7 +184,7 @@ Params_t<Model::ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSe
 			multiplier);
 }
 
-double svmSolver (const TrainingSet_t<>& pts)
+DType_t svmSolver (const TrainingSet_t<>& pts)
 {
 	dlib::svr_trainer<dlib::radial_basis_kernel<SampleType_t<>>> trainer;
 	trainer.set_kernel ({ 4e-07 });
@@ -213,13 +213,13 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("input-file", po::value<std::string> (), "input data file")
 		("output-file", po::value<std::string> (), "output data file")
 		("mode", po::value<std::string> (), "computational experiment mode: conv_modified2classical | conv_modified_vs_classical | stability | justfit")
-		("conv-start", po::value<double> (), "convergence start")
-		("conv-end", po::value<double> (), "convergence end")
-		("conv-step", po::value<double> (), "convergence step")
-		("values-start", po::value<double> (), "values start")
-		("values-end", po::value<double> (), "values end")
+		("conv-start", po::value<DType_t> (), "convergence start")
+		("conv-end", po::value<DType_t> (), "convergence end")
+		("conv-step", po::value<DType_t> (), "convergence step")
+		("values-start", po::value<DType_t> (), "values start")
+		("values-end", po::value<DType_t> (), "values end")
 		("repetitions", po::value<int> (), "repetitions count")
-		("multiplier", po::value<double> (), "sigma multiplier (for modified functional denominator)");
+		("multiplier", po::value<DType_t> (), "sigma multiplier (for modified functional denominator)");
 
 	po::positional_options_description p;
 	p.add ("input-file", -1);
@@ -254,7 +254,7 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
-	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<double> () : 1;
+	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<DType_t> () : 1;
 
 	const auto ySigma = [] (const auto& pair) { return pair.second * 0.02; };
 	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
@@ -278,12 +278,12 @@ int main (int argc, char **argv)
 	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, fixedP, ySigma, xSigma, multiplier) << std::endl << std::endl;
 
 	/*
-	std::vector<double> xVars;
-	for (double i = 0; i < 1e-3; i += 1e-4)
+	std::vector<DType_t> xVars;
+	for (DType_t i = 0; i < 1e-3; i += 1e-4)
 		xVars.push_back (i);
 
-	std::vector<double> yVars;
-	for (double i = 0; i < 5e-4; i += 2e-5)
+	std::vector<DType_t> yVars;
+	for (DType_t i = 0; i < 5e-4; i += 2e-5)
 		yVars.push_back (i);
 	*/
 	std::vector<DType_t> xVars
