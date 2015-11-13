@@ -53,7 +53,7 @@ TrainingSet_t<> genSample (size_t size, DType_t from, DType_t to,
 	{
 		const auto rawX = rawXDistr (generator);
 
-		const double xArr [] = { rawX };
+		const DType_t xArr [] = { rawX };
 		const SampleType_t<> pseudoSample { xArr };
 
 		auto preprocessed = Model::preprocess ({ { pseudoSample, 0 } });
