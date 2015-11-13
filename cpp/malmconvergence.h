@@ -33,27 +33,6 @@
 #include "defs.h"
 #include "threadpool.h"
 
-DType_t clamp (DType_t from, DType_t to, DType_t x, DType_t xDev)
-{
-	if (x + xDev <= to && x + xDev >= from)
-		return x + xDev;
-
-	if (x + xDev > to)
-	{
-		if (x - xDev >= from)
-			return x - xDev;
-
-		return 2 * x >= to - from ? to : from;
-	}
-	else
-	{
-		if (x - xDev >= to)
-			return x - xDev;
-
-		return 2 * x >= to - from ? to : from;
-	}
-}
-
 template<
 		typename Model,
 		typename YSigmaGetterT,
