@@ -68,23 +68,23 @@ Params_t<ParamsCount> solve (const TS& pairs,
 
 	const auto diff = 1e-18;
 
+#if 1
+	auto wrappedRes = [&] (const auto& data, const auto& p) -> DType_t
+	{
+		const auto srcVal = res (data, p);
+
+		const auto& derivatives = varsDer (data, p);
+		const DType_t denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
+
+		return srcVal / (multiplier * std::sqrt (denom));
+	};
+#else
+	const auto& wrappedRes = res;
+#endif
+
 	for (int i = 0; i < 50000; ++i)
 	{
 		const auto prevP = p;
-
-#if 1
-		auto wrappedRes = [&] (const auto& data, const auto& p) -> double
-		{
-			const auto srcVal = res (data, p);
-
-			const auto& derivatives = varsDer (data, p);
-			const DType_t denom = std::pow (ySigma (data), 2) + std::pow (xSigmas (data) * derivatives, 2);
-
-			return srcVal / (multiplier * std::sqrt (denom));
-		};
-#else
-		const auto& wrappedRes = res;
-#endif
 
 		dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { diff, 2 },
 				wrappedRes, paramsDer, pairs, p, TrustRadius);
