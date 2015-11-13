@@ -256,8 +256,8 @@ int main (int argc, char **argv)
 
 	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<DType_t> () : 1;
 
-	const auto ySigma = [] (const auto& pair) { return pair.second * 0.02; };
-	const auto xSigma = [] (const auto& pair) { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
+	const auto ySigma = [] (const auto& pair) -> DType_t { return pair.second * 0.02; };
+	const auto xSigma = [] (const auto& pair) -> DType_t { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
 
 	using Model = Models::Laser;
 
