@@ -44,7 +44,7 @@ Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::arr
 	Params_t<ParamsCount> p;
 	for (auto i = 0u; i < ParamsCount; ++i)
 		p (i) = initial [i];
-	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-18, 500 },
+	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-18, 50000 },
 			res, paramsDer, pairs, p, TrustRadius);
 	return p;
 }
