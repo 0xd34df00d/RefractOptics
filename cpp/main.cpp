@@ -202,6 +202,14 @@ DType_t svmSolver (const TrainingSet_t<>& pts)
 	return df.alpha;
 }
 
+void printBanner (std::ostream& ostr, int argc, char **argv)
+{
+	ostr << "#";
+	for (int i = 0; i < argc; ++i)
+		ostr << ' ' << argv [i];
+	ostr << "\n";
+}
+
 boost::program_options::variables_map parseOptions (int argc, char **argv)
 {
 	namespace po = boost::program_options;
@@ -313,6 +321,7 @@ int main (int argc, char **argv)
 		return 0;
 
 	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "output.txt" };
+	printBanner (ostr, argc, argv);
 	if (mode == "conv_modified2classical")
 	{
 		std::cout << "calculating convergence..." << std::endl;
