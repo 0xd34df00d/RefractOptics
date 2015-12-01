@@ -110,7 +110,7 @@ std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& 
 
 template<typename Model>
 void calculateConvergence (const TrainingSet_t<>& pairs,
-		const boost::program_options::variables_map& vm, DType_t multiplier)
+		const boost::program_options::variables_map& vm, DType_t multiplier, std::ostream& ostr)
 {
 	const auto& preprocessed = Model::preprocess (pairs);
 
@@ -124,7 +124,6 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 	const auto fixedY = std::max_element (pairs.begin (), pairs.end (),
 			[] (const auto& p1, const auto& p2) { return p1.second < p2.second; })->second;
 
-	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "convergence.txt" };
 	for (DType_t i = start; i < end; i += step)
 	{
 		const auto& fixedP = solve<Model::ParamsCount> (preprocessed,
@@ -317,7 +316,7 @@ int main (int argc, char **argv)
 	if (mode == "conv_modified2classical")
 	{
 		std::cout << "calculating convergence..." << std::endl;
-		calculateConvergence<Model> (pairs, vm, multiplier);
+		calculateConvergence<Model> (pairs, vm, multiplier, ostr);
 	}
 	else if (mode == "conv_modified_vs_classical")
 	{
