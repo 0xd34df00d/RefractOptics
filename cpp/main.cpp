@@ -225,6 +225,8 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("conv-step", po::value<DType_t> (), "convergence step")
 		("values-start", po::value<DType_t> (), "values start")
 		("values-end", po::value<DType_t> (), "values end")
+		("xsigma", po::value<DType_t> (), "x sigma multiplier")
+		("ysigma", po::value<DType_t> (), "y sigma multiplier")
 		("repetitions", po::value<int> (), "repetitions count")
 		("multiplier", po::value<DType_t> (), "sigma multiplier (for modified functional denominator)");
 
@@ -263,8 +265,11 @@ int main (int argc, char **argv)
 
 	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<DType_t> () : 1;
 
-	const auto ySigma = [] (const auto& pair) -> DType_t { return pair.second * 0.02; };
-	const auto xSigma = [] (const auto& pair) -> DType_t { return pair.first (0) < 0.6 ? 0.02 : 0.01; };
+	const auto xSigmaMult = vm.count ("xsigma") ? vm ["xsigma"].as<DType_t> () : 1;
+	const auto ySigmaMult = vm.count ("ysigma") ? vm ["ysigma"].as<DType_t> () : 1;
+
+	const auto ySigma = [ySigmaMult] (const auto& pair) -> DType_t { return ySigmaMult * pair.second * 0.02; };
+	const auto xSigma = [xSigmaMult] (const auto& pair) -> DType_t { return xSigmaMult * pair.first (0) < 0.6 ? 0.02 : 0.01; };
 
 	using Model = Models::Laser;
 
