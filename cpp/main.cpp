@@ -312,6 +312,8 @@ int main (int argc, char **argv)
 
 	if (mode == "justfit")
 		return 0;
+
+	std::ofstream ostr { vm.count ("output-file") ? vm ["output-file"].as<std::string> () : "output.txt" };
 	if (mode == "conv_modified2classical")
 	{
 		std::cout << "calculating convergence..." << std::endl;
