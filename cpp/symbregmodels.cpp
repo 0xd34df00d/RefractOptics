@@ -39,16 +39,16 @@ std::array<DType_t, Series::ParamsCount> Series::initial ()
 	return {{ 1, 1, 1 }};
 }
 
-double Series::residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+DType_t Series::residual (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
-	double result = 0;
+	DType_t result = 0;
 	const auto x = data.first (0);
 	for (size_t i = 0; i < ParamsCount; ++i)
 		result += p (i) / std::pow (x, 2 * i);
 	return result - data.second;
 }
 
-Params_t<Series::ParamsCount> Series::residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+Params_t<Series::ParamsCount> Series::residualDer (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	Params_t<ParamsCount> res;
 	const auto x = data.first (0);
@@ -57,16 +57,16 @@ Params_t<Series::ParamsCount> Series::residualDer (const std::pair<SampleType_t<
 	return res;
 }
 
-SampleType_t<> Series::varsDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+SampleType_t<> Series::varsDer (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto x = data.first (0);
 
-	auto subDerivative = [] (double x, int64_t i, double p_i)
+	auto subDerivative = [] (DType_t x, int64_t i, DType_t p_i)
 	{
 		return -2 * i * p_i * std::pow (x, -2 * i - 1);
 	};
 
-	double result = 0;
+	DType_t result = 0;
 	for (size_t i = 1; i < ParamsCount; ++i)
 		result += subDerivative (x, static_cast<int64_t> (i), p (i));
 

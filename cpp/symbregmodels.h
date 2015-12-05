@@ -40,11 +40,11 @@ public:
 
 	static std::array<DType_t, ParamsCount> initial ();
 
-	static double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
+	static DType_t residual (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
+	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-	static SampleType_t<> varsDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
+	static SampleType_t<> varsDer (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p);
 
 	static TrainingSet_t<> preprocess (const TrainingSet_t<>& srcPts);
 };
