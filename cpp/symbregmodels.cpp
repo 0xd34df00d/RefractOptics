@@ -90,7 +90,7 @@ std::array<DType_t, Laser::ParamsCount> Laser::initial ()
 
 namespace
 {
-	DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0, double L)
+	DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0, DType_t L)
 	{
 		return alpha0 - logr0 / (2 * L);
 	}
