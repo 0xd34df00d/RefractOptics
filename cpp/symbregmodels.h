@@ -71,8 +71,8 @@ class Resonance
 public:
 	static constexpr size_t ParamsCount = 3;
 
-	double residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
+	DType_t residual (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p);
+	Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p);
 };
 }

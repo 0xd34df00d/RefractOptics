@@ -162,26 +162,26 @@ TrainingSet_t<2> Laser::preprocess (const TrainingSet_t<>& srcPts)
 /**********************************************************************
  * Resonance
  **********************************************************************/
-double Resonance::residual (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+DType_t Resonance::residual (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto x = data.first (0);
 	const auto x2 = x * x;
 
-	const double cminus = p (2) - 1.0 / x2;
-	const double underRoot = p (0) + p (1) / cminus;
-	const double root = underRoot >= 0 ? std::sqrt(underRoot) : 10;
+	const DType_t cminus = p (2) - 1.0 / x2;
+	const DType_t underRoot = p (0) + p (1) / cminus;
+	const DType_t root = underRoot >= 0 ? std::sqrt(underRoot) : 10;
 
 	return root - data.second;
 }
 
-Params_t<Resonance::ParamsCount> Resonance::residualDer (const std::pair<SampleType_t<>, double>& data, const Params_t<ParamsCount>& p)
+Params_t<Resonance::ParamsCount> Resonance::residualDer (const std::pair<SampleType_t<>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto x = data.first (0);
 	const auto x2 = x * x;
 
-	const double cminus = p (2) - 1.0 / x2;
-	const double underRoot = p (0) + p (1) / cminus;
-	const double root = underRoot > 0 ? std::sqrt(underRoot) : 10;
+	const DType_t cminus = p (2) - 1.0 / x2;
+	const DType_t underRoot = p (0) + p (1) / cminus;
+	const DType_t root = underRoot > 0 ? std::sqrt(underRoot) : 10;
 
 	Params_t<ParamsCount> res;
 	res (0) = 1. / (2. * root);
