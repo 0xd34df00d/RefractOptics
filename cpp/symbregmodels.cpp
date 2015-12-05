@@ -92,11 +92,11 @@ namespace
 {
 	DType_t alpha0MinusLn (DType_t alpha0, DType_t logr0, DType_t L)
 	{
-		return alpha0 - logr0 / (2 * L);
+		return alpha0 - logr0 / L;
 	}
 }
 
-DType_t Laser::residual (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
+DType_t Laser::residual (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto r0 = data.first (0);
 	const auto logr0 = data.first (1);
@@ -107,7 +107,7 @@ DType_t Laser::residual (const std::pair<SampleType_t<2>, DType_t>& data, const 
 	return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0, L) - 1) - data.second;
 }
 
-Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
+Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto r0 = data.first (0);
 	const auto logr0 = data.first (1);
@@ -129,31 +129,37 @@ Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<2>
 	return res;
 }
 
-SampleType_t<> Laser::varsDer (const std::pair<SampleType_t<2>, DType_t>& data, const Params_t<ParamsCount>& p)
+SampleType_t<> Laser::varsDer (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto r0 = data.first (0);
 	const auto logr0 = data.first (1);
+	const auto r0sq = data.first (2);
+	const auto r0frac = data.first (3);
+
 	const auto g0 = p (0);
 	const auto alpha0 = p (1);
 	const auto k = p (2);
 
 	const auto a0ml = alpha0MinusLn (alpha0, logr0, L);
-	auto result = -2 * (g0 / a0ml - 1) / (1 + r0) / (1 + r0);
-	result += g0 * (1 - r0) / (1 + r0) / (2 * L * r0 * a0ml * a0ml);
+	auto result = (g0 / a0ml - 1) * r0sq;
+	result += g0 * r0frac / (L * r0 * a0ml * a0ml);
 
 	SampleType_t<> res;
 	res (0) = result * k;
 	return res;
 }
 
-TrainingSet_t<2> Laser::preprocess (const TrainingSet_t<>& srcPts)
+TrainingSet_t<4> Laser::preprocess (const TrainingSet_t<>& srcPts)
 {
-	TrainingSet_t<2> res;
+	TrainingSet_t<4> res;
 	for (const auto& srcPt : srcPts)
 	{
 		const auto val = srcPt.first (0);
-		SampleType_t<2> pt;
-		pt = val, std::log (val);
+		SampleType_t<4> pt;
+		pt (0) = val;
+		pt (1) = std::log (val);
+		pt (2) = -2 / ((1 + val) * (1 + val));
+		pt (3) = (1 - val) / (1 + val);
 		res.emplace_back (pt, srcPt.second);
 	}
 	return res;
