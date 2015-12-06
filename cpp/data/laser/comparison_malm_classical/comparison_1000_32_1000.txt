@@ -1,0 +1,1 @@
+# ../optics --mode=conv_modified_vs_classical --conv-start=10 --conv-end=30 --values-start=0.5 --values-end=1 --repetitions=1000 --output-file=comparison_1000_32_1000.txt --multiplier=32 ldata.txt
