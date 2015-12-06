@@ -1,10 +1,14 @@
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE PartialTypeSignatures #-}
+{-# LANGUAGE RankNTypes #-}
 
 import System.Environment
 import Data.Monoid
 import Data.List
 import qualified Graphics.Gnuplot.Advanced as GA
-import qualified Graphics.Gnuplot.Terminal.X11 as GT
+import qualified Graphics.Gnuplot.Terminal as GT
+import qualified Graphics.Gnuplot.Terminal.X11 as GTX
+import qualified Graphics.Gnuplot.Terminal.PostScript as GTP
 import qualified Graphics.Gnuplot.Plot.TwoDimensional as GP
 import qualified Graphics.Gnuplot.Graph.TwoDimensional as GG
 import qualified Graphics.Gnuplot.Value.Atom as GVA
@@ -29,10 +33,16 @@ gfxPrim runs f = GF.cons frameOpts $ single "Classic" classic <> single "Modifie
     where single n p = GG.lineSpec (GLS.title n GLS.deflt) <$> GP.list GG.lines (filterPts $ map (\run -> (cnt run, f $ p run)) runs)
           frameOpts = GFOS.xLabel "Iterations" $ GFOS.yLabel "Relative difference" GFOS.deflt
 
-process :: String -> IO ()
-process fname = do
+mkTerm :: String -> String -> (forall t. GT.C t => t -> a) -> a
+mkTerm "x11" _     cont = cont $ GTX.cons
+mkTerm "eps" fname cont = cont $ GTP.eps $ GTP.cons fname 
+
+process :: String -> String -> IO ()
+process term fname = do
     runs <- (map parseLine . filter ((/= '#') . head) . lines) <$> readFile fname :: IO [Run Double]
-    mapM_ (GA.plot GT.cons . gfxPrim runs) [p1, p2, p3]
+    mapM_ (\(p', n) -> (mkTerm term (fname ++ "_parameter" ++ n ++ ".txt") (\t -> GA.plot t $ gfxPrim runs p'))) [(p1, "p1"), (p2, "p2"), (p3, "p3")]
 
 main :: IO ()
-main = getArgs >>= (process . head)
+main = do
+    [mode, file] <- getArgs
+    process mode file
