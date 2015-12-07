@@ -7,7 +7,8 @@ import qualified Graphics.Gnuplot.Advanced as GA
 import qualified Graphics.Gnuplot.Display as GD
 import qualified Graphics.Gnuplot.Terminal as GT
 import qualified Graphics.Gnuplot.Terminal.X11 as GTX
-import qualified Graphics.Gnuplot.Terminal.PostScript as GTP
+import qualified Graphics.Gnuplot.Terminal.PostScript as GTPS
+import qualified Graphics.Gnuplot.Terminal.PNG as GTP
 import qualified Graphics.Gnuplot.Plot.TwoDimensional as GP
 import qualified Graphics.Gnuplot.Graph.TwoDimensional as GG
 import qualified Graphics.Gnuplot.Value.Atom as GVA
@@ -35,7 +36,8 @@ gfxPrim runs f = GF.cons frameOpts $ single "Classic" classic <> single "Modifie
 
 plotWTerm :: (GD.C gfx) => String -> String -> gfx -> IO IOEx.ExitCode
 plotWTerm "x11" _     = GA.plot GTX.cons
-plotWTerm "eps" fname = GA.plot $ GTP.color $ GTP.eps $ GTP.cons $ fname ++ ".eps"
+plotWTerm "eps" fname = GA.plot $ GTPS.color $ GTPS.eps $ GTPS.cons $ fname ++ ".eps"
+plotWTerm "png" fname = GA.plot $ GTP.trueColor $ GTP.cons $ fname ++ ".png"
 
 process :: String -> String -> IO ()
 process term fname = do
