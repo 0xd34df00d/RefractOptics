@@ -40,7 +40,7 @@ plotWTerm "eps" fname = GA.plot $ GTP.eps $ GTP.cons fname
 process :: String -> String -> IO ()
 process term fname = do
     runs <- (map parseLine . filter ((/= '#') . head) . lines) <$> readFile fname :: IO [Run Double]
-    mapM_ (\(p', n) -> (plotWTerm term (fname ++ "_parameter" ++ n ++ ".txt") $ gfxPrim runs p')) [(p1, "p1"), (p2, "p2"), (p3, "p3")]
+    mapM_ (\(p', n) -> (plotWTerm term (fname ++ "_parameter" ++ n ++ ".eps") $ gfxPrim runs p')) [(p1, "p1"), (p2, "p2"), (p3, "p3")]
 
 main :: IO ()
 main = do
