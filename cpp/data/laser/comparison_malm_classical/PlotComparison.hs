@@ -1,11 +1,10 @@
 {-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE PartialTypeSignatures #-}
-{-# LANGUAGE RankNTypes #-}
 
 import System.Environment
 import Data.Monoid
 import Data.List
 import qualified Graphics.Gnuplot.Advanced as GA
+import qualified Graphics.Gnuplot.Display as GD
 import qualified Graphics.Gnuplot.Terminal as GT
 import qualified Graphics.Gnuplot.Terminal.X11 as GTX
 import qualified Graphics.Gnuplot.Terminal.PostScript as GTP
@@ -16,6 +15,7 @@ import qualified Graphics.Gnuplot.Value.Tuple as GVT
 import qualified Graphics.Gnuplot.LineSpecification as GLS
 import qualified Graphics.Gnuplot.Frame.OptionSet as GFOS
 import qualified Graphics.Gnuplot.Frame as GF
+import qualified GHC.IO.Exception as IOEx
 
 data ParamsV a = ParamsV { p1 :: a, p2 :: a, p3 :: a } deriving (Show, Eq, Ord)
 data Run a = Run { cnt :: Int, classic :: ParamsV a, modified :: ParamsV a } deriving (Show, Eq, Ord)
@@ -33,14 +33,14 @@ gfxPrim runs f = GF.cons frameOpts $ single "Classic" classic <> single "Modifie
     where single n p = GG.lineSpec (GLS.title n GLS.deflt) <$> GP.list GG.lines (filterPts $ map (\run -> (cnt run, f $ p run)) runs)
           frameOpts = GFOS.xLabel "Iterations" $ GFOS.yLabel "Relative difference" GFOS.deflt
 
-mkTerm :: String -> String -> (forall t. GT.C t => t -> a) -> a
-mkTerm "x11" _     cont = cont $ GTX.cons
-mkTerm "eps" fname cont = cont $ GTP.eps $ GTP.cons fname 
+plotWTerm :: (GD.C gfx) => String -> String -> gfx -> IO IOEx.ExitCode
+plotWTerm "x11" _     = GA.plot GTX.cons
+plotWTerm "eps" fname = GA.plot $ GTP.eps $ GTP.cons fname
 
 process :: String -> String -> IO ()
 process term fname = do
     runs <- (map parseLine . filter ((/= '#') . head) . lines) <$> readFile fname :: IO [Run Double]
-    mapM_ (\(p', n) -> (mkTerm term (fname ++ "_parameter" ++ n ++ ".txt") (\t -> GA.plot t $ gfxPrim runs p'))) [(p1, "p1"), (p2, "p2"), (p3, "p3")]
+    mapM_ (\(p', n) -> (plotWTerm term (fname ++ "_parameter" ++ n ++ ".txt") $ gfxPrim runs p')) [(p1, "p1"), (p2, "p2"), (p3, "p3")]
 
 main :: IO ()
 main = do
