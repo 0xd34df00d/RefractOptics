@@ -35,7 +35,7 @@ gfxPrim runs f = GF.cons frameOpts $ single "Classic" classic <> single "Modifie
 
 plotWTerm :: (GD.C gfx) => String -> String -> gfx -> IO IOEx.ExitCode
 plotWTerm "x11" _     = GA.plot GTX.cons
-plotWTerm "eps" fname = GA.plot $ GTP.eps $ GTP.cons fname
+plotWTerm "eps" fname = GA.plot $ GTP.color $ GTP.eps $ GTP.cons fname
 
 process :: String -> String -> IO ()
 process term fname = do
