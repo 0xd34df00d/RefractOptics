@@ -42,7 +42,7 @@ plotWTerm "png" fname = GA.plot $ GTP.trueColor $ GTP.cons $ fname ++ ".png"
 process :: String -> String -> IO ()
 process term fname = do
     runs <- (map parseLine . filter ((/= '#') . head) . lines) <$> readFile fname :: IO [Run Double]
-    mapM_ (\(p', n) -> (plotWTerm term (fname ++ "_parameter" ++ n) $ gfxPrim runs p')) [(p1, "p1"), (p2, "p2"), (p3, "p3")]
+    mapM_ (\(p', n) -> (plotWTerm term (fname ++ "_parameter" ++ show n) $ gfxPrim runs p')) $ zip [p1, p2, p3] [1..]
 
 main :: IO ()
 main = do
