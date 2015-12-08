@@ -32,7 +32,7 @@ filterPts pts = filter ((<= θ) . snd) pts
 gfxPrim :: (GVA.C a, GVT.C a, Ord a) => [Run a] -> (ParamsV a -> a) -> GF.T (GG.T Int a)
 gfxPrim runs f = GF.cons frameOpts $ single "{/Symbol w}^0" classic <> single "{/Symbol w}" modified
     where single n p = GG.lineSpec (GLS.title n GLS.deflt) <$> GP.list GG.lines (filterPts $ map (\run -> (cnt run, f $ p run)) runs)
-          frameOpts = GFOS.xLabel "Iterations" $ GFOS.yLabel "Relative difference" GFOS.deflt
+          frameOpts = GFOS.xLabel "Sample size" $ GFOS.yLabel "Mean absolute difference" GFOS.deflt
 
 plotWTerm :: (GD.C gfx) => String -> String -> gfx -> IO IOEx.ExitCode
 plotWTerm "x11" _     = GA.plot GTX.cons
