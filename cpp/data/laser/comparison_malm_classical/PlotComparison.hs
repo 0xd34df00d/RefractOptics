@@ -30,7 +30,7 @@ filterPts pts = filter ((<= θ) . snd) pts
     where θ = sort (map snd pts) !! floor (fromIntegral (length pts) * 0.98)
 
 gfxPrim :: (GVA.C a, GVT.C a, Ord a) => [Run a] -> (ParamsV a -> a) -> GF.T (GG.T Int a)
-gfxPrim runs f = GF.cons frameOpts $ single "Classic" classic <> single "Modified" modified
+gfxPrim runs f = GF.cons frameOpts $ single "{/Symbol w}^0" classic <> single "{/Symbol w}" modified
     where single n p = GG.lineSpec (GLS.title n GLS.deflt) <$> GP.list GG.lines (filterPts $ map (\run -> (cnt run, f $ p run)) runs)
           frameOpts = GFOS.xLabel "Iterations" $ GFOS.yLabel "Relative difference" GFOS.deflt
 
