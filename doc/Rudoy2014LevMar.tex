@@ -161,17 +161,17 @@ $\sigma_{x_{ij}}$:
   \Sigma_x = \| \sigma_{x_{ij}} \| | i \in \{ 1, \dots, \ell \}, j \in \{ 1, \dots, m \}.
 \]
 
-Требуется построить функционал ошибки $S(\bomega)$ вектора параметров
+Требуется построить функционал ошибки $\breve{S}(\bomega)$ вектора параметров
 $\bomega$ модели $f$, учитывающий ошибки измерений $\boldsymbol{\sigma}_y$ и
 $\Sigma_x$:
 \begin{equation}
-  S(\bomega) = S(\bomega, \boldsymbol{\sigma}_y, \Sigma_x),
+  \breve{S}(\bomega) = \breve{S}(\bomega, \boldsymbol{\sigma}_y, \Sigma_x),
   \label{eq:s_modified}
 \end{equation}
 и, кроме того, найти вектор параметров $\omega$, минимизирующий функционал
 \eqref{eq:s_modified}:
 \begin{equation}
-  \hat{\bomega} = \mathop{\arg \min}\limits_{\bomega} S(\bomega).
+  \hat{\bomega} = \mathop{\arg \min}\limits_{\bomega} \breve{S}(\bomega).
 \end{equation}
 
 \section{Модифицированный функционал качества}
@@ -329,7 +329,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
 Таким образом, предлагаемый нами функционал, минимизирующий сумму введеных согласно \eqref{eq:dist0}
 расстояний, для достаточно гладких функций выглядит следующим образом:
 \begin{equation}
-  S(\bomega) = \sum_{i = 1}^\ell \frac{(y_i - f(\mathbf{x}_i, \bomega))^2}{\sigma_{y_i}^2 + \sum_{j = 1}^m (\frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega))^2 \sigma^2_{x_{ij}}}.
+  \breve{S}(\bomega) = \sum_{i = 1}^\ell \frac{(y_i - f(\mathbf{x}_i, \bomega))^2}{\sigma_{y_i}^2 + \sum_{j = 1}^m (\frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega))^2 \sigma^2_{x_{ij}}}.
   \label{eq:s}
 \end{equation}
 
