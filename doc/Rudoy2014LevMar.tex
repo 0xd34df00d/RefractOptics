@@ -589,6 +589,168 @@ $k$ превышает ее.
 гетероскедастичности ошибки такой зависимости не наблюдается, хотя значения $\boldsymbol{\omega}$
 и оказываются достаточно близки к $\boldsymbol{\omega}^0$.
 
+\subsection{Сходимость параметров к истинным}
+Численно исследована зависимость сходимости параметров $\bomega = \arg \min \breve{S}$
+и $\bomega^0 = \arg \min S$ к некоторому <<истинному>> значению вектора параметров
+$\hat{\bomega}$, от количества точек $\ell$ в обучающей выборке и от погрешности определения
+независимой переменной.
+
+Для этого вектор параметров $\bomega$, полученный минимизацией обучающей выборки из таблицы
+\ref{tabl:measurements}, принимается за некоторый <<истинный>> вектор параметров $\hat{\bomega}$,
+и на каждой $j$-й итерации генерируется обучающая выборка $D_j(\ell, k)$:
+\[
+  D_j(\ell, k) = \{ (x_i + \xi^x_i, y(x_i, \hat{\bomega}) + \xi^y_i) \} \mid \xi^x_i \sim \mathcal{N}(0, k \sigma_{x_i}), \xi^y_i \sim \mathcal{N}(0, \sigma_{y_i}), i \in \{ 1, \dots, \ell \},
+\]
+где $y(x, \bomega)$ задано соотношением \eqref{eq:y_approx}, а $\sigma_{x_i}$ и $\sigma_{y_i}$
+определяются соотношением \eqref{eq:sigmas_definition}.
+
+Иными словами, генерируется обучающая выборка согласно искомой функции зависимости с
+известным и фиксированным вектором параметров, которая затем зашумляется нормально
+распределенным шумом. При этом стандартное отклонение шума для зависимой величины
+совпадает с экспертно предложенным для реального эксперимента, а стандартное отклонение
+независимой величины отличается от экспертно предложенного в $k$ раз.
+
+После генерации выборки $D_j(\ell, k)$ по ней находятся значения $\bomega_j = \arg \min \breve{S}$
+и $\bomega_j^0 = \arg \min S$, что повторяется $N$ раз, и рассматриваются значения
+\[
+  \overline{\delta \bomega} = \frac{\sum_{j = 1}^N \text{Abs}(\bomega_j - \hat{\bomega})}{N},
+\]
+\[
+  \overline{\delta \bomega^0} = \frac{\sum_{j = 1}^N \text{Abs}(\bomega^0 - \hat{\bomega})}{N},
+\]
+где $\text{Abs}(\{ \omega_i \}) = \{ | \omega_i | \}$.
+
+Иными словами, $\overline{\delta \bomega}$~--- вектор, компоненты которого представляют
+среднее отклонение соответствующих компонент минимизирующего \eqref{eq:s} вектора от
+$\hat{\bomega}$. Аналогично для $\overline{\delta \bomega}$ и \eqref{eq:s_classic}.
+
+Таким образом, варьируя $k$ и изучая поведение $\overline{\delta \bomega}$ и $\overline{\delta \bomega^0}$, можно исследовать влияние погрешности определения
+независимой переменной на разность между $\hat{\bomega}$ и оптимальными параметрами $\bomega$ и $\bomega^0$
+согласно \eqref{eq:s} и \eqref{eq:s_classic} соответственно.
+
+Так как при уменьшении $k$ монотонно уменьшается погрешность определения независимой
+переменной, естественно ожидать, что различие между $\bomega$ и $\bomega^0$ будет
+уменьшаться. Однако, наш вычислительный эксперимент демонстрирует, что это не так.
+
+В нашем эксперименте $N = 1000$, $\ell \in \{ 10, \dots, 1000 \}$,
+$k \in \{ 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 2, 3, \dots, 9 \}$.
+
+Наиболее характерные результаты эксперимента приведены на рис.
+\ref{fig:comparison_0.5}-\ref{fig:comparison_9}.
+
+Вопрос о причинах подобного поведения оптимальных параметров является предметом
+дальнейшей работы.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter1.eps}
+	\caption{$g_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 0.5$.}
+  \label{fig:comparison_0.5}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.8.txt_parameter1.eps}
+	\caption{$g_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.8.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.8.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 0.8$.}
+  \label{fig:comparison_0.8}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.txt_parameter1.eps}
+	\caption{$g_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 1$.}
+  \label{fig:comparison_0.9}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.9.txt_parameter1.eps}
+	\caption{$g_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.9.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.9.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 0.9$.}
+  \label{fig:comparison_1}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter1.eps}
+	\caption{$g_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 1.2$.}
+  \label{fig:comparison_1.2}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter1.eps}
+	\caption{$g_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 9$.}
+  \label{fig:comparison_9}
+\end{figure}
+
+\FloatBarrier
+
 \section{Заключение}
 
 Предложен модифицированный функционал среднеквадратичной ошибки для существенно
