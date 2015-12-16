@@ -638,6 +638,23 @@ $k \in \{ 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 2, 3, \dots, 9 \}$.
 Наиболее характерные результаты эксперимента приведены на рис.
 \ref{fig:comparison_0.5}-\ref{fig:comparison_9}.
 
+Стоит отметить следующее:
+\begin{itemize}
+  \item Во всех случаях предложенный в настоящей работе функционал \eqref{eq:s}
+	дает лучшее приближение при разумно малом объеме обучающей выборки. Кроме того, в
+	подавляющем большинстве случаев предпочтительность предложенного функционала
+	сохраняется и для большего числа экспериментальных точек.
+  \item Для малых $k \approx 0.5$ ошибка оценки параметров $\alpha_0$ и $\gamma$
+	при помощи классического функционала \eqref{eq:s_classic}
+	имеет ярко выраженный минимум в окрестности 60-100 экспериментальных точек
+	(рис. \ref{fig:comparison_0.5_alpha} и \ref{fig:comparison_0.5_gamma}).
+	Дальнейшее увеличение обучающей выборки ведет к ухудшению приближения, получаемого
+	минмизацией \eqref{eq:s_classic}.
+  \item Для некоторых $k$ ошибка приближения, получаемого минмизацией предложенного
+	функционала \eqref{eq:s}, имеет явную горизонтальную асимптоту (рис. \ref{fig:comparison_0.5_alpha},
+	\ref{fig:comparison_1}, \ref{fig:comparison_1.2_alpha} и \ref{fig:comparison_9_alpha}).
+\end{itemize}
+
 Вопрос о причинах подобного поведения оптимальных параметров является предметом
 дальнейшей работы.
 
@@ -650,10 +667,12 @@ $k \in \{ 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 2, 3, \dots, 9 \}$.
   \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter2.eps}
 	\caption{$\alpha_0$}
+	\label{fig:comparison_0.5_alpha}
   \end{subfigure}%
   \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter3.eps}
 	\caption{$\gamma$}
+	\label{fig:comparison_0.5_gamma}
   \end{subfigure}
   \caption{Сходимость параметров к истинным при $k = 0.5$.}
   \label{fig:comparison_0.5}
@@ -722,6 +741,7 @@ $k \in \{ 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 2, 3, \dots, 9 \}$.
   \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter2.eps}
 	\caption{$\alpha_0$}
+	\label{fig:comparison_1.2_alpha}
   \end{subfigure}%
   \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter3.eps}
@@ -740,6 +760,7 @@ $k \in \{ 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 2, 3, \dots, 9 \}$.
   \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter2.eps}
 	\caption{$\alpha_0$}
+	\label{fig:comparison_9_alpha}
   \end{subfigure}%
   \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter3.eps}
