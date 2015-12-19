@@ -380,7 +380,9 @@ $\tilde{\mathbf{x}}_i = \{ \mathbf{x}_i, y_i \}$~--- исходный векто
 
 Легко показать, что градиент $\tilde{f}$ по параметрам выглядит следующим образом:
 \[
-  \frac{\partial\tilde{f}}{\partial \omega_k}(\mathbf{x}_i, \bomega) = \frac{\frac{\partial f}{\partial \omega_k}(\mathbf{x}_i, \bomega) + \big(f(\mathbf{x}_i, \bomega) - y_i\big) \sum_{j = 1}^m \sigma_{x_{ij}}^2 \frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega) \frac{\partial^2 f}{\partial x_j \partial \omega_k}(\mathbf{x}_i, \bomega)}
+  \frac{\partial\tilde{f}}{\partial \omega_k}(\mathbf{x}_i, \bomega) = \frac{
+		\frac{\partial f}{\partial \omega_k}(\mathbf{x}_i, \bomega) \Big(\sigma_{y_i}^2 + \sum_{j = 1}^m \big(\frac{\partial f}{\partial x_j} (\mathbf{x}_i, \bomega)\big)^2 \sigma_{x_{ij}}^2 \Big)-
+		\big(f(\mathbf{x}_i, \bomega) - y_i\big) \sum_{j = 1}^m \sigma_{x_{ij}}^2 \frac{\partial f}{\partial x_j}(\mathbf{x}_i, \bomega) \frac{\partial^2 f}{\partial x_j \partial \omega_k}(\mathbf{x}_i, \bomega)}
   {\Big( \sigma_{y_i}^2 + \sum_{j = 1}^m \big(\frac{\partial f}{\partial x_j} (\mathbf{x}_i, \bomega)\big)^2 \sigma_{x_{ij}}^2 \Big)^{\sfrac{3}{2}}}.
 \]
 
