@@ -284,7 +284,8 @@ int main (int argc, char **argv)
 			Model::residual, Model::residualDer, Model::varsDer,
 			ySigma, xSigma,
 			Model::initial (),
-			multiplier);
+			multiplier,
+			vm.count ("radius") ? vm ["radius"].as<double> () : 1);
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
 	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl;
