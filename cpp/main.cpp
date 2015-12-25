@@ -228,7 +228,8 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("xsigma", po::value<DType_t> (), "x sigma multiplier")
 		("ysigma", po::value<DType_t> (), "y sigma multiplier")
 		("repetitions", po::value<int> (), "repetitions count")
-		("multiplier", po::value<DType_t> (), "sigma multiplier (for modified functional denominator)");
+		("multiplier", po::value<DType_t> (), "sigma multiplier (for modified functional denominator)")
+		("radius", po::value<double> (), "radius for trust region");
 
 	po::positional_options_description p;
 	p.add ("input-file", -1);
