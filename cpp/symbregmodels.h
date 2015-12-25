@@ -55,15 +55,17 @@ class Laser
 public:
 	static constexpr size_t ParamsCount = 3;
 
+	static constexpr size_t IndependentCount = 4;
+
 	static std::array<DType_t, ParamsCount> initial ();
 
-	static DType_t residual (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p);
+	static DType_t residual (const std::pair<SampleType_t<IndependentCount>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p);
+	static Params_t<ParamsCount> residualDer (const std::pair<SampleType_t<IndependentCount>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-	static SampleType_t<> varsDer (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p);
+	static SampleType_t<> varsDer (const std::pair<SampleType_t<IndependentCount>, DType_t>& data, const Params_t<ParamsCount>& p);
 
-	static TrainingSet_t<4> preprocess (const TrainingSet_t<>& srcPts);
+	static TrainingSet_t<IndependentCount> preprocess (const TrainingSet_t<>& srcPts);
 };
 
 class Resonance

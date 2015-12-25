@@ -96,7 +96,7 @@ namespace
 	}
 }
 
-DType_t Laser::residual (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p)
+DType_t Laser::residual (const std::pair<SampleType_t<IndependentCount>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto r0 = data.first (0);
 	const auto logr0 = data.first (1);
@@ -107,7 +107,7 @@ DType_t Laser::residual (const std::pair<SampleType_t<4>, DType_t>& data, const 
 	return k * (1 - r0) / (1 + r0) * (g0 / alpha0MinusLn (alpha0, logr0, L) - 1) - data.second;
 }
 
-Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p)
+Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<IndependentCount>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto r0 = data.first (0);
 	const auto logr0 = data.first (1);
@@ -129,7 +129,7 @@ Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<4>
 	return res;
 }
 
-SampleType_t<> Laser::varsDer (const std::pair<SampleType_t<4>, DType_t>& data, const Params_t<ParamsCount>& p)
+SampleType_t<> Laser::varsDer (const std::pair<SampleType_t<IndependentCount>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 	const auto r0 = data.first (0);
 	const auto logr0 = data.first (1);
@@ -149,13 +149,13 @@ SampleType_t<> Laser::varsDer (const std::pair<SampleType_t<4>, DType_t>& data, 
 	return res;
 }
 
-TrainingSet_t<4> Laser::preprocess (const TrainingSet_t<>& srcPts)
+TrainingSet_t<Laser::IndependentCount> Laser::preprocess (const TrainingSet_t<>& srcPts)
 {
-	TrainingSet_t<4> res;
+	TrainingSet_t<IndependentCount> res;
 	for (const auto& srcPt : srcPts)
 	{
 		const auto val = srcPt.first (0);
-		SampleType_t<4> pt;
+		SampleType_t<IndependentCount> pt;
 		pt (0) = val;
 		pt (1) = std::log (val);
 		pt (2) = -2 / ((1 + val) * (1 + val));
