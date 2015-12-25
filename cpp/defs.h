@@ -36,7 +36,7 @@ template<typename T, size_t Dim = 1> using SampleTypeBase_t = dlib::matrix<T, Di
 template<typename T, size_t Dim = 1> using TrainingSetInstanceBase_t = std::pair<SampleTypeBase_t<T, Dim>, T>;
 template<typename T, size_t Dim = 1> using TrainingSetBase_t = std::vector<TrainingSetInstanceBase_t<T, Dim>>;
 
-using DType_t = double;
+using DType_t = float;
 
 template<size_t Dim = 1>
 using SampleType_t = SampleTypeBase_t<DType_t, Dim>;
