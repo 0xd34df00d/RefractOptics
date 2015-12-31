@@ -33,6 +33,7 @@
 #include <limits>
 #include <boost/program_options.hpp>
 #include <dlib/svm.h>
+#include "malmwrapper.h"
 #include "solve.h"
 #include "util.h"
 #include "symbregmodels.h"
@@ -292,6 +293,15 @@ int main (int argc, char **argv)
 
 	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl;
 	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, fixedP, ySigma, xSigma, multiplier) << std::endl << std::endl;
+
+	const auto wrapped = WrapModel<Model> (ySigma, xSigma);
+	using WrappedModel = decltype (wrapped);
+	const auto& tildeP = solve<Model::ParamsCount> (wrapped.preprocess (pairs),
+			WrappedModel::residual, WrappedModel::residualDer, WrappedModel::initial (), radius);
+	std::cout << "fixed \\tilde{p} params: " << dlib::trans (tildeP);
+
+	std::cout << "MSE: " << getMse<Model> (pairs, tildeP) << std::endl;
+	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, tildeP, ySigma, xSigma, multiplier) << std::endl << std::endl;
 
 	/*
 	std::vector<DType_t> xVars;
