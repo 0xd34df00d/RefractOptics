@@ -150,6 +150,7 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigma,
 		const boost::program_options::variables_map& vm,
 		DType_t multiplier,
+		double radius,
 		std::ostream& ostr)
 {
 	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<DType_t> () : 10;
@@ -160,7 +161,7 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 
 	const auto repsCount = vm.count ("repetitions") ? vm ["repetitions"].as<int> () : 100;
 
-	const auto& result = compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params, multiplier);
+	const auto& result = compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params, multiplier, radius);
 
 	for (auto i = start; i <= end; ++i)
 	{
@@ -265,6 +266,7 @@ int main (int argc, char **argv)
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
 	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<DType_t> () : 1;
+	const auto radius = vm.count ("radius") ? vm ["radius"].as<double> () : 1;
 
 	const auto xSigmaMult = vm.count ("xsigma") ? vm ["xsigma"].as<DType_t> () : 1;
 	const auto ySigmaMult = vm.count ("ysigma") ? vm ["ysigma"].as<DType_t> () : 1;
@@ -285,7 +287,7 @@ int main (int argc, char **argv)
 			ySigma, xSigma,
 			Model::initial (),
 			multiplier,
-			vm.count ("radius") ? vm ["radius"].as<double> () : 1);
+			radius);
 	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
 
 	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl;
@@ -337,7 +339,7 @@ int main (int argc, char **argv)
 	else if (mode == "conv_modified_vs_classical")
 	{
 		std::cout << "comparing modified MSE vs classical MSE..." << std::endl;
-		calculateModifiedVsClassical<Model> (fixedP, ySigma, xSigma, vm, multiplier, ostr);
+		calculateModifiedVsClassical<Model> (fixedP, ySigma, xSigma, vm, multiplier, radius, ostr);
 	}
 	else if (mode == "stability")
 	{
