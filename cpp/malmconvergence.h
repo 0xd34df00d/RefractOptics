@@ -32,6 +32,7 @@
 #include <random>
 #include "defs.h"
 #include "threadpool.h"
+#include "malmwrapper.h"
 
 template<
 		typename Model,
@@ -149,16 +150,12 @@ SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t
 {
 	const auto& trainingSet = genSample<Model> (size, from, to, ySigma, xSigma, params);
 
-	const auto& preprocessed = Model::preprocess (trainingSet);
-
-	const auto& classicP = solve<Model::ParamsCount> (preprocessed,
-			Model::residual, Model::residualDer, Model::initial ());
-	const auto& fixedP = solve<Model::ParamsCount> (preprocessed,
-			Model::residual, Model::residualDer, Model::varsDer,
-			ySigma,
-			xSigma,
-			Model::initial (),
-			multiplier);
+	const auto& classicP = solve<Model::ParamsCount> (Model::preprocess (trainingSet),
+			Model::residual, Model::residualDer, Model::initial (), radius);
+	const auto wrapped = WrapModel<Model> (ySigma, xSigma);
+	using WrappedModel = decltype (wrapped);
+	const auto& fixedP = solve<Model::ParamsCount> (wrapped.preprocess (trainingSet),
+			WrappedModel::residual, WrappedModel::residualDer, WrappedModel::initial (), radius);
 
 	return { classicP, fixedP };
 }
