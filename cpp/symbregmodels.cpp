@@ -100,43 +100,13 @@ namespace
 	}
 }
 
-namespace LaserTypes
-{
-	using namespace Parse;
-
-	auto g0 = w0;
-	auto alpha0 = w1;
-	auto k = w2;
-	auto r0 = x0;
-	auto logr0 = x1;
-	auto r0ppsq = x2;
-	auto r0recip = x3;
-
-	using Formula_t = decltype (k * (_1 - r0) / (_1 + r0) * (g0 / (alpha0 - logr0 / Num<300>) - _1));
-}
-
 #define USE_MAD 1
-
-namespace
-{
-	template<typename DataVec, typename ParamsVec>
-	auto BindParams (const DataVec& data, const ParamsVec& p)
-	{
-		return Params::BuildFunctor<DType_t> (LaserTypes::g0, p (0),
-				LaserTypes::alpha0, p (1),
-				LaserTypes::k, p (2),
-				LaserTypes::r0ppsq, data (2),
-				LaserTypes::r0recip, data (3),
-				LaserTypes::r0, data (0),
-				LaserTypes::logr0, data (1));
-	}
-}
 
 DType_t Laser::residual (const std::pair<SampleType_t<IndependentCount>, DType_t>& data, const Params_t<ParamsCount>& p)
 {
 #if USE_MAD
 	const auto& vec = BindParams (data.first, p);
-	return LaserTypes::Formula_t::Eval (vec) - data.second;
+	return Formula_t::Eval (vec) - data.second;
 #else
 	const auto r0 = data.first (0);
 	const auto logr0 = data.first (1);
@@ -154,7 +124,7 @@ Params_t<Laser::ParamsCount> Laser::residualDer (const std::pair<SampleType_t<In
 	const auto& vec = BindParams (data.first, p);
 
 	using Simplify::Simplify_t;
-	using namespace LaserTypes;
+	using namespace LaserDetail;
 
 	Params_t<ParamsCount> res;
 	res (0) = Simplify_t<VarDerivative_t<Formula_t, decltype (g0)>>::Eval (vec);
@@ -189,16 +159,10 @@ SampleType_t<> Laser::varsDer (const std::pair<SampleType_t<IndependentCount>, D
 	const auto& vec = BindParams (data.first, p);
 
 	using Simplify::Simplify_t;
-	using namespace LaserTypes;
-
-	using Unwrapped_t = ApplyDependency_t<decltype (logr0), decltype (Parse::Ln (r0)), Formula_t>;
-	using Derivative_t = Simplify_t<VarDerivative_t<Unwrapped_t, decltype (r0)>>;
-	using CacheLog_t = ApplyDependency_t<decltype (Parse::Ln (r0)), decltype (logr0), Derivative_t>;
-	using CachedSq_t = ApplyDependency_t<decltype ((-k * (_1 + r0) - (k * (_1 - r0))) / ((_1 + r0) * (_1 + r0))), decltype (k * r0ppsq), CacheLog_t>;
-	using CachedRecip_t = ApplyDependency_t<decltype (k * (_1 - r0) / (_1 + r0)), decltype (k * r0recip), CachedSq_t>;
+	using namespace LaserDetail;
 
 	SampleType_t<> res;
-	res (0) = Simplify_t<CachedRecip_t>::Eval (vec);
+	res (0) = Simplify_t<VarsDer_t>::Eval (vec);
 	return res;
 #else
 	const auto r0 = data.first (0);

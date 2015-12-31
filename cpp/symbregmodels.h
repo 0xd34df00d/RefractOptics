@@ -29,6 +29,8 @@
 
 #pragma once
 
+#include <parse.h>
+#include <params.h>
 #include "defs.h"
 
 namespace Models
@@ -49,6 +51,29 @@ public:
 	static TrainingSet_t<> preprocess (const TrainingSet_t<>& srcPts);
 };
 
+namespace LaserDetail
+{
+	using namespace Parse;
+
+	constexpr auto g0 = w0;
+	constexpr auto alpha0 = w1;
+	constexpr auto k = w2;
+	constexpr auto r0 = x0;
+	constexpr auto logr0 = x1;
+	constexpr auto r0ppsq = x2;
+	constexpr auto r0recip = x3;
+
+	using Formula_t = decltype (k * (_1 - r0) / (_1 + r0) * (g0 / (alpha0 - logr0 / Num<300>) - _1));
+
+	using Unwrapped_t = ApplyDependency_t<decltype (logr0), decltype (Parse::Ln (r0)), Formula_t>;
+	using VarsDerivative_t = Simplify::Simplify_t<VarDerivative_t<Unwrapped_t, decltype (r0)>>;
+	using VarsCacheLog_t = ApplyDependency_t<decltype (Parse::Ln (r0)), decltype (logr0), VarsDerivative_t>;
+	using VarsCachedSq_t = ApplyDependency_t<decltype ((-k * (_1 + r0) - (k * (_1 - r0))) / ((_1 + r0) * (_1 + r0))), decltype (k * r0ppsq), VarsCacheLog_t>;
+	using VarsCachedRecip_t = ApplyDependency_t<decltype (k * (_1 - r0) / (_1 + r0)), decltype (k * r0recip), VarsCachedSq_t>;
+
+	using VarsDer_t = VarsCachedRecip_t;
+}
+
 class Laser
 {
 	static constexpr auto L = 300.0;
@@ -56,6 +81,21 @@ public:
 	static constexpr size_t ParamsCount = 3;
 
 	static constexpr size_t IndependentCount = 4;
+
+	using Formula_t = LaserDetail::Formula_t;
+	using VarsDer_t = LaserDetail::VarsDer_t;
+
+	template<typename DataVec, typename ParamsVec>
+	static auto BindParams (const DataVec& data, const ParamsVec& p)
+	{
+		return Params::BuildFunctor<DType_t> (LaserDetail::g0, p (0),
+				LaserDetail::alpha0, p (1),
+				LaserDetail::k, p (2),
+				LaserDetail::r0ppsq, data (2),
+				LaserDetail::r0recip, data (3),
+				LaserDetail::r0, data (0),
+				LaserDetail::logr0, data (1));
+	}
 
 	static std::array<DType_t, ParamsCount> initial ();
 
