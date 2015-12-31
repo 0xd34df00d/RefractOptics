@@ -39,13 +39,13 @@
 const auto TrustRadius = 0.5;
 
 template<size_t ParamsCount, typename R, typename D, typename TS>
-Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<DType_t, ParamsCount>& initial)
+Params_t<ParamsCount> solve (const TS& pairs, R res, D paramsDer, const std::array<DType_t, ParamsCount>& initial, double radius = TrustRadius)
 {
 	Params_t<ParamsCount> p;
 	for (auto i = 0u; i < ParamsCount; ++i)
 		p (i) = initial [i];
 	dlib::solve_least_squares_lm (dlib::gradient_norm_stop_strategy { 1e-18, 50000 },
-			res, paramsDer, pairs, p, TrustRadius);
+			res, paramsDer, pairs, p, radius);
 	return p;
 }
 
