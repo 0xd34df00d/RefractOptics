@@ -649,143 +649,88 @@ $\hat{\bomega}$, от количества точек $\ell$ в обучающе
 переменной, естественно ожидать, что различие между $\bomega$ и $\bomega^0$ будет
 уменьшаться. Однако, наш вычислительный эксперимент демонстрирует, что это не так.
 
-В нашем эксперименте $N = 1000$, $\ell \in \{ 10, \dots, 1000 \}$,
-$k \in \{ 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 2, 3, \dots, 9 \}$.
+В нашем эксперименте $N = 1000$, $\ell \in \{ 10, \dots, 5000 \}$,
+$k \in \{ 0.2, 0.25, \dots, 1 \}$.
 
-Наиболее характерные результаты эксперимента приведены на рис.
-\ref{fig:comparison_0.5}-\ref{fig:comparison_9}.
+Результаты приведены на рис. \ref{fig:comparison_0.2}-\ref{fig:comparison_gamma_k}.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.20_float.txt_parameter1.eps}
+	\caption{$g_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.20_float.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.20_float.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 0.2$.}
+  \label{fig:comparison_0.2}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.65_float.txt_parameter1.eps}
+	\caption{$g_0$}
+	\label{fig:comparison_0.65_g0}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.65_float.txt_parameter2.eps}
+	\caption{$\alpha_0$}
+	\label{fig:comparison_0.65_alpha0}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.65_float.txt_parameter3.eps}
+	\caption{$\gamma$}
+  \end{subfigure}
+  \caption{Сходимость параметров к истинным при $k = 0.65$.}
+  \label{fig:comparison_0.65}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.80_float.txt_parameter3.eps}
+	\caption{$k = 0.8$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma0.90_float.txt_parameter3.eps}
+	\caption{$k = 0.9$}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.35\textwidth}
+    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_5000_1000_xsigma1.00_float.txt_parameter3.eps}
+	\caption{$k = 1.0$}
+  \end{subfigure}
+  \caption{Сходимость параметра $\gamma$ при некоторых $k$.}
+  \label{fig:comparison_gamma_k}
+\end{figure}
+
 
 Стоит отметить следующее:
 \begin{itemize}
-  \item Во всех случаях предложенный в настоящей работе функционал \eqref{eq:s}
-	дает лучшее приближение при разумно малом объеме обучающей выборки. Кроме того, в
+  \item Практически во всех случаях (кроме оценки $\gamma$ для $k = 0.8$)
+	предложенный в настоящей работе функционал \eqref{eq:s}
+	дает лучшее приближение, в том числе, при разумно малом объеме обучающей выборки. Кроме того, в
 	подавляющем большинстве случаев предпочтительность предложенного функционала
 	сохраняется и для большего числа экспериментальных точек.
-  \item Для малых $k \approx 0.5$ ошибка оценки параметров $\alpha_0$ и $\gamma$
-	при помощи классического функционала \eqref{eq:s_classic}
-	имеет ярко выраженный минимум в окрестности 60-100 экспериментальных точек
-	(рис. \ref{fig:comparison_0.5_alpha} и \ref{fig:comparison_0.5_gamma}).
+  \item Для малых $k \leq 0.6$ ошибка оценки параметров при помощи классического
+	функционала \eqref{eq:s_classic} имеет ярко выраженный минимум в окрестности 60-100
+	для $\alpha_0$ и $\gamma$ и 400 для $g_0$ экспериментальных точек
+	(рис. \ref{fig:comparison_0.2}).
 	Дальнейшее увеличение обучающей выборки ведет к ухудшению приближения, получаемого
 	минмизацией \eqref{eq:s_classic}.
   \item Для некоторых $k$ ошибка приближения, получаемого минимизацией предложенного
-	функционала \eqref{eq:s}, имеет явную горизонтальную асимптоту (рис. \ref{fig:comparison_0.5_alpha},
-	\ref{fig:comparison_1}, \ref{fig:comparison_1.2_alpha} и \ref{fig:comparison_9_alpha}).
+	функционала \eqref{eq:s}, имеет явную горизонтальную асимптоту (рис. \ref{fig:comparison_0.2},
+	\ref{fig:comparison_0.65_g0} и \ref{fig:comparison_0.65_alpha0}).
 \end{itemize}
 
 Вопрос о причинах подобного поведения оптимальных параметров является предметом
 дальнейшей работы.
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter1.eps}
-	\caption{$g_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter2.eps}
-	\caption{$\alpha_0$}
-	\label{fig:comparison_0.5_alpha}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.5.txt_parameter3.eps}
-	\caption{$\gamma$}
-	\label{fig:comparison_0.5_gamma}
-  \end{subfigure}
-  \caption{Сходимость параметров к истинным при $k = 0.5$.}
-  \label{fig:comparison_0.5}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.8.txt_parameter1.eps}
-	\caption{$g_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.8.txt_parameter2.eps}
-	\caption{$\alpha_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.8.txt_parameter3.eps}
-	\caption{$\gamma$}
-  \end{subfigure}
-  \caption{Сходимость параметров к истинным при $k = 0.8$.}
-  \label{fig:comparison_0.8}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.9.txt_parameter1.eps}
-	\caption{$g_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.9.txt_parameter2.eps}
-	\caption{$\alpha_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma0.9.txt_parameter3.eps}
-	\caption{$\gamma$}
-  \end{subfigure}
-  \caption{Сходимость параметров к истинным при $k = 0.9$.}
-  \label{fig:comparison_0.9}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.txt_parameter1.eps}
-	\caption{$g_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.txt_parameter2.eps}
-	\caption{$\alpha_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.txt_parameter3.eps}
-	\caption{$\gamma$}
-  \end{subfigure}
-  \caption{Сходимость параметров к истинным при $k = 1$.}
-  \label{fig:comparison_1}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter1.eps}
-	\caption{$g_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter2.eps}
-	\caption{$\alpha_0$}
-	\label{fig:comparison_1.2_alpha}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma1.2.txt_parameter3.eps}
-	\caption{$\gamma$}
-  \end{subfigure}
-  \caption{Сходимость параметров к истинным при $k = 1.2$.}
-  \label{fig:comparison_1.2}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter1.eps}
-	\caption{$g_0$}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter2.eps}
-	\caption{$\alpha_0$}
-	\label{fig:comparison_9_alpha}
-  \end{subfigure}%
-  \begin{subfigure}[b]{0.35\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/comparison/comparison_1000_32_1000_xsigma9.txt_parameter3.eps}
-	\caption{$\gamma$}
-  \end{subfigure}
-  \caption{Сходимость параметров к истинным при $k = 9$.}
-  \label{fig:comparison_9}
-\end{figure}
 
 \FloatBarrier
 
