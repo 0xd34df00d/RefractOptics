@@ -631,18 +631,15 @@ $\hat{\bomega}$, от количества точек $\ell$ в обучающе
 независимой величины отличается от экспертно предложенного в $k$ раз.
 
 После генерации выборки $D_j(\ell, k)$ по ней находятся значения $\bomega_j = \arg \min \breve{S}$
-и $\bomega_j^0 = \arg \min S$, что повторяется $N$ раз, и рассматриваются значения
+и $\bomega_j^0 = \arg \min S$, что повторяется $N$ раз, и для $\forall i$ рассматриваются значения
 \[
-  \overline{\delta \bomega} = \frac{\sum_{j = 1}^N \text{Abs}(\bomega_j - \hat{\bomega})}{N},
+  \overline{\delta \omega_i} = \frac{\sum_{j = 1}^N (\omega_{ji} - \hat{\omega}_i)}{N},
 \]
 \[
-  \overline{\delta \bomega^0} = \frac{\sum_{j = 1}^N \text{Abs}(\bomega^0 - \hat{\bomega})}{N},
+  \overline{\delta \omega^0_i} = \frac{\sum_{j = 1}^N (\omega^0_{ji} - \hat{\omega}_i)}{N}.
 \]
-где $\text{Abs}$ выполняет операцию взятия модуля над каждой компонентой аргумента-вектора: $\text{Abs}(\{ \omega_i \}) = \{ | \omega_i | \}$.
 
-Иными словами, $\overline{\delta \bomega}$~--- вектор, компоненты которого представляют
-среднее отклонение соответствующих компонент минимизирующего \eqref{eq:s} вектора от
-$\hat{\bomega}$. Аналогично для $\overline{\delta \bomega}$ и \eqref{eq:s_classic}.
+Обозначим, кроме того, $\overline{\delta \bomega} = \{ \overline{\delta \omega_1}, \overline{\delta \omega_2}, \overline{\delta \omega_3} \}$.
 
 Таким образом, варьируя $k$ и изучая поведение $\overline{\delta \bomega}$ и $\overline{\delta \bomega^0}$, можно исследовать влияние погрешности определения
 независимой переменной на разность между $\hat{\bomega}$ и оптимальными параметрами $\bomega$ и $\bomega^0$
