@@ -27,6 +27,7 @@
 \usepackage{sectsty}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{wrapfig}
 \usepackage[doublespacing]{setspace}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{decorations.pathmorphing}
@@ -893,5 +894,20 @@ $n = 10$ порождённых точках и $D(\xi_i) = 10$ приведен
 %\bibliographystyle{babunsrt}
 %\bibliographystyle{unsrt}
 \bibliography{bibliography}
+
+\vbox{%
+\begin{wrapfigure}{l}{0pt}
+  \includegraphics{rudoy_photo}
+\end{wrapfigure}
+\textbf{Georg Rudoy} received his MSc degree in Applied Mathematics
+in 2014 from the Moscow Institute of Physics and Technology
+in Russia. Currently he is working on his PhD at the Department
+of Control and Applied Mathematics at the Moscow Institute
+of Physics and Technology on the subject of generating and
+analyzing regression models as superpositions of elementary
+functions. His interests include non-linear regression models,
+learning theory and natural language processing as well as
+other fields like category theory, type theory and their
+applications to programming.}
 
 \end{document}
