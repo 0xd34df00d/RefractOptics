@@ -177,12 +177,14 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 template<typename Model>
 Params_t<Model::ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
 {
-	return solve<Model::ParamsCount> (Model::preprocess (srcPts),
-			Model::residual, Model::residualDer, Model::varsDer,
-			[yVar] (const auto& pair) { return pair.second * yVar; },
-			[xVar] (const auto& pair) { return pair.first (0) * xVar; },
-			Model::initial (),
-			multiplier);
+	const auto yGetter = [yVar] (const auto& pair) { return pair.second * yVar; };
+	const auto xGetter = [xVar] (const auto& pair) { return pair.first (0) * xVar; };
+
+	const auto wrapped = WrapModel<Model> (yGetter, xGetter);
+	using WrappedModel = decltype (wrapped);
+
+	return solve<Model::ParamsCount> (wrapped.preprocess (srcPts),
+			WrappedModel::residual, WrappedModel::residualDer, WrappedModel::initial ());
 }
 
 DType_t svmSolver (const TrainingSet_t<>& pts)
