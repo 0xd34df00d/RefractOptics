@@ -127,12 +127,14 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 
 	for (DType_t i = start; i < end; i += step)
 	{
-		const auto& fixedP = solve<Model::ParamsCount> (preprocessed,
-				Model::residual, Model::residualDer, Model::varsDer,
-				[i, fixedY] (const auto& pair) { return 0.02 * i * fixedY; },
-				[] (const auto& pair) { return 0.1; },
-				Model::initial (),
-				multiplier);
+		const auto ySigma = [i, fixedY] (const auto& pair) { return 0.02 * i * fixedY; };
+		const auto xSigma = [] (const auto& pair) { return 0.1; };
+
+		const auto wrapped = WrapModel<Model> (ySigma, xSigma);
+		using WrappedModel = decltype (wrapped);
+
+		const auto& fixedP = solve<Model::ParamsCount> (wrapped.preprocess (pairs),
+				WrappedModel::residual, WrappedModel::residualDer, WrappedModel::initial ());
 
 		ostr << i << " ";
 		printVec (ostr, classicP);
