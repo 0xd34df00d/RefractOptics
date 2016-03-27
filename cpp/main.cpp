@@ -81,17 +81,16 @@ template<
 		typename XSigmasGetterT
 	>
 DType_t getModifiedMse (const TrainingSet_t<>& srcPairs, const Params_t<Model::ParamsCount>& p,
-		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas, DType_t multiplier)
+		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigmas)
 {
 	const auto& pairs = Model::preprocess (srcPairs);
-	const auto multSquared = multiplier * multiplier;
-	return multSquared * std::accumulate (pairs.begin (), pairs.end (), 0.0,
+	return std::accumulate (pairs.begin (), pairs.end (), 0.0,
 			[&] (DType_t sum, auto pair)
 			{
 				const auto res = std::pow (Model::residual (pair, p), 2);
 				const auto& derivatives = Model::varsDer (pair, p);
 				const DType_t denom = std::pow (ySigma (pair), 2) + std::pow (xSigmas (pair) * derivatives, 2);
-				return sum + res / (multSquared * denom);
+				return sum + res / denom;
 			});
 }
 
@@ -111,7 +110,7 @@ std::ostream& printVec (std::ostream& ostr, const dlib::matrix<DType_t, rc, 1>& 
 
 template<typename Model>
 void calculateConvergence (const TrainingSet_t<>& pairs,
-		const boost::program_options::variables_map& vm, DType_t multiplier, std::ostream& ostr)
+		const boost::program_options::variables_map& vm, std::ostream& ostr)
 {
 	const auto& preprocessed = Model::preprocess (pairs);
 
@@ -152,7 +151,6 @@ template<
 void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 		const YSigmaGetterT& ySigma, const XSigmasGetterT& xSigma,
 		const boost::program_options::variables_map& vm,
-		DType_t multiplier,
 		double radius,
 		std::ostream& ostr)
 {
@@ -164,7 +162,7 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 
 	const auto repsCount = vm.count ("repetitions") ? vm ["repetitions"].as<int> () : 100;
 
-	const auto& result = compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params, multiplier, radius);
+	const auto& result = compareFunctionals<Model> (start, end, repsCount, valStart, valEnd, ySigma, xSigma, params, radius);
 
 	for (auto i = start; i <= end; ++i)
 	{
@@ -177,7 +175,7 @@ void calculateModifiedVsClassical (const Params_t<Model::ParamsCount>& params,
 }
 
 template<typename Model>
-Params_t<Model::ParamsCount> symbRegSolver (DType_t multiplier, const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
+Params_t<Model::ParamsCount> symbRegSolver (const TrainingSet_t<>& srcPts, DType_t xVar, DType_t yVar)
 {
 	const auto yGetter = [yVar] (const auto& pair) { return pair.second * yVar; };
 	const auto xGetter = [xVar] (const auto& pair) { return pair.first (0) * xVar; };
@@ -234,7 +232,6 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("xsigma", po::value<DType_t> (), "x sigma multiplier")
 		("ysigma", po::value<DType_t> (), "y sigma multiplier")
 		("repetitions", po::value<int> (), "repetitions count")
-		("multiplier", po::value<DType_t> (), "sigma multiplier (for modified functional denominator)")
 		("radius", po::value<double> (), "radius for trust region");
 
 	po::positional_options_description p;
@@ -270,7 +267,6 @@ int main (int argc, char **argv)
 
 	std::cout << "read " << pairs.size () << " samples: " << std::endl;
 
-	const auto multiplier = vm.count ("multiplier") ? vm ["multiplier"].as<DType_t> () : 1;
 	const auto radius = vm.count ("radius") ? vm ["radius"].as<double> () : 1;
 
 	const auto xSigmaMult = vm.count ("xsigma") ? vm ["xsigma"].as<DType_t> () : 1;
@@ -285,7 +281,7 @@ int main (int argc, char **argv)
 			Model::residual, Model::residualDer, Model::initial ());
 	std::cout << "inferred params: " << dlib::trans (p);
 	std::cout << "MSE: " << getMse<Model> (pairs, p) << std::endl;
-	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, p, ySigma, xSigma, multiplier) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, p, ySigma, xSigma) << std::endl << std::endl;
 
 	const auto wrapped = WrapModel<Model> (ySigma, xSigma);
 	using WrappedModel = decltype (wrapped);
@@ -294,7 +290,7 @@ int main (int argc, char **argv)
 	std::cout << "fixed \\tilde{p} params: " << dlib::trans (tildeP);
 
 	std::cout << "MSE: " << getMse<Model> (pairs, tildeP) << std::endl;
-	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, tildeP, ySigma, xSigma, multiplier) << std::endl << std::endl;
+	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, tildeP, ySigma, xSigma) << std::endl << std::endl;
 
 	/*
 	std::vector<DType_t> xVars;
@@ -337,18 +333,18 @@ int main (int argc, char **argv)
 	if (mode == "conv_modified2classical")
 	{
 		std::cout << "calculating convergence..." << std::endl;
-		calculateConvergence<Model> (pairs, vm, multiplier, ostr);
+		calculateConvergence<Model> (pairs, vm, ostr);
 	}
 	else if (mode == "conv_modified_vs_classical")
 	{
 		std::cout << "comparing modified MSE vs classical MSE..." << std::endl;
-		calculateModifiedVsClassical<Model> (tildeP, ySigma, xSigma, vm, multiplier, radius, ostr);
+		calculateModifiedVsClassical<Model> (tildeP, ySigma, xSigma, vm, radius, ostr);
 	}
 	else if (mode == "stability")
 	{
 		std::cout << "calculating mean/dispersion..." << std::endl;
 		using namespace std::placeholders;
-		auto results = calcStats (std::bind (symbRegSolver<Model>, multiplier, _1, _2, _3), xVars, yVars, pairs);
+		auto results = calcStats (std::bind (symbRegSolver<Model>, _1, _2, _3), xVars, yVars, pairs);
 
 		WriteCoeffs (p, results, infile);
 	}

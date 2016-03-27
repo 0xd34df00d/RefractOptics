@@ -145,7 +145,6 @@ SingleCompareResult<Model::ParamsCount> compareFunctionals (size_t size, DType_t
 		const YSigmaGetterT& ySigma,
 		const XSigmasGetterT& xSigma,
 		const Params_t<Model::ParamsCount>& params,
-		double multiplier,
 		double radius)
 {
 	const auto& trainingSet = genSample<Model> (size, from, to, ySigma, xSigma, params);
@@ -171,7 +170,6 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 		const YSigmaGetterT& ySigma,
 		const XSigmasGetterT& xSigma,
 		const Params_t<Model::ParamsCount>& params,
-		double multiplier,
 		double radius)
 {
 	using SingleResult_t = SingleCompareResult<Model::ParamsCount>;
@@ -192,7 +190,7 @@ auto compareFunctionals (size_t sizeFrom, size_t sizeTo,
 					}
 					SingleResult_t subres;
 					for (size_t i = 0; i < repetitions; ++i)
-						subres += (compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, multiplier, radius) - reference).abs ();
+						subres += (compareFunctionals<Model> (size, pointFrom, pointTo, ySigma, xSigma, params, radius) - reference).abs ();
 
 					subres.m_classicalParams /= repetitions;
 					subres.m_modifiedParams /= repetitions;
