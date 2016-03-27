@@ -177,31 +177,5 @@ Stats_t calcStats (Solver s, const std::vector<DType_t>& lVars, const std::vecto
 		}
 	}
 
-	/*
-	for (auto lVar : lVars)
-	{
-		for (auto i = nVars.begin (); i != nVars.end (); )
-		{
-			std::map<double, std::future<StatsVec_t>> nVar2future;
-			for (size_t t = 0; i != nVars.end () && t < threadCount; ++i, ++t)
-				nVar2future [*i] = std::async (std::launch::async,
-						&getStats<Solver>,
-						lVar, *i, pairs, s);
-
-			for (auto& pair : nVar2future)
-			{
-				const auto& coeffs = pair.second.get ();
-
-				std::vector<dlib::running_stats<double>> stats;
-				stats.resize (coeffs.size ());
-				for (size_t i = 0; i < coeffs.size (); ++i)
-					for (auto coeff : coeffs [i])
-						stats [i].add (coeff);
-				results [lVar] [pair.first] = stats;
-				std::cout << (100 * ++finished / count) << "% done for (" << lVar << "; " << pair.first << ")" << std::endl;
-			}
-		}
-	}
-	*/
 	return results;
 }
