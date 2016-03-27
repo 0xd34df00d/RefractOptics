@@ -351,7 +351,7 @@ int main (int argc, char **argv)
 	else if (mode == "conv_modified_vs_classical")
 	{
 		std::cout << "comparing modified MSE vs classical MSE..." << std::endl;
-		calculateModifiedVsClassical<Model> (fixedP, ySigma, xSigma, vm, multiplier, radius, ostr);
+		calculateModifiedVsClassical<Model> (tildeP, ySigma, xSigma, vm, multiplier, radius, ostr);
 	}
 	else if (mode == "stability")
 	{
