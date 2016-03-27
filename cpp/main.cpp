@@ -285,17 +285,6 @@ int main (int argc, char **argv)
 	std::cout << "MSE: " << getMse<Model> (pairs, p) << std::endl;
 	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, p, ySigma, xSigma, multiplier) << std::endl << std::endl;
 
-	const auto& fixedP = solve<Model::ParamsCount> (Model::preprocess (pairs),
-			Model::residual, Model::residualDer, Model::varsDer,
-			ySigma, xSigma,
-			Model::initial (),
-			multiplier,
-			radius);
-	std::cout << "fixed inferred params: " << dlib::trans (fixedP);
-
-	std::cout << "MSE: " << getMse<Model> (pairs, fixedP) << std::endl;
-	std::cout << "mMSE: " << getModifiedMse<Model> (pairs, fixedP, ySigma, xSigma, multiplier) << std::endl << std::endl;
-
 	const auto wrapped = WrapModel<Model> (ySigma, xSigma);
 	using WrappedModel = decltype (wrapped);
 	const auto& tildeP = solve<Model::ParamsCount> (wrapped.preprocess (pairs),
