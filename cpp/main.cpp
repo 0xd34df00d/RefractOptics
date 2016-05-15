@@ -120,13 +120,14 @@ void calculateConvergence (const TrainingSet_t<>& pairs,
 	const auto start = vm.count ("conv-start") ? vm ["conv-start"].as<DType_t> () : 1;
 	const auto end = vm.count ("conv-end") ? vm ["conv-end"].as<DType_t> () : 10;
 	const auto step = vm.count ("conv-step") ? vm ["conv-step"].as<DType_t> () : 0.01;
+	const auto isMax = vm.count ("conv-max") ? vm ["conv-max"].as<bool> () : true;
 
 	const auto fixedY = std::max_element (pairs.begin (), pairs.end (),
 			[] (const auto& p1, const auto& p2) { return p1.second < p2.second; })->second;
 
 	for (DType_t i = start; i < end; i += step)
 	{
-		const auto ySigma = [i, fixedY] (const auto& pair) { return 0.02 * i * fixedY; };
+		const auto ySigma = [&] (const auto& pair) { return 0.02 * i * (isMax ? fixedY : pair.second); };
 		const auto xSigma = [] (const auto& pair) { return 0.1; };
 
 		const auto wrapped = WrapModel<Model> (ySigma, xSigma);
@@ -227,6 +228,7 @@ boost::program_options::variables_map parseOptions (int argc, char **argv)
 		("conv-start", po::value<DType_t> (), "convergence start")
 		("conv-end", po::value<DType_t> (), "convergence end")
 		("conv-step", po::value<DType_t> (), "convergence step")
+		("conv-max", po::value<bool> (), "if true, use the maximum y value for convergence sigma, otherwise use the current y_i for each data point")
 		("values-start", po::value<DType_t> (), "values start")
 		("values-end", po::value<DType_t> (), "values end")
 		("xsigma", po::value<DType_t> (), "x sigma multiplier")
