@@ -28,10 +28,10 @@
  **********************************************************************/
 
 #include "symbregmodels.h"
-#include <diff.h>
-#include <parse.h>
-#include <params.h>
-#include <simplify.h>
+#include <iammad/diff.h>
+#include <iammad/parse.h>
+#include <iammad/params.h>
+#include <iammad/simplify.h>
 
 namespace Models
 {

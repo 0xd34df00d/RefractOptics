@@ -29,8 +29,8 @@
 
 #pragma once
 
-#include <parse.h>
-#include <params.h>
+#include <iammad/parse.h>
+#include <iammad/params.h>
 #include "defs.h"
 
 namespace Models
