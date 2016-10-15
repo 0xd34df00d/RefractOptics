@@ -159,5 +159,54 @@ struct Node<Number<N>>
 значения узла в данной точке, возвращает значение этой константы. Параметры функции
 \texttt{Eval} рассмотрим далее.
 
+\subsection{Свободные переменные}
+
+Для определения переменной также введем вспомогательный тип:
+\begin{lstlisting}
+template<char Family, int Index>
+struct Variable {};
+\end{lstlisting}
+где \texttt{Family} и \texttt{index}~--- <<семейство>> и индекс переменной. Так, например,
+для $w_0$ они равны, соответственно, \texttt{'w'} и \texttt{0}.
+
+Рассмотрим определение узла для свободной переменной:
+\begin{lstlisting}
+template<char Family, int Index>
+struct Node<Variable<Family, Index>>
+{
+  template<char FPrime, int IPrime>
+  using Derivative_t = std::conditional_t<FPrime == Family && IPrime == Index,
+      Node<Number<1>>,
+      Node<Number<0>>>;
+
+  static std::string Print ()
+  {
+    return std::string { Family, '_' } + std::to_string (Index);
+  }
+
+  template<typename Vec>
+  static typename Vec::value_type Eval (const Vec& values)
+  {
+    return values (Node {});
+  }
+
+  constexpr Node () {}
+};
+\end{lstlisting}
+
+Так, производная переменной равна единице, если производная берется по самой этой переменной,
+и нулю иначе. Собственно, параметры \texttt{FPrime} и \texttt{IPrime} типа \texttt{Derivative\_t}
+соответствуют семейству и индексу переменной, по которой вычисляется производная.
+
+Функция \texttt{Eval}, вычисляющая значение переменной, создает безымянный объект того же типа,
+что и узел, и вызывает переданный объект \texttt{values} с этим типом. Соответствующая перегрузка
+\texttt{operator()} у типа \texttt{Vec} обеспечивает выбор значеничя, соответствующего типу
+\texttt{Node}. Детальная реализация типа \texttt{Vec} рассмотрена далее.
+
+Отметим, что известный на этапе компиляции тип \texttt{Node} и, как следствие, известная на этапе
+компиляции перегрузка \texttt{Vec::operator()} обеспечивают компилятору возможность прямо подставить
+соответствующее значение переменной (пусть и известное лишь на этапе выполнения), как если бы оно
+было указано вручную.
+
 
 \end{document}
