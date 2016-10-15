@@ -512,5 +512,94 @@ struct ApplyDependency<Var, Expr, Var>
 };
 \end{lstlisting}
 
+\section{Передача параметров}
+
+Отметим, что каждая переменная имеет свой собственный тип, что дает возможность
+выбора соответствующего значения при помощи выбора соответствующей перегрузки
+некоторой функции из данного семейства. Для построения этого семейства предлагается
+следующий подход.
+
+Каждая конкретная функция из семейства задается лямбда-выражением. Так, для
+построения функци, возвращающей для типа \texttt{NodeType}, известного на момент
+компиляции, задаваемое в процессе выполнения значение \texttt{val} типа
+\texttt{ValueType}, используется следующая конструкция:
+\begin{lstlisting}
+template<typename ValueType, typename NodeType>
+auto BuildFunctor (NodeType, ValueType val)
+{
+    return [val] (NodeType) { return val; };
+}
+\end{lstlisting}
+
+Для того, чтобы скомбинировать несколько подобных функций, предлагается воспользоваться
+тем, что лямбда-выражения в языке C++ представляют собой структуры сгенерированного
+компилятором типа, от которых, тем не менее, можно наследоваться. Тогда для объединения
+нескольких лямбда-выражений можно использовать следующий вспомогательный тип:
+\begin{lstlisting}
+template<typename F, typename S>
+struct Map : F, S
+{
+	using F::operator();
+	using S::operator();
+
+	Map (F f, S s)
+	: F { std::forward<F> (f) }
+	, S { std::forward<S> (s) }
+	{
+	}
+};
+\end{lstlisting}
+где \texttt{F} и \texttt{S}~--- прозвольные объекты, имеющие конструктор копирования и
+оператор вызова (\texttt{operator()}).
+
+Отметим, что тип \texttt{Map<F, S>} также можно использовать как один из аргументов к
+типу \texttt{Map}. Иными словами, \texttt{Map} порождает моноид на пространстве объектов
+с переопределенным \texttt{operator()}, где единичным элементом является объект с
+оператором вида \texttt{void operator() () {}}.
+
+С учетом этого для построения объекта, передаваемого в вышеописанные фукнции
+\texttt{Eval}, можно использовать следующий рекурсивный механизм:
+
+\begin{lstlisting}
+template<typename F>
+auto Augment (F&& f)
+{
+	return f;
+}
+
+template<typename F, typename S>
+auto Augment (F&& f, S&& s)
+{
+	return Map<std::decay_t<F>, std::decay_t<S>> { f, s };
+}
+
+template<typename ValueType>
+auto BuildFunctor ()
+{
+	struct
+	{
+		ValueType operator() () const
+		{
+			return {};
+		}
+
+		using value_type = ValueType;
+	} dummy;
+	return dummy;
+}
+
+template<typename ValueType, typename NodeType, typename... Tail>
+auto BuildFunctor (NodeType, ValueType val, Tail&&... tail)
+{
+	return detail::Augment ([val] (NodeType) { return val; },
+			BuildFunctor<ValueType> (std::forward<Tail> (tail)...));
+}
+\end{lstlisting}
+
+Данный подход, кроме того, позволяет гарантировать полноту и единственность задания
+аргументов на этапе компиляции: ошибкой компиляции является как отсутствие значения
+для какой-либо из переменных, так и несколько раз указанное значение для одной и той
+же переменной.
+
 
 \end{document}
