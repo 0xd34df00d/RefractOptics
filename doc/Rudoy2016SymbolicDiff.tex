@@ -424,5 +424,93 @@ template<typename Node, typename Var>
 using VarDerivative_t = typename VarDerivative<Node, std::decay_t<Var>>::Result_t;
 \end{lstlisting}
 
+\section{Использование зависимых переменных}
+
+Для оптимизации скорости вычислений иногда имеет смысл кэшировать результаты
+некоторых сложных операций (таких, как, например, взятие логарифма) над свободными
+переменными.  Получающиеся при этом переменные имеют зависимость от исходных свободных,
+и это необходимо учитывать при взятии соответствующих производных.
+
+Для этого предлагается преобразовывать выражения, заменяя поддеревья, отвечающие за
+сложные операции, на зависимые переменные во время вычисления значения выражения, и
+выполняя обратную замену при взятии производной.
+
+Так, например, если в формуле часто фигурирует выражение $\log \omega_0$, где
+$\omega_0$~--- редко изменяемый параметр, то имеет смысл ввести дополнительную
+переменную $\tilde{\omega_0} = \log \omega_0$ и переписать выражение в ее терминах.
+
+Для этого определим метафункцию \texttt{ApplyDependency}, рекурсивно спускающуюся
+по дереву выражения и подменяющую элемент дерева, соответствующий шаблону, следующим образом:
+\begin{enumerate}
+  \item Если рассматриваемый узел совпадает с шаблоном, то необходимо его заменить
+	на данное выражение.
+  \item Иначе, если рассматриваемый узел~--- унарная функция, необходимо рекурсивно
+	спуститься на дочерний узел.
+  \item Иначе, если рассматриваемый узел~--- бинарная функция, необходимо рекурсивно
+	спуститься на оба дочерних узла.
+  \item Иначе ничего не делать.
+\end{enumerate}
+
+Последнему случаю соответствует базовая реализация \text{ApplyDependency}, а оставшимся
+вариантам~--- специализации шаблона. Так как специализации шаблонов рассматриваются
+не по порядку, а все вместе, необходимо отключать специализации для второго и третьего
+случаев при совпадении шаблона с рассматриваемым узлом при помощи техники SFINAE\cite{Josuttis2003Templates}:
+
+\begin{lstlisting}
+template<typename Var, typename Expr, typename Formula, typename Enable = void>
+struct ApplyDependency
+{
+	using Result_t = Formula;
+};
+
+template<typename Var, typename Expr, typename Formula>
+using ApplyDependency_t = typename ApplyDependency<std::decay_t<Var>,
+				std::decay_t<Expr>, Formula>::Result_t;
+
+template<
+		typename Var,
+		typename Expr,
+		UnaryFunction UF,
+		typename Child
+	>
+struct ApplyDependency<Var,
+		Expr,
+		Node<UnaryFunctionWrapper<UF>, Child>,
+		std::enable_if_t<!std::is_same<Var,
+				Node<UnaryFunctionWrapper<UF>, Child>>::value>>
+{
+	using Result_t = Node<
+				UnaryFunctionWrapper<UF>,
+				ApplyDependency_t<Var, Expr, Child>
+			>;
+};
+
+template<
+		typename Var,
+		typename Expr,
+		BinaryFunction BF,
+		typename FirstNode,
+		typename SecondNode
+	>
+struct ApplyDependency<Var,
+		Expr,
+		Node<BinaryFunctionWrapper<BF>, FirstNode, SecondNode>,
+		std::enable_if_t<!std::is_same<Var,
+				Node<BinaryFunctionWrapper<BF>, FirstNode, SecondNode>>::value>>
+{
+	using Result_t = Node<
+				BinaryFunctionWrapper<BF>,
+				ApplyDependency_t<Var, Expr, FirstNode>,
+				ApplyDependency_t<Var, Expr, SecondNode>
+			>;
+};
+
+template<typename Var, typename Expr>
+struct ApplyDependency<Var, Expr, Var>
+{
+	using Result_t = Expr;
+};
+\end{lstlisting}
+
 
 \end{document}
