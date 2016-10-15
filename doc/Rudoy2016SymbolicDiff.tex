@@ -348,5 +348,61 @@ using Div = BinaryFunctionWrapper<BinaryFunction::Div>;
 using Pow = BinaryFunctionWrapper<BinaryFunction::Pow>;
 \end{lstlisting}
 
+\subsection{Дополнительные определения}
+
+Приведем объявления, позволяющие приблизить запись формул к обычной математической.
+
+Некоторые часто используемые имена свободных переменных:
+\begin{lstlisting}
+template<char Family, int Index = 0>
+constexpr Node<Variable<Family, Index>> Var {};
+
+using X0 = Node<Variable<'x', 0>>;
+constexpr X0 x0;
+using X1 = Node<Variable<'x', 1>>;
+constexpr X1 x1;
+using X2 = Node<Variable<'x', 2>>;
+constexpr X2 x2;
+
+using W0 = Node<Variable<'w', 0>>;
+constexpr W0 w0;
+using W1 = Node<Variable<'w', 1>>;
+constexpr W1 w1;
+using W2 = Node<Variable<'w', 2>>;
+constexpr W2 w2;
+\end{lstlisting}
+
+Константа, соответствующая единице:
+\begin{lstlisting}
+constexpr Node<Number<1>> _1;
+\end{lstlisting}
+
+Операторы и унарные функции для более естественной записи выражений:
+\begin{lstlisting}
+template<typename T1, typename T2>
+Node<Add, std::decay_t<T1>, std::decay_t<T2>> operator+ (T1, T2);
+
+template<typename T1, typename T2>
+Node<Mul, std::decay_t<T1>, std::decay_t<T2>> operator* (T1, T2);
+
+template<typename T1, typename T2>
+Node<Div, std::decay_t<T1>, std::decay_t<T2>> operator/ (T1, T2);
+
+template<typename T1, typename T2>
+Node<Add, std::decay_t<T1>, Node<Neg, std::decay_t<T2>>> operator- (T1, T2);
+
+template<typename T>
+Node<Sin, std::decay_t<T>> Sin (T);
+
+template<typename T>
+Node<Cos, std::decay_t<T>> Cos (T);
+
+template<typename T>
+Node<Ln, std::decay_t<T>> Ln (T);
+\end{lstlisting}
+
+Отметим, что функциям и операторам не нужно определение, достаточно объявления, так
+достаточно лишь укзаания возвращаемого типа соответствующих функций.
+
 
 \end{document}
