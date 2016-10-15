@@ -601,5 +601,77 @@ auto BuildFunctor (NodeType, ValueType val, Tail&&... tail)
 для какой-либо из переменных, так и несколько раз указанное значение для одной и той
 же переменной.
 
+\section{Вычислительный эксперимент}
+
+Предложенный метод применен для вычисления производных регрессионной модели,
+описывающей мощность лазера как функцию прозрачности его
+резонатора\cite{Rudoy16StabilityAnalysis}.
+Функция имеет следующий вид:
+\[
+  y(R_0) = \gamma \frac{1 - R_0}{1 + R_0} \Big(\frac{g_0}{\alpha_0 - \frac{1}{2} L \ln R_0} - 1\Big),
+\]
+где $L$~--- некоторая константа, $R_0$~--- свободная переменная, а $\alpha_0$, $g_0$ и
+$\gamma$~--- параметры регрессионной модели, которые необходимо оценить, и которые
+в контексте данной работы также можно считать свободными переменными.
+
+Для удобства записи этой формулы в виде кода переименуем стандартные переменные так,
+чтобы они соответствовали предметной области (считая, что $k = \gamma$):
+\begin{lstlisting}
+auto g0 = w0;
+auto alpha0 = w1;
+auto k = w2;
+auto r0 = x0;
+auto logr0 = x1;
+auto r0ppsq = x2;
+\end{lstlisting}
+где \texttt{logr0} и \texttt{r0ppsq} представляют кешированные подвыражения.
+
+Тогда искомую формулу, регрессионный остаток и производные можно записать следующим образом:
+\begin{lstlisting}
+using Formula_t = decltype (k * (_1 - r0) / (_1 + r0) *
+					(g0 / (alpha0 - logr0 / Num<300>) - _1));
+
+const auto& params = Params::BuildFunctor<float> (g0, someValue,
+        alpha0, anotherValue,
+        k, yetOneMoreValue,
+        r0, independentVariable,
+        logr0, logOfTheIndependentVariable);
+
+const auto residual = Formula_t::Eval (params) - knownValue;
+const auto dg0 = VarDerivative_t<Formula_t, decltype (g0)>::Eval (params);
+const auto dalpha0 = VarDerivative_t<Formula_t, decltype (alpha0)>::Eval (params);
+const auto dk = VarDerivative_t<Formula_t, decltype (k)>::Eval (params);
+\end{lstlisting}
+
+Производная по $R_0$ требует подстановки значения $\log R_0$:
+\begin{lstlisting}
+using Unwrapped_t = ApplyDependency_t<decltype (logr0), decltype (Ln (r0)), Formula_t>;
+using Derivative_t = VarDerivative_t<Unwrapped_t, decltype (r0)>;
+using CacheLog_t = ApplyDependency_t<decltype (Ln (r0)), decltype (logr0), Derivative_t>;
+using CachedSq_t = ApplyDependency_t<decltype ((-k * (_1 + r0) - (k * (_1 - r0))) /
+						((_1 + r0) * (_1 + r0))),
+			decltype (k * r0ppsq),
+			CacheLog_t>;
+const auto dr0 = CachedSq_t::Eval (vec);
+\end{lstlisting}
+Предпоследнее выражение для \texttt{CachedSq\_t} обеспечивает замену соответствующего
+подвыражения в формуле на рассчитанное заранее значение \texttt{r0ppsq} и, формально,
+не является необходимым.
+
+Сравнение производительность выполнялось при оценке эмпирического распределения
+параметров регрессионной модели методом Монте-Карло\cite{Rudoy15MonteCarlo}.
+Вычислительная программа компилировалась и выполнялась с использованием компилятора
+clang 3.9 для архитектуры amd64 под ОС Linux на процессоре Intel Core i7-3930K
+с флагами \texttt{-march=native -O3 -ffast-math}. Время Монте-Карло-симуляции,
+вычислявшей приблизительно $212 \dot 10^9$ производных за все время своей работы,
+и выполнявшейся в 12 потоков (с учетом виртуальных HT-ядер процессора) по результатам
+десяти запусков, составило 531 секунду, стандартное отклонение~--- 4.2 с.
+Аналогичная симуляция, использовавшая вручную написанный и оптимизированный код,
+выполнялась за 529 секунд, стандартное отклонение~--- 5.0 с.
+
+Непосредственное время вычисления производных в обоих случаях составляло около
+35\% времени работы алгоритма. Таким образом, разница во времени работы оказалась
+незначимой.
+
 
 \end{document}
