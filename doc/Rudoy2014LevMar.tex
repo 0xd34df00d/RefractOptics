@@ -272,6 +272,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
   \begin{tikzpicture}[
       scale = 1.5,
       point/.style = { draw, black, circle, fill, scale = 0.2 },
+      thecurve/.style = { red },
       classical/.style = { magenta },
       linearized/.style = { blue },
       ideal/.style = { orange },
@@ -300,7 +301,7 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
     \draw[->, name path = Ox] (-0.2,0) -- (8,0) coordinate[label = { below:$x$ }] (xmax);
     \draw[->, name path = Oy] (0,-0.2) -- (0,4) coordinate[label = { right:$y$ }] (ymax);
 
-    \draw[thick, red, tangent = 0.54, name path = f_x] plot[smooth] coordinates {(1, 3.875) (2, 3.75) (3, 3.5) (4, 3) (5, 2.1) (6, 0) (7, 0.5) };
+    \draw[thick, thecurve, tangent = 0.54, name path = f_x] plot[smooth] coordinates {(1, 3.875) (2, 3.75) (3, 3.5) (4, 3) (5, 2.1) (6, 0) (7, 0.5) };
     \node at (2, 3.5) {$f(x, \bomega)$};
 
     \draw[ideal, dashed, use tangent = 1] (-2, 0) -- (2, 0);
