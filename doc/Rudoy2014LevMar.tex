@@ -272,10 +272,10 @@ $(x, f(x, \bomega))$ на кривой, описываемой регресси�
   \begin{tikzpicture}[
       scale = 1.5,
       point/.style = { draw, black, circle, fill, scale = 0.2 },
-      thecurve/.style = { red },
-      classical/.style = { magenta },
-      linearized/.style = { blue },
-      ideal/.style = { orange },
+      thecurve/.style = { black },
+      classical/.style = { gray },
+      linearized/.style = { darkgray },
+      ideal/.style = { black },
       tangent/.style = {
         decoration = {
         markings,
@@ -651,7 +651,7 @@ $g_0$~--- коэффициент усиления слабого сигнала,
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\textwidth]{figs/levmar/results.pdf}
+  \includegraphics[width=\textwidth]{figs/levmar/results_bw.pdf}
   \caption{Графики \eqref{eq:y_approx}, соответствующие параметрам,
 	минимизирующим \eqref{eq:s} и \eqref{eq:s_classic}.}
   \label{fig:results}
@@ -695,12 +695,12 @@ $g_0$~--- коэффициент усиления слабого сигнала,
 \begin{figure}[h]
   \centering
   \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_1_100_0.01_yi.txt.pdf}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_1_100_0.01_yi.txt_bw.pdf}
 	\caption{$\sigma_{y_i} = 0.02ky_i$}
 	\label{fig:conv_varY_100}
   \end{subfigure}%
   \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_1_100_0.01_ymax.txt.pdf}
+    \includegraphics[width=\textwidth]{figs/levmar/convergence/convergence_1_100_0.01_ymax.txt_bw.pdf}
 	\caption{$\sigma_{y_i} = 0.02ky_{\max}$}
 	\label{fig:conv_fixedY_100}
   \end{subfigure}
