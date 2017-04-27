@@ -673,6 +673,8 @@ FUNCTION {output.address.publisher.date}
           if$
         }
         if$
+        " --- " output
+        add.blank
         publisher output
         format.date output
 }
