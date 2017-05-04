@@ -8,6 +8,7 @@ cp slashbox.sty $TARGET
 cp authors.txt $TARGET/authors.txt
 cp Rudoy2014LevMar.tex $TARGET/Rudoy2016LevMar.tex				# meh
 cp Rudoy2014LevMar.pdf $TARGET/../Rudoy2016LevMar.pdf
+cp utf8gost71s.bst $TARGET/
 
 mkdir -p $TARGET/figs/levmar/convergence
 mkdir -p $TARGET/figs/levmar/comparison
