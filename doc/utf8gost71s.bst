@@ -5,10 +5,10 @@
 %% The original source files were:
 %%
 %% utf8gost.dtx  (with options: `utf8gost71s')
-%% 
+%%
 %% Copyright 1996-2005 Maksym Polyakov.
 %% Version 2005.08.12
-%% 
+%%
 %% This file may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.2
 %% of this license or (at your option) any later version.
@@ -16,25 +16,25 @@
 %%   http://www.latex-project.org/lppl.txt
 %% and version 1.2 or later is part of all distributions of LaTeX
 %% version 1999/12/01 or later.
-%% 
+%%
 %% Please, send bug reports via e-mail:
 %%   polyama at auburn dot edu
-%% 
+%%
 %% 2005.08.12 Bug fix (long annote)
-%% 
+%%
 %% 2003.06.06 contributions by Konstantin Vorontsov:
 %% New ENTRY "annote" added for output annotations.
 %% New commands BibUrl, BibAnnote added for customize urls and annotations.
-%% 
+%%
 %% 2003.08.10
 %% New command BibEmph added for customize emphasizing.
-%% 
+%%
 %% 2003.10.07
 %% Some bug fixes in names and date formatting.
-%% 
+%%
 %% 2003.10.07
 %% Bug fix in INPROCEEDINGS.
-%% 
+%%
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
@@ -432,10 +432,10 @@ FUNCTION {bbl.number}  %  { "\bblnumber{}" }
 
 FUNCTION {bbl.nr}     %   { "\bblno{}" }
 {  curlanguage "english" =
-    {"no."}
+    {"No."}
     { curlanguage "ukrainian" = curlanguage "russian" = or
            {"{№}"}
-           {"language is not defined: " language  "no." * * warning$ "no."}
+           {"language is not defined: " language  "No." * * warning$ "No."}
       if$}
   if$
 }
@@ -492,10 +492,10 @@ FUNCTION {bbl.page}   %   { "\bblp."
 
 FUNCTION {bbl.ppages}%    { "\bblPp." }
 {  curlanguage "english" =
-    {"Pp."}
+    {"P."}
     { curlanguage "ukrainian" = curlanguage "russian" = or
            {"{С.}"}
-           {"language is not defined: " language  "Pp." * * warning$ "Pp."}
+           {"language is not defined: " language  "P." * * warning$ "P."}
       if$}
   if$
 }
@@ -872,7 +872,7 @@ FUNCTION {format.vol.num.pages}
   number empty$
     'skip$
     {
-      ", no." number tie.or.space.connect *
+      ". No." number tie.or.space.connect *
       volume empty$
         { "there's a number but no volume in " cite$ * warning$ }
         'skip$
