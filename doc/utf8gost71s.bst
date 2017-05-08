@@ -1030,7 +1030,6 @@ FUNCTION {article}
   author.after
   new.dblslash
   journal "journal" output.check
-  new.block
   format.date output
   new.block
   format.volume output
