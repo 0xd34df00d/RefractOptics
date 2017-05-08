@@ -1029,7 +1029,7 @@ FUNCTION {article}
   new.slash
   author.after
   new.dblslash
-  journal emphasize "journal" output.check
+  journal "journal" output.check
   new.block
   format.date output
   new.block
