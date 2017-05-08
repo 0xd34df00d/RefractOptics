@@ -1033,6 +1033,7 @@ FUNCTION {article}
   format.date output
   new.block
   format.volume output
+  new.block
   format.number output
   new.block
   format.pages.page output
